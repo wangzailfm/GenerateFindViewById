@@ -2,7 +2,7 @@
     <id>com.wangzai.plugin.findViewById</id>
     <name>GeneralFindViewById</name>
     <version>1.0</version>
-    <vendor email="673173629@qq.com" url="http://blog.csdn.net/u011976726">Jowan</vendor>
+    <vendor email="673173629@qq.com" url="https://github.com/wangzailfm/GenerateFindViewById">GitHub</vendor>
 
     <description><![CDATA[
     可输入布局字段，可选中布局文件字段，生成相应的代码。<br/>
