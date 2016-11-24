@@ -17,12 +17,7 @@ import com.intellij.ui.JBColor;
 import entity.Element;
 
 import java.awt.*;
-import java.awt.List;
-import java.util.*;
 
-/**
- * Created by pc on 2016/11/22.
- */
 public class Utils {
 
     /**

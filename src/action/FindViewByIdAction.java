@@ -21,10 +21,6 @@ import org.apache.http.util.TextUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-
-/**
- * Created by pc on 2016/11/21.
- */
 public class FindViewByIdAction extends AnAction {
 
     @Override

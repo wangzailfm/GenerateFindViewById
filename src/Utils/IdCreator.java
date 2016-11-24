@@ -1,7 +1,6 @@
 package Utils;
 
 import com.intellij.codeInsight.actions.ReformatCodeProcessor;
-import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.command.WriteCommandAction.Simple;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
@@ -12,9 +11,6 @@ import org.apache.http.util.TextUtils;
 
 import java.util.List;
 
-/**
- * Created by pc on 2016/11/22.
- */
 public class IdCreator extends Simple {
 
     private PsiFile mFile;
