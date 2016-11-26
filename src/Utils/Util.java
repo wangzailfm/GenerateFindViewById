@@ -5,20 +5,21 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.popup.Balloon;
 import com.intellij.openapi.ui.popup.JBPopupFactory;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.XmlRecursiveElementVisitor;
+import com.intellij.psi.*;
 import com.intellij.psi.search.FilenameIndex;
 import com.intellij.psi.search.GlobalSearchScope;
+import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.psi.xml.XmlAttribute;
 import com.intellij.psi.xml.XmlFile;
 import com.intellij.psi.xml.XmlTag;
 import com.intellij.ui.JBColor;
 import entity.Element;
+import org.apache.http.util.TextUtils;
 
 import java.awt.*;
+import java.util.Locale;
 
-public class Utils {
+public class Util {
 
     /**
      * 显示dialog
@@ -36,6 +37,32 @@ public class Utils {
                         .show(factory.guessBestPopupLocation(editor), Balloon.Position.below);
             }
         });
+    }
+
+    /**
+     * 驼峰
+     * @param fieldName
+     * @return
+     */
+    public static String getFieldName(String fieldName) {
+        if (!TextUtils.isEmpty(fieldName)) {
+            String[] names = fieldName.split("_");
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < names.length; i++) {
+                sb.append(firstToUpperCase(names[i]));
+            }
+            fieldName = sb.toString();
+        }
+        return fieldName;
+    }
+
+    /**
+     * 第一个字母大写
+     * @param key
+     * @return
+     */
+    public static String firstToUpperCase(String key) {
+        return key.substring(0, 1).toUpperCase(Locale.CHINA) + key.substring(1);
     }
 
     /**
@@ -123,5 +150,22 @@ public class Utils {
         }
         // layout_view
         return parts[1];
+    }
+
+    /**
+     * 根据当前文件获取对应的class文件
+     * @param editor
+     * @param file
+     * @return
+     */
+    public static PsiClass getTargetClass(Editor editor, PsiFile file) {
+        int offset = editor.getCaretModel().getOffset();
+        PsiElement element = file.findElementAt(offset);
+        if(element == null) {
+            return null;
+        } else {
+            PsiClass target = PsiTreeUtil.getParentOfType(element, PsiClass.class);
+            return target instanceof SyntheticElement ?null:target;
+        }
     }
 }

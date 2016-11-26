@@ -1,7 +1,8 @@
 package entity;
 
-import com.intellij.psi.xml.XmlAttribute;
+import Utils.*;
 import com.intellij.psi.xml.XmlTag;
+import org.apache.http.util.TextUtils;
 
 import java.util.Locale;
 import java.util.regex.Matcher;
@@ -12,12 +13,14 @@ public class Element {
     // 判断id正则
     private static final Pattern sIdPattern = Pattern.compile("@\\+?(android:)?id/([^$]+)$", Pattern.CASE_INSENSITIVE);
     // id
-    public String id;
+    private String id;
     // 名字如TextView
-    public String name;
+    private String name;
     // 命名1 aa_bb_cc; 2 aaBbCc 3 mAaBbCc
-    public int fieldNameType = 3;
-    public XmlTag xml;
+    private int fieldNameType = 3;
+    private String fieldName;
+    private XmlTag xml;
+    private boolean isEnable = true;
 
     /**
      * 构造函数
@@ -48,6 +51,46 @@ public class Element {
         this.xml = xml;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getFieldNameType() {
+        return fieldNameType;
+    }
+
+    public void setFieldNameType(int fieldNameType) {
+        this.fieldNameType = fieldNameType;
+    }
+
+    public XmlTag getXml() {
+        return xml;
+    }
+
+    public void setXml(XmlTag xml) {
+        this.xml = xml;
+    }
+
+    public boolean isEnable() {
+        return isEnable;
+    }
+
+    public void setEnable(boolean enable) {
+        isEnable = enable;
+    }
+
     /**
      * 获取id，R.id.id
      *
@@ -67,35 +110,37 @@ public class Element {
      * @return
      */
     public String getFieldName() {
-        String fieldName = id;
-        String[] names = id.split("_");
-        if (fieldNameType == 2) {
-            // aaBbCc
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < names.length; i++) {
-                if (i == 0) {
-                    sb.append(names[i]);
-                } else {
-                    sb.append(firstToUpperCase(names[i]));
+        if (TextUtils.isEmpty(this.fieldName)) {
+            String fieldName = id;
+            String[] names = id.split("_");
+            if (fieldNameType == 2) {
+                // aaBbCc
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < names.length; i++) {
+                    if (i == 0) {
+                        sb.append(names[i]);
+                    } else {
+                        sb.append(Util.firstToUpperCase(names[i]));
+                    }
                 }
-            }
-            fieldName = sb.toString();
-        } else if (fieldNameType == 3) {
-            // mAaBbCc
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < names.length; i++) {
-                if (i == 0) {
-                    sb.append("m");
+                fieldName = sb.toString();
+            } else if (fieldNameType == 3) {
+                // mAaBbCc
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < names.length; i++) {
+                    if (i == 0) {
+                        sb.append("m");
+                    }
+                    sb.append(Util.firstToUpperCase(names[i]));
                 }
-                sb.append(firstToUpperCase(names[i]));
+                fieldName = sb.toString();
             }
-            fieldName = sb.toString();
+            this.fieldName = fieldName;
         }
-        return fieldName;
+        return this.fieldName;
     }
 
-    // 第一个字母大写
-    public static String firstToUpperCase(String key) {
-        return key.substring(0, 1).toUpperCase(Locale.CHINA) + key.substring(1);
+    public void setFieldName(String fieldName) {
+       this.fieldName = fieldName;
     }
 }

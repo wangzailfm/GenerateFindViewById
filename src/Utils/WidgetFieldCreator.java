@@ -11,16 +11,18 @@ import org.apache.http.util.TextUtils;
 
 import java.util.List;
 
-public class IdCreator extends Simple {
+public class WidgetFieldCreator extends Simple {
 
     private PsiFile mFile;
     private Project mProject;
     private PsiClass mClass;
     private List<Element> mElements;
     private PsiElementFactory mFactory;
-    private String mSelectText;
+    private String mSelectedText;
+    private boolean mIsLayoutInflater;
+    private String mLayoutInflaterText;
 
-    public IdCreator(PsiFile psiFile, PsiClass psiClass, String command, List<Element> elements, String selectText) {
+    public WidgetFieldCreator(PsiFile psiFile, PsiClass psiClass, String command, List<Element> elements, String selectedText, boolean isLayoutInflater, String text) {
         super(psiClass.getProject(), command);
 
         mFile = psiFile;
@@ -29,7 +31,9 @@ public class IdCreator extends Simple {
         mElements = elements;
         // 获取Factory
         mFactory = JavaPsiFacade.getElementFactory(mProject);
-        mSelectText = selectText;
+        mSelectedText = selectedText;
+        mIsLayoutInflater = isLayoutInflater;
+        mLayoutInflaterText = text;
     }
 
     @Override
@@ -47,16 +51,38 @@ public class IdCreator extends Simple {
      * 创建变量
      */
     private void generateFields() {
+        if (mIsLayoutInflater) {
+            String inflater = "private " + "View " + mLayoutInflaterText + ";";
+            // 已存在的变量就不创建
+            boolean duplicateField = false;
+            for (PsiField field : mClass.getFields()) {
+                String name = field.getName();
+                if (name != null && name.equals(mLayoutInflaterText)) {
+                    duplicateField = true;
+                    break;
+                }
+            }
+            if (!duplicateField) {
+                mClass.add(mFactory.createFieldFromText(inflater, mClass));
+            }
+        }
         for (Element element : mElements) {
-
-            // remove duplicate field
+            // 已存在的变量就不创建
             PsiField[] fields = mClass.getFields();
             boolean duplicateField = false;
             for (PsiField field : fields) {
                 String name = field.getName();
-                if (name != null && name.equals(element.getFieldName())) {
-                    duplicateField = true;
-                    break;
+                if (!mIsLayoutInflater) {
+                    if (name != null && name.equals(element.getFieldName())) {
+                        duplicateField = true;
+                        break;
+                    }
+                } else {
+                    if (name != null && name.equals(element.getFieldName()
+                            + mLayoutInflaterText.substring(1))) {
+                        duplicateField = true;
+                        break;
+                    }
                 }
             }
 
@@ -64,14 +90,22 @@ public class IdCreator extends Simple {
                 continue;
             }
             // 设置变量
-            String text = element.xml.getAttributeValue("android:text");
+            String text = element.getXml().getAttributeValue("android:text");
             // text
-            String fromText = "private " + element.name + " " + element.getFieldName() + ";";
+            StringBuilder fromText = new StringBuilder();
+            fromText.append("private ");
+            fromText.append(element.getName());
+            fromText.append(" ");
+            fromText.append(element.getFieldName());
+            if (mIsLayoutInflater) fromText.append(mLayoutInflaterText.substring(1));
+            fromText.append(";");
             if (!TextUtils.isEmpty(text)) {
-                fromText = "/** " + text + " */\n" + fromText;
+                // fromText = "/** " + text + " */\n" + fromText;
             }
-            // 添加到class
-            mClass.add(mFactory.createFieldFromText(fromText, mClass));
+            if (element.isEnable()) {
+                // 添加到class
+                mClass.add(mFactory.createFieldFromText(fromText.toString(), mClass));
+            }
         }
     }
 
@@ -95,7 +129,7 @@ public class IdCreator extends Simple {
                 method.append("super.onCreate(savedInstanceState);\n");
                 method.append("\t// TODO:run FindViewById again To setValue in initView method\n");
                 method.append("\tsetContentView(R.layout.");
-                method.append(mSelectText);
+                method.append(mSelectedText);
                 method.append(");\n");
                 method.append("}");
                 // 添加
@@ -124,7 +158,7 @@ public class IdCreator extends Simple {
                     onCreate.getBody().addAfter(mFactory.createStatementFromText("initView();", mClass), setContentViewStatement);
                 }
 
-                generatorLayoutCode(null);
+                generatorLayoutCode(null, "getApplicationContext()");
             }
 
             // 判断mClass是不是继承fragmentClass或者fragmentV4Class
@@ -137,7 +171,7 @@ public class IdCreator extends Simple {
                 method.append("@Override public View onCreateView(android.view.LayoutInflater inflater, android.view.ViewGroup container, android.os.Bundle savedInstanceState) {\n");
                 method.append("\t// TODO: run FindViewById again To setValue in initView method\n");
                 method.append("\tView view = View.inflate(getActivity(), R.layout.");
-                method.append(mSelectText);
+                method.append(mSelectedText);
                 method.append(", null);");
                 method.append("return view;");
                 method.append("}");
@@ -169,7 +203,7 @@ public class IdCreator extends Simple {
                 if (!hasInitViewStatement && returnStatement != null && returnValue != null) {
                     onCreate.getBody().addBefore(mFactory.createStatementFromText("initView(" + returnValue + ");", mClass), returnStatement);
                 }
-                generatorLayoutCode(returnValue);
+                generatorLayoutCode(returnValue, "getActivity()");
             }
         }
     }
@@ -178,16 +212,58 @@ public class IdCreator extends Simple {
      * 写initView方法
      *
      * @param findPre Fragment的话要view.findViewById
+     * @param context
      */
-    private void generatorLayoutCode(String findPre) {
+    private void generatorLayoutCode(String findPre, String context) {
         // 判断是否已有initView方法
         PsiMethod[] initViewMethods = mClass.findMethodsByName("initView", false);
         if (initViewMethods.length > 0 && initViewMethods[0].getBody() != null) {
             PsiCodeBlock initViewMethodBody = initViewMethods[0].getBody();
+            // 获取initView方法里面的每条findViewById
+            PsiStatement[] statements = initViewMethodBody.getStatements();
+            if (mIsLayoutInflater) {
+                // 添加LayoutInflater.from(this).inflate(R.layout.activity_main, null);
+                String layoutInflater = mLayoutInflaterText
+                        + " = "
+                        + "LayoutInflater.from(" + context + ").inflate(R.layout." + mSelectedText + ", null);";
+                // 判断是否存在
+                boolean isExist = false;
+                for (PsiStatement statement : statements) {
+                    if (statement.getText().equals(layoutInflater)) {
+                        isExist = true;
+                        break;
+                    } else {
+                        isExist = false;
+                    }
+                }
+                // 不存在才添加
+                if (!isExist) {
+                    initViewMethodBody.add(mFactory.createStatementFromText(layoutInflater, initViewMethods[0]));
+                }
+            }
             for (Element element : mElements) {
-                String pre = TextUtils.isEmpty(findPre) ? "" : findPre + ".";
-                String s2 = element.getFieldName() + " = (" + element.name + ") " + pre + "findViewById(" + element.getFullID() + ");";
-                initViewMethodBody.add(mFactory.createStatementFromText(s2, initViewMethods[0]));
+                if (element.isEnable()) {
+                    // 判断是否已存在findViewById
+                    boolean isExist = false;
+                    String pre = TextUtils.isEmpty(findPre) ? "" : findPre + ".";
+                    String inflater = "";
+                    if (mIsLayoutInflater) inflater = mLayoutInflaterText.substring(1);
+                    String s2 = element.getFieldName() + inflater
+                            + " = (" + element.getName() + ") "
+                            + pre + "findViewById(" + element.getFullID() + ");";
+                    for (PsiStatement statement : statements) {
+                        if (statement.getText().equals(s2)) {
+                            isExist = true;
+                            break;
+                        } else {
+                            isExist = false;
+                        }
+                    }
+                    // 不存在就添加
+                    if (!isExist) {
+                        initViewMethodBody.add(mFactory.createStatementFromText(s2, initViewMethods[0]));
+                    }
+                }
             }
         } else {
             StringBuilder initView = new StringBuilder();
@@ -196,10 +272,24 @@ public class IdCreator extends Simple {
             } else {
                 initView.append("private void initView(View " + findPre + ") {\n");
             }
+            if (mIsLayoutInflater) {
+                // 添加LayoutInflater.from(this).inflate(R.layout.activity_main, null);
+                String layoutInflater = mLayoutInflaterText
+                        + " = "
+                        + "LayoutInflater.from(" + context + ").inflate(R.layout." + mSelectedText + ", null);"
+                        + "\n";
+                initView.append(layoutInflater);
+            }
 
             for (Element element : mElements) {
-                String pre = TextUtils.isEmpty(findPre) ? "" : findPre + ".";
-                initView.append(element.getFieldName() + " = (" + element.name + ")" + pre + "findViewById(" + element.getFullID() + ");\n");
+                if (element.isEnable()) {
+                    String pre = TextUtils.isEmpty(findPre) ? "" : findPre + ".";
+                    String inflater = "";
+                    if (mIsLayoutInflater) inflater = mLayoutInflaterText.substring(1);
+                    initView.append(element.getFieldName() + inflater
+                            + " = (" + element.getName() + ")"
+                            + pre + "findViewById(" + element.getFullID() + ");\n");
+                }
             }
             initView.append("}\n");
             mClass.add(mFactory.createMethodFromText(initView.toString(), mClass));
