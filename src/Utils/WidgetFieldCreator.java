@@ -247,7 +247,10 @@ public class WidgetFieldCreator extends Simple {
                     boolean isExist = false;
                     String pre = TextUtils.isEmpty(findPre) ? "" : findPre + ".";
                     String inflater = "";
-                    if (mIsLayoutInflater) inflater = mLayoutInflaterText.substring(1);
+                    if (mIsLayoutInflater) {
+                        inflater = mLayoutInflaterText.substring(1);
+                        pre = mLayoutInflaterText + ".";
+                    }
                     String s2 = element.getFieldName() + inflater
                             + " = (" + element.getName() + ") "
                             + pre + "findViewById(" + element.getFullID() + ");";
@@ -285,7 +288,10 @@ public class WidgetFieldCreator extends Simple {
                 if (element.isEnable()) {
                     String pre = TextUtils.isEmpty(findPre) ? "" : findPre + ".";
                     String inflater = "";
-                    if (mIsLayoutInflater) inflater = mLayoutInflaterText.substring(1);
+                    if (mIsLayoutInflater) {
+                        inflater = mLayoutInflaterText.substring(1);
+                        pre = mLayoutInflaterText + ".";
+                    }
                     initView.append(element.getFieldName() + inflater
                             + " = (" + element.getName() + ")"
                             + pre + "findViewById(" + element.getFullID() + ");\n");
