@@ -101,19 +101,8 @@ public class FindViewByIdDialog extends JFrame implements ActionListener {
     private void initContentPanel() {
         // 添加JPanel
         getContentPane().add(mPanelTitle);
-        // 已存在的变量设置isEnable为false
-        PsiField[] fields = mClass.getFields();
         // 设置内容
         for (Element mElement : mElements) {
-            for (Element element : mElements) {
-                for (PsiField field : fields) {
-                    String name = field.getName();
-                    if (name != null && name.equals(element.getFieldName())) {
-                        element.setEnable(false);
-                        break;
-                    }
-                }
-            }
             IdBean itemJPanel = new IdBean(new GridLayout(1, 4, 10, 10),
                     new EmptyBorder(5, 10, 5, 10),
                     new JCheckBox(mElement.getName(), mElement.isEnable()),
