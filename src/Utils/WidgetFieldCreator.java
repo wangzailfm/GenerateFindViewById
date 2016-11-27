@@ -48,7 +48,6 @@ public class WidgetFieldCreator extends Simple {
     @Override
     protected void run() throws Throwable {
         try {
-            generateFields();
             generateFindViewById();
         } catch (Exception e) {
             // 异常打印
@@ -163,7 +162,7 @@ public class WidgetFieldCreator extends Simple {
                 StringBuilder method = new StringBuilder();
                 method.append("@Override protected void onCreate(android.os.Bundle savedInstanceState) {\n");
                 method.append("super.onCreate(savedInstanceState);\n");
-                method.append("\t// TODO:run FindViewById again To setValue in initView method\n");
+                method.append("\t// TODO:No the onCreate method run FindViewById again to generate field\n");
                 method.append("\tsetContentView(R.layout.");
                 method.append(mSelectedText);
                 method.append(");\n");
@@ -171,6 +170,7 @@ public class WidgetFieldCreator extends Simple {
                 // 添加
                 mClass.add(mFactory.createMethodFromText(method.toString(), mClass));
             } else {
+                generateFields();
                 // 获取setContentView
                 PsiStatement setContentViewStatement = null;
                 // onCreate是否存在initView方法
@@ -205,7 +205,7 @@ public class WidgetFieldCreator extends Simple {
             if (mClass.findMethodsByName("onCreateView", false).length == 0) {
                 StringBuilder method = new StringBuilder();
                 method.append("@Override public View onCreateView(android.view.LayoutInflater inflater, android.view.ViewGroup container, android.os.Bundle savedInstanceState) {\n");
-                method.append("\t// TODO: run FindViewById again To setValue in initView method\n");
+                method.append("\t// TODO:No the onCreateView method run FindViewById again to generate field\n");
                 method.append("\tView view = View.inflate(getActivity(), R.layout.");
                 method.append(mSelectedText);
                 method.append(", null);");
@@ -215,6 +215,7 @@ public class WidgetFieldCreator extends Simple {
                 mClass.add(mFactory.createMethodFromText(method.toString(), mClass));
 
             } else {
+                generateFields();
                 // 查找onCreateView
                 PsiReturnStatement returnStatement = null;
                 // view
