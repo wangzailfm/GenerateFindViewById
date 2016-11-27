@@ -3,6 +3,7 @@
 - Activity如果没有onCreate方法，会先生成onCreate方法，再重新操作一次才生成有id控件相应的代码。
 - Fragment如果没有onCreateView方法，会先生成onCreateView方法，再重新操作一次才生成有id控件相应的代码。
 - 可选生成的字段，可编辑变量名，可选择是否LayoutInflater类型。
+- LayoutInflater类型生成的变量规则，如LayoutInflater的变量为mView，生成控件变量后面会加上"View"。
 
 # 演示
 ![演示](http://img.blog.csdn.net/20161122145239231)
