@@ -3,6 +3,8 @@ package View;
 import Utils.*;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
+import com.intellij.psi.PsiClass;
+import com.intellij.psi.PsiField;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.util.PsiUtilBase;
 import entity.Element;
@@ -23,14 +25,20 @@ public class FindViewByIdDialog extends JFrame implements ActionListener {
     private Editor mEditor;
     private String mSelectedText;
     private List<Element> mElements;
+    // 获取当前文件
+    private PsiFile psiFile;
+    // 获取class
+    private PsiClass mClass;
+
     // 标签JPanel
-    private IdBean mPanelTitle = new IdBean();
+    private JPanel mPanelTitle = new JPanel();
     private JLabel mTitleName = new JLabel("ViewWidget");
     private JLabel mTitleId = new JLabel("ViewId");
     private JLabel mTitleField = new JLabel("ViewFiled");
     // 确定、取消JPanel
-    private IdBean mPanelRight = new IdBean();
-    private IdBean mPanelButton = new IdBean();
+    private JPanel mPanelRight = new JPanel();
+    private JPanel mPanelButton = new JPanel();
+
     // 是否选择LayoutInflater
     private JCheckBox mButtonLayoutInflater = new JCheckBox("LayoutInflater.from?", false);
     // 手动修改LayoutInflater字段名
@@ -43,18 +51,15 @@ public class FindViewByIdDialog extends JFrame implements ActionListener {
         mProject = project;
         mSelectedText = selectedText;
         mElements = elements;
-        mPanelTitle.setLayout(new GridLayout(1, 4, 10, 10));
-        mPanelTitle.setBorder(new EmptyBorder(5, 10, 5, 10));
+        psiFile = PsiUtilBase.getPsiFileInEditor(mEditor, mProject);
+        mClass = Util.getTargetClass(mEditor, psiFile);
+        initTopPanel();
+        initBottomPanel();
+        initContentPanel();
+        setDialog();
+    }
 
-        mTitleName.setHorizontalAlignment(JLabel.LEFT);
-        mTitleName.setBorder(new EmptyBorder(0, 25, 0, 0));
-        mTitleId.setHorizontalAlignment(JLabel.LEFT);
-        mTitleField.setHorizontalAlignment(JLabel.LEFT);
-
-        mPanelTitle.add(mTitleName);
-        mPanelTitle.add(mTitleId);
-        mPanelTitle.add(mTitleField);
-
+    private void initBottomPanel() {
         // 添加监听
         mButtonConfirm.addActionListener(this);
         mButtonCancel.addActionListener(this);
@@ -73,49 +78,50 @@ public class FindViewByIdDialog extends JFrame implements ActionListener {
         mPanelButton.add(mButtonLayoutInflater);
         mPanelButton.add(mButtonLayoutInflaterField);
         mPanelButton.add(mPanelRight);
-        initPanel();
-        setDialog();
     }
 
     /**
-     * 解析mElements
+     * 添加头部
      */
-    private void initPanel() {
+    private void initTopPanel() {
+        mPanelTitle.setLayout(new GridLayout(1, 4, 10, 10));
+        mPanelTitle.setBorder(new EmptyBorder(5, 10, 5, 10));
+        mTitleName.setHorizontalAlignment(JLabel.LEFT);
+        mTitleName.setBorder(new EmptyBorder(0, 25, 0, 0));
+        mTitleId.setHorizontalAlignment(JLabel.LEFT);
+        mTitleField.setHorizontalAlignment(JLabel.LEFT);
+        mPanelTitle.add(mTitleName);
+        mPanelTitle.add(mTitleId);
+        mPanelTitle.add(mTitleField);
+    }
+
+    /**
+     * 解析mElements，并添加到JPanel
+     */
+    private void initContentPanel() {
         // 添加JPanel
         getContentPane().add(mPanelTitle);
+        // 已存在的变量设置isEnable为false
+        PsiField[] fields = mClass.getFields();
         // 设置内容
         for (Element mElement : mElements) {
-            IdBean itemJPanel = new IdBean();
-            itemJPanel.setLayout(new GridLayout(1, 4, 10, 10));
-            itemJPanel.setBorder(new EmptyBorder(5, 10, 5, 10));
-            // 是否生成 + name
-            JCheckBox enableCheckBox = new JCheckBox(mElement.getName(), true);
-            // 监听
-            enableCheckBox.addActionListener(e -> mElement.setEnable(enableCheckBox.isSelected()));
-            // 设置边距
-            enableCheckBox.setHorizontalAlignment(JLabel.LEFT);
-            // id
-            JLabel idJLabel = new JLabel(mElement.getId());
-            idJLabel.setHorizontalAlignment(JLabel.LEFT);
-            // 变量名
-            JTextField fieldJTextField = new JTextField(mElement.getFieldName());
-            fieldJTextField.setHorizontalAlignment(JTextField.LEFT);
-            // 监听
-            fieldJTextField.addFocusListener(new FocusListener() {
-                @Override
-                public void focusGained(FocusEvent e) {
-                    mElement.setFieldName(fieldJTextField.getText());
+            for (Element element : mElements) {
+                for (PsiField field : fields) {
+                    String name = field.getName();
+                    if (name != null && name.equals(element.getFieldName())) {
+                        element.setEnable(false);
+                        break;
+                    }
                 }
-
-                @Override
-                public void focusLost(FocusEvent e) {
-                    mElement.setFieldName(fieldJTextField.getText());
-                }
-            });
-
-            itemJPanel.add(enableCheckBox);
-            itemJPanel.add(idJLabel);
-            itemJPanel.add(fieldJTextField);
+            }
+            IdBean itemJPanel = new IdBean(new GridLayout(1, 4, 10, 10),
+                    new EmptyBorder(5, 10, 5, 10),
+                    new JCheckBox(mElement.getName(), mElement.isEnable()),
+                    new JLabel(mElement.getId()),
+                    new JTextField(mElement.getFieldName()));
+            // 监听
+            itemJPanel.setEnableActionListener(enableCheckBox1 -> mElement.setEnable(enableCheckBox1.isSelected()));
+            itemJPanel.setFieldFocusListener(fieldJTextField -> mElement.setFieldName(fieldJTextField.getText()));
             getContentPane().add(itemJPanel);
         }
 
@@ -173,11 +179,8 @@ public class FindViewByIdDialog extends JFrame implements ActionListener {
      * @param text 自定义text
      */
     private void setCreator(boolean isLayoutInflater, String text) {
-        //获取当前文件
-        PsiFile psiFile = PsiUtilBase.getPsiFileInEditor(mEditor, mProject);
-        new WidgetFieldCreator(psiFile, Util.getTargetClass(mEditor, psiFile),
+        new WidgetFieldCreator(this, mEditor, psiFile, mClass,
                 "Generate Injections", mElements, mSelectedText, isLayoutInflater, text)
                 .execute();
-        Util.showPopupBalloon(mEditor, "生成成功");
     }
 }

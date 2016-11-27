@@ -18,8 +18,12 @@ import org.apache.http.util.TextUtils;
 
 import java.awt.*;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Util {
+    // 通过strings.xml获取的值
+    private static String StringValue;
 
     /**
      * 显示dialog
@@ -41,6 +45,7 @@ public class Util {
 
     /**
      * 驼峰
+     *
      * @param fieldName
      * @return
      */
@@ -58,11 +63,46 @@ public class Util {
 
     /**
      * 第一个字母大写
+     *
      * @param key
      * @return
      */
     public static String firstToUpperCase(String key) {
         return key.substring(0, 1).toUpperCase(Locale.CHINA) + key.substring(1);
+    }
+
+    /**
+     * 解析xml获取string的值
+     * @param psiFile
+     * @param text
+     * @return
+     */
+    public static String getTextFromStringsXml(PsiFile psiFile, String text) {
+        psiFile.accept(new XmlRecursiveElementVisitor() {
+            @Override
+            public void visitElement(PsiElement element) {
+                super.visitElement(element);
+                if (element instanceof XmlTag) {
+                    XmlTag tag = (XmlTag) element;
+                    if (tag.getName().equals("string")
+                            && tag.getAttributeValue("name").equals(text)) {
+                        PsiElement[] children = tag.getChildren();
+                        String value = "";
+                        for (PsiElement child : children) {
+                            value += child.getText();
+                        }
+                        // value = <string name="app_name">My Application</string>
+                        // 用正则获取值
+                        Pattern p = Pattern.compile("<string name=\"" + text + "\">(.*)</string>");
+                        Matcher m = p.matcher(value);
+                        while (m.find()) {
+                            StringValue = m.group(1);
+                        }
+                    }
+                }
+            }
+        });
+        return StringValue;
     }
 
     /**
@@ -154,6 +194,7 @@ public class Util {
 
     /**
      * 根据当前文件获取对应的class文件
+     *
      * @param editor
      * @param file
      * @return
@@ -161,11 +202,11 @@ public class Util {
     public static PsiClass getTargetClass(Editor editor, PsiFile file) {
         int offset = editor.getCaretModel().getOffset();
         PsiElement element = file.findElementAt(offset);
-        if(element == null) {
+        if (element == null) {
             return null;
         } else {
             PsiClass target = PsiTreeUtil.getParentOfType(element, PsiClass.class);
-            return target instanceof SyntheticElement ?null:target;
+            return target instanceof SyntheticElement ? null : target;
         }
     }
 }

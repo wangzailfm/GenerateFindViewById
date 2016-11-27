@@ -1,11 +1,17 @@
 package Utils;
 
+import View.FindViewByIdDialog;
 import com.intellij.codeInsight.actions.ReformatCodeProcessor;
 import com.intellij.openapi.command.WriteCommandAction.Simple;
+import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
 import com.intellij.psi.codeStyle.JavaCodeStyleManager;
 import com.intellij.psi.search.EverythingGlobalScope;
+import com.intellij.psi.search.FilenameIndex;
+import com.intellij.psi.search.GlobalSearchScope;
+import com.intellij.psi.xml.XmlFile;
+import com.intellij.psi.xml.XmlTag;
 import entity.Element;
 import org.apache.http.util.TextUtils;
 
@@ -13,6 +19,8 @@ import java.util.List;
 
 public class WidgetFieldCreator extends Simple {
 
+    private FindViewByIdDialog mDialog;
+    private Editor mEditor;
     private PsiFile mFile;
     private Project mProject;
     private PsiClass mClass;
@@ -22,9 +30,10 @@ public class WidgetFieldCreator extends Simple {
     private boolean mIsLayoutInflater;
     private String mLayoutInflaterText;
 
-    public WidgetFieldCreator(PsiFile psiFile, PsiClass psiClass, String command, List<Element> elements, String selectedText, boolean isLayoutInflater, String text) {
+    public WidgetFieldCreator(FindViewByIdDialog dialog, Editor editor, PsiFile psiFile, PsiClass psiClass, String command, List<Element> elements, String selectedText, boolean isLayoutInflater, String text) {
         super(psiClass.getProject(), command);
-
+        mDialog = dialog;
+        mEditor = editor;
         mFile = psiFile;
         mProject = psiClass.getProject();
         mClass = psiClass;
@@ -38,13 +47,21 @@ public class WidgetFieldCreator extends Simple {
 
     @Override
     protected void run() throws Throwable {
-        generateFields();
-        generateFindViewById();
+        try {
+            generateFields();
+            generateFindViewById();
+        } catch (Exception e) {
+            // 异常打印
+            mDialog.cancelDialog();
+            Util.showPopupBalloon(mEditor, e.getMessage());
+            return;
+        }
         // 重写class
         JavaCodeStyleManager styleManager = JavaCodeStyleManager.getInstance(mProject);
         styleManager.optimizeImports(mFile);
         styleManager.shortenClassReferences(mClass);
         new ReformatCodeProcessor(mProject, mClass.getContainingFile(), null, false).runWithoutProgress();
+        Util.showPopupBalloon(mEditor, "生成成功");
     }
 
     /**
@@ -85,23 +102,42 @@ public class WidgetFieldCreator extends Simple {
                     }
                 }
             }
-
+            // 已存在跳出
             if (duplicateField) {
                 continue;
             }
-            // 设置变量
+            // 设置变量名，获取text里面的内容
             String text = element.getXml().getAttributeValue("android:text");
-            // text
+            if (TextUtils.isEmpty(text)) {
+                // 如果是text为空，则获取hint里面的内容
+                text = element.getXml().getAttributeValue("android:hint");
+            }
+            // 如果是@string/app_name类似
+            if (!TextUtils.isEmpty(text) && text.contains("@string/")) {
+                text = text.replace("@string/", "");
+                // 获取strings.xml
+                PsiFile[] psiFiles = FilenameIndex.getFilesByName(mProject, "strings.xml", GlobalSearchScope.allScope(mProject));
+                if (psiFiles.length > 0) {
+                    for (PsiFile psiFile : psiFiles) {
+                        // 获取src\main\res\values下面的strings.xml文件
+                        String dirName = psiFile.getParent().toString();
+                        if (dirName.contains("src\\main\\res\\values")) {
+                            text = Util.getTextFromStringsXml(psiFile, text);
+                        }
+                    }
+                }
+            }
+
             StringBuilder fromText = new StringBuilder();
+            if (!TextUtils.isEmpty(text)) {
+                 fromText.append("/** " + text + " */\n");
+            }
             fromText.append("private ");
             fromText.append(element.getName());
             fromText.append(" ");
             fromText.append(element.getFieldName());
             if (mIsLayoutInflater) fromText.append(mLayoutInflaterText.substring(1));
             fromText.append(";");
-            if (!TextUtils.isEmpty(text)) {
-                // fromText = "/** " + text + " */\n" + fromText;
-            }
             if (element.isEnable()) {
                 // 添加到class
                 mClass.add(mFactory.createFieldFromText(fromText.toString(), mClass));
