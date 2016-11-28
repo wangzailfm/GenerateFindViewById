@@ -1,5 +1,6 @@
 package action;
 
+import Utils.CreateMethodCreator;
 import Utils.Util;
 import View.FindViewByIdDialog;
 import com.intellij.openapi.actionSystem.AnAction;
@@ -9,9 +10,11 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.SelectionModel;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
+import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.search.FilenameIndex;
 import com.intellij.psi.search.GlobalSearchScope;
+import com.intellij.psi.util.PsiUtilBase;
 import com.intellij.psi.xml.XmlFile;
 import entity.Element;
 import org.apache.http.util.TextUtils;
@@ -54,10 +57,30 @@ public class FindViewByIdAction extends AnAction {
         Util.getIDsFromLayout(xmlFile, elements);
         // 将代码写入文件，不允许在主线程中进行实时的文件写入
         if (elements.size() != 0) {
+            // 判断是否有onCreate/onCreateView方法
+            PsiFile psiFile = PsiUtilBase.getPsiFileInEditor(mEditor, project);
+            PsiClass psiClass = Util.getTargetClass(mEditor, psiFile);
+            if (Util.isExtendsActivityOrActivityCompat(project, psiClass)) {
+                // 判断是否有onCreate方法
+                if (psiClass.findMethodsByName("onCreate", false).length == 0) {
+                    // 写onCreate方法
+                    new CreateMethodCreator(mEditor, psiFile, psiClass, "Generate Injections",
+                            mSelectedText, "activity").execute();
+                    return;
+                }
+            } else if (Util.isExtendsFragmentOrFragmentV4(project, psiClass)) {
+                // 判断是否有onCreateView方法
+                if (psiClass.findMethodsByName("onCreateView", false).length == 0) {
+                    new CreateMethodCreator(mEditor, psiFile, psiClass, "Generate Injections",
+                            mSelectedText, "fragment").execute();
+                    return;
+                }
+            }
+            // 有的话就创建变量和findViewById
             if (mDialog != null && mDialog.isShowing()) {
                 mDialog.cancelDialog();
             }
-            mDialog = new FindViewByIdDialog(mEditor, project, elements, mSelectedText);
+            mDialog = new FindViewByIdDialog(mEditor, project, psiFile, psiClass, elements, mSelectedText);
             mDialog.showDialog();
         } else {
             Util.showPopupBalloon(mEditor, "未找到任何Id");

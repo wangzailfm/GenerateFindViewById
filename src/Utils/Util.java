@@ -6,6 +6,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.popup.Balloon;
 import com.intellij.openapi.ui.popup.JBPopupFactory;
 import com.intellij.psi.*;
+import com.intellij.psi.search.EverythingGlobalScope;
 import com.intellij.psi.search.FilenameIndex;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.util.PsiTreeUtil;
@@ -73,6 +74,7 @@ public class Util {
 
     /**
      * 解析xml获取string的值
+     *
      * @param psiFile
      * @param text
      * @return
@@ -209,4 +211,64 @@ public class Util {
             return target instanceof SyntheticElement ? null : target;
         }
     }
+
+    /**
+     * 判断mClass是不是继承activityClass或者activityCompatClass
+     * @param mProject
+     * @param mClass
+     * @return
+     */
+    public static boolean isExtendsActivityOrActivityCompat(Project mProject, PsiClass mClass) {
+        // 根据类名查找类
+        PsiClass activityClass = JavaPsiFacade.getInstance(mProject).findClass("android.app.Activity", new EverythingGlobalScope(mProject));
+        PsiClass activityCompatClass = JavaPsiFacade.getInstance(mProject).findClass("android.support.v7.app.AppCompatActivity", new EverythingGlobalScope(mProject));
+        return (activityClass != null && mClass.isInheritor(activityClass, true))
+                || (activityCompatClass != null && mClass.isInheritor(activityCompatClass, true))
+                || mClass.getName().contains("Activity");
+    }
+
+    /**
+     * 判断mClass是不是继承fragmentClass或者fragmentV4Class
+     * @param mProject
+     * @param mClass
+     * @return
+     */
+    public static boolean isExtendsFragmentOrFragmentV4(Project mProject, PsiClass mClass) {
+        // 根据类名查找类
+        PsiClass fragmentClass = JavaPsiFacade.getInstance(mProject).findClass("android.app.Fragment", new EverythingGlobalScope(mProject));
+        PsiClass fragmentV4Class = JavaPsiFacade.getInstance(mProject).findClass("android.support.v4.app.Fragment", new EverythingGlobalScope(mProject));
+        return (fragmentClass != null && mClass.isInheritor(fragmentClass, true))
+                || (fragmentV4Class != null && mClass.isInheritor(fragmentV4Class, true))
+                || mClass.getName().contains("Fragment");
+    }
+
+    /**
+     * 创建onCreate方法
+     * @param mSelectedText
+     * @return
+     */
+    public static String createOnCreateMethod(String mSelectedText) {
+        StringBuilder method = new StringBuilder();
+        method.append("@Override protected void onCreate(android.os.Bundle savedInstanceState) {\n");
+        method.append("super.onCreate(savedInstanceState);\n");
+        method.append("\t// TODO:OnCreate Method has been created, run FindViewById again to generate field\n");
+        method.append("\tsetContentView(R.layout.");
+        method.append(mSelectedText);
+        method.append(");\n");
+        method.append("}");
+        return method.toString();
+    }
+
+    public static String createOnCreateViewMethod(String mSelectedText) {
+        StringBuilder method = new StringBuilder();
+        method.append("@Override public View onCreateView(android.view.LayoutInflater inflater, android.view.ViewGroup container, android.os.Bundle savedInstanceState) {\n");
+        method.append("\t// TODO:OnCreateView Method has been created, run FindViewById again to generate field\n");
+        method.append("\tView view = View.inflate(getActivity(), R.layout.");
+        method.append(mSelectedText);
+        method.append(", null);");
+        method.append("return view;");
+        method.append("}");
+        return method.toString();
+    }
+
 }

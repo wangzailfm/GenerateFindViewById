@@ -148,27 +148,11 @@ public class WidgetFieldCreator extends Simple {
      * 设置变量的值FindViewById，Activity和Fragment
      */
     private void generateFindViewById() {
-        // 根据类名查找类
-        PsiClass activityClass = JavaPsiFacade.getInstance(mProject).findClass("android.app.Activity", new EverythingGlobalScope(mProject));
-        PsiClass activityCompatClass = JavaPsiFacade.getInstance(mProject).findClass("android.support.v7.app.AppCompatActivity", new EverythingGlobalScope(mProject));
-        PsiClass fragmentClass = JavaPsiFacade.getInstance(mProject).findClass("android.app.Fragment", new EverythingGlobalScope(mProject));
-        PsiClass fragmentV4Class = JavaPsiFacade.getInstance(mProject).findClass("android.support.v4.app.Fragment", new EverythingGlobalScope(mProject));
-        // 判断mClass是不是继承activityClass或者activityCompatClass
-        if ((activityClass != null && mClass.isInheritor(activityClass, true))
-                || (activityCompatClass != null && mClass.isInheritor(activityCompatClass, true))
-                || mClass.getName().contains("Activity")) {
+        if (Util.isExtendsActivityOrActivityCompat(mProject, mClass)) {
             // 判断是否有onCreate方法
             if (mClass.findMethodsByName("onCreate", false).length == 0) {
-                StringBuilder method = new StringBuilder();
-                method.append("@Override protected void onCreate(android.os.Bundle savedInstanceState) {\n");
-                method.append("super.onCreate(savedInstanceState);\n");
-                method.append("\t// TODO:No the onCreate method run FindViewById again to generate field\n");
-                method.append("\tsetContentView(R.layout.");
-                method.append(mSelectedText);
-                method.append(");\n");
-                method.append("}");
                 // 添加
-                mClass.add(mFactory.createMethodFromText(method.toString(), mClass));
+                mClass.add(mFactory.createMethodFromText(Util.createOnCreateMethod(mSelectedText), mClass));
             } else {
                 generateFields();
                 // 获取setContentView
@@ -197,22 +181,11 @@ public class WidgetFieldCreator extends Simple {
                 generatorLayoutCode(null, "getApplicationContext()");
             }
 
-            // 判断mClass是不是继承fragmentClass或者fragmentV4Class
-        } else if ((fragmentClass != null && mClass.isInheritor(fragmentClass, true))
-                || (fragmentV4Class != null && mClass.isInheritor(fragmentV4Class, true))
-                || mClass.getName().contains("Fragment")) {
+        } else if (Util.isExtendsFragmentOrFragmentV4(mProject, mClass)) {
             // 判断是否有onCreateView方法
             if (mClass.findMethodsByName("onCreateView", false).length == 0) {
-                StringBuilder method = new StringBuilder();
-                method.append("@Override public View onCreateView(android.view.LayoutInflater inflater, android.view.ViewGroup container, android.os.Bundle savedInstanceState) {\n");
-                method.append("\t// TODO:No the onCreateView method run FindViewById again to generate field\n");
-                method.append("\tView view = View.inflate(getActivity(), R.layout.");
-                method.append(mSelectedText);
-                method.append(", null);");
-                method.append("return view;");
-                method.append("}");
                 // 添加
-                mClass.add(mFactory.createMethodFromText(method.toString(), mClass));
+                mClass.add(mFactory.createMethodFromText(Util.createOnCreateViewMethod(mSelectedText), mClass));
 
             } else {
                 generateFields();

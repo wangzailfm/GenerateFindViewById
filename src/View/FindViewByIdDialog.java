@@ -26,7 +26,7 @@ public class FindViewByIdDialog extends JFrame implements ActionListener {
     private String mSelectedText;
     private List<Element> mElements;
     // 获取当前文件
-    private PsiFile psiFile;
+    private PsiFile mPsiFile;
     // 获取class
     private PsiClass mClass;
 
@@ -46,13 +46,13 @@ public class FindViewByIdDialog extends JFrame implements ActionListener {
     private JButton mButtonConfirm = new JButton("确定");
     private JButton mButtonCancel = new JButton("取消");
 
-    public FindViewByIdDialog(Editor editor, Project project, List<Element> elements, String selectedText) {
+    public FindViewByIdDialog(Editor editor, Project project, PsiFile psiFile, PsiClass psiClass, List<Element> elements, String selectedText) {
         mEditor = editor;
         mProject = project;
         mSelectedText = selectedText;
         mElements = elements;
-        psiFile = PsiUtilBase.getPsiFileInEditor(mEditor, mProject);
-        mClass = Util.getTargetClass(mEditor, psiFile);
+        mPsiFile = psiFile;
+        mClass = psiClass;
         initTopPanel();
         initBottomPanel();
         initContentPanel();
@@ -101,8 +101,18 @@ public class FindViewByIdDialog extends JFrame implements ActionListener {
     private void initContentPanel() {
         // 添加JPanel
         getContentPane().add(mPanelTitle);
+        // 获取已存在的变量
+        PsiField[] fields = mClass.getFields();
         // 设置内容
         for (Element mElement : mElements) {
+            for (PsiField field : fields) {
+                String name = field.getName();
+                if (name != null && name.equals(mElement.getFieldName())) {
+                    // 已存在的变量设置checkbox为false
+                    mElement.setEnable(false);
+                    break;
+                }
+            }
             IdBean itemJPanel = new IdBean(new GridLayout(1, 4, 10, 10),
                     new EmptyBorder(5, 10, 5, 10),
                     new JCheckBox(mElement.getName(), mElement.isEnable()),
@@ -136,8 +146,10 @@ public class FindViewByIdDialog extends JFrame implements ActionListener {
         setLayout(new GridLayout(0, 1));
         // 不可拉伸
         setResizable(false);
+        // 设置大小
+        setSize(640, 360);
         // 自适应大小
-        pack();
+        // pack();
         // 设置居中，放在setSize后面
         setLocationRelativeTo(null);
         // 显示最前
@@ -168,7 +180,7 @@ public class FindViewByIdDialog extends JFrame implements ActionListener {
      * @param text 自定义text
      */
     private void setCreator(boolean isLayoutInflater, String text) {
-        new WidgetFieldCreator(this, mEditor, psiFile, mClass,
+        new WidgetFieldCreator(this, mEditor, mPsiFile, mClass,
                 "Generate Injections", mElements, mSelectedText, isLayoutInflater, text)
                 .execute();
     }
