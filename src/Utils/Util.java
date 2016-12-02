@@ -31,13 +31,14 @@ public class Util {
      *
      * @param editor
      * @param result 内容
+     * @param time   显示时间，单位秒
      */
-    public static void showPopupBalloon(final Editor editor, final String result) {
+    public static void showPopupBalloon(final Editor editor, final String result, final int time) {
         ApplicationManager.getApplication().invokeLater(new Runnable() {
             public void run() {
                 JBPopupFactory factory = JBPopupFactory.getInstance();
                 factory.createHtmlTextBalloonBuilder(result, null, new JBColor(new Color(116, 214, 238), new Color(76, 112, 117)), null)
-                        .setFadeoutTime(5000)
+                        .setFadeoutTime(time * 1000)
                         .createBalloon()
                         .show(factory.guessBestPopupLocation(editor), Balloon.Position.below);
             }
@@ -159,9 +160,15 @@ public class Util {
                     if (aClass != null) {
                         name = aClass.getValue();
                     }
+                    // 获取clickable
+                    XmlAttribute clickableAttr = tag.getAttribute("android:clickable", null);
+                    boolean clickable = false;
+                    if (clickableAttr != null && !TextUtils.isEmpty(clickableAttr.getValue())) {
+                        clickable = clickableAttr.getValue().equals("true");
+                    }
                     // 添加到list
                     try {
-                        Element e = new Element(name, idValue, tag);
+                        Element e = new Element(name, idValue, clickable, tag);
                         elements.add(e);
                     } catch (IllegalArgumentException e) {
 
@@ -214,6 +221,7 @@ public class Util {
 
     /**
      * 判断mClass是不是继承activityClass或者activityCompatClass
+     *
      * @param mProject
      * @param mClass
      * @return
@@ -229,6 +237,7 @@ public class Util {
 
     /**
      * 判断mClass是不是继承fragmentClass或者fragmentV4Class
+     *
      * @param mProject
      * @param mClass
      * @return
@@ -244,6 +253,7 @@ public class Util {
 
     /**
      * 创建onCreate方法
+     *
      * @param mSelectedText
      * @return
      */
@@ -251,7 +261,7 @@ public class Util {
         StringBuilder method = new StringBuilder();
         method.append("@Override protected void onCreate(android.os.Bundle savedInstanceState) {\n");
         method.append("super.onCreate(savedInstanceState);\n");
-        method.append("\t// TODO:OnCreate Method has been created, run FindViewById again to generate field\n");
+        method.append("\t// TODO:OnCreate Method has been created, run FindViewById again to generate code\n");
         method.append("\tsetContentView(R.layout.");
         method.append(mSelectedText);
         method.append(");\n");
@@ -259,10 +269,16 @@ public class Util {
         return method.toString();
     }
 
+    /**
+     * 创建onCreateView方法
+     *
+     * @param mSelectedText
+     * @return
+     */
     public static String createOnCreateViewMethod(String mSelectedText) {
         StringBuilder method = new StringBuilder();
         method.append("@Override public View onCreateView(android.view.LayoutInflater inflater, android.view.ViewGroup container, android.os.Bundle savedInstanceState) {\n");
-        method.append("\t// TODO:OnCreateView Method has been created, run FindViewById again to generate field\n");
+        method.append("\t// TODO:OnCreateView Method has been created, run FindViewById again to generate code\n");
         method.append("\tView view = View.inflate(getActivity(), R.layout.");
         method.append(mSelectedText);
         method.append(", null);");
@@ -271,4 +287,53 @@ public class Util {
         return method.toString();
     }
 
+    /**
+     * 判断是否实现了OnClickListener接口
+     *
+     * @param referenceElements
+     * @return
+     */
+    public static boolean isImplementsOnClickListener(PsiJavaCodeReferenceElement[] referenceElements) {
+        for (PsiJavaCodeReferenceElement referenceElement : referenceElements) {
+            if (referenceElement.getText().contains("OnClickListener")) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 获取initView方法里面的每条数据
+     *
+     * @param mClass
+     * @return
+     */
+    public static PsiStatement[] getInitViewBodyStatements(PsiClass mClass) {
+        // 获取initView方法
+        PsiMethod[] method = mClass.findMethodsByName("initView", false);
+        PsiStatement[] statements = null;
+        if (method.length > 0 && method[0].getBody() != null) {
+            PsiCodeBlock methodBody = method[0].getBody();
+            statements = methodBody.getStatements();
+        }
+        return statements;
+    }
+
+
+    /**
+     * 获取onClick方法里面的每条数据
+     *
+     * @param mClass
+     * @return
+     */
+    public static PsiElement[] getOnClickStatement(PsiClass mClass) {
+        // 获取onClick方法
+        PsiMethod[] onClickMethods = mClass.findMethodsByName("onClick", false);
+        PsiElement[] psiElements = null;
+        if (onClickMethods.length > 0 && onClickMethods[0].getBody() != null) {
+            PsiCodeBlock onClickMethodBody = onClickMethods[0].getBody();
+            psiElements = onClickMethodBody.getChildren();
+        }
+        return psiElements;
+    }
 }

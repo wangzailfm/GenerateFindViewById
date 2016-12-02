@@ -11,7 +11,7 @@
 
     <change-notes><![CDATA[
         1.2 添加快捷键ctrl+alt+E，text、hint的值添加到字段注释<br/>
-            LayoutInflater类型生成的变量规则，如LayoutInflater的变量为mView，控件变量后面会加上"View"<br/>
+            添加LayoutInflater生成，添加OnClick生成代码<br/>
         1.1 添加可选生成的字段，可编辑变量名，可选择是否LayoutInflater类型<br/>
         1.0 Activity and Fragment
     ]]>

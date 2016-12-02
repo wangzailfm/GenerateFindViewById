@@ -3,8 +3,6 @@ package entity;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
@@ -14,6 +12,7 @@ import java.awt.event.FocusListener;
 public class IdBean extends JPanel {
     private JCheckBox mEnableCheckBox;
     private JLabel mIdJLabel;
+    private JCheckBox mClickCheckBox;
     private JTextField mFieldJTextField;
 
     /**
@@ -43,22 +42,41 @@ public class IdBean extends JPanel {
     }
 
     /**
+     * mClickCheckBox接口
+     */
+    public interface ClickActionListener {
+        void setClick(JCheckBox clickCheckBox);
+    }
+
+    private ClickActionListener mClickListener;
+
+    public void setClickActionListener(ClickActionListener clickListener) {
+        mClickListener = clickListener;
+    }
+
+    /**
      * 构造方法
      *
-     * @param layout      布局
-     * @param emptyBorder border
-     * @param jCheckBox   是否生成+name
-     * @param jLabel      id
-     * @param jTextField  字段名
+     * @param layout         布局
+     * @param emptyBorder    border
+     * @param jCheckBox      是否生成+name
+     * @param jLabelId       id
+     * @param jCheckBoxClick onClick
+     * @param jTextField     字段名
+     * @param enable         是否生成
+     * @param clickable      clickable
+     * @param clickEnable    是否Enable
      */
-    public IdBean(LayoutManager layout, EmptyBorder emptyBorder, JCheckBox jCheckBox, JLabel jLabel, JTextField jTextField) {
+    public IdBean(LayoutManager layout, EmptyBorder emptyBorder,
+                  JCheckBox jCheckBox, JLabel jLabelId, JCheckBox jCheckBoxClick, JTextField jTextField,
+                  boolean enable, boolean clickable, boolean clickEnable) {
         super(layout);
         initLayout(layout, emptyBorder);
-
         mEnableCheckBox = jCheckBox;
-        mIdJLabel = jLabel;
+        mIdJLabel = jLabelId;
+        mClickCheckBox = jCheckBoxClick;
         mFieldJTextField = jTextField;
-        initComponent();
+        initComponent(enable, clickable, clickEnable);
         addComponent();
     }
 
@@ -68,13 +86,18 @@ public class IdBean extends JPanel {
     private void addComponent() {
         this.add(mEnableCheckBox);
         this.add(mIdJLabel);
+        this.add(mClickCheckBox);
         this.add(mFieldJTextField);
     }
 
     /**
      * 设置Component
+     *
+     * @param enable
+     * @param clickable
+     * @param clickEnable
      */
-    private void initComponent() {
+    private void initComponent(boolean enable, boolean clickable, boolean clickEnable) {
         /*
         // 是否生成 + name
         JCheckBox enableCheckBox = new JCheckBox(mElement.getName(), true);
@@ -101,19 +124,36 @@ public class IdBean extends JPanel {
             }
         });
         */
-        // 监听
-        mEnableCheckBox.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (mEnableListener != null) {
-                    mEnableListener.setEnable(mEnableCheckBox);
-                }
-            }
-        });
+        mEnableCheckBox.setSelected(enable);
+        if (clickEnable) {
+            mClickCheckBox.setSelected(clickable);
+            mClickCheckBox.setEnabled(enable);
+        } else {
+            mClickCheckBox.setEnabled(clickEnable);
+        }
+
+        mIdJLabel.setEnabled(enable);
+        mFieldJTextField.setEnabled(enable);
+
         // 设置左对齐
         mEnableCheckBox.setHorizontalAlignment(JLabel.LEFT);
         mIdJLabel.setHorizontalAlignment(JLabel.LEFT);
         mFieldJTextField.setHorizontalAlignment(JTextField.LEFT);
+        // 监听
+        mEnableCheckBox.addActionListener(e -> {
+            if (mEnableListener != null) {
+                mEnableListener.setEnable(mEnableCheckBox);
+                mIdJLabel.setEnabled(mEnableCheckBox.isSelected());
+                if (clickEnable) mClickCheckBox.setEnabled(mEnableCheckBox.isSelected());
+                mFieldJTextField.setEnabled(mEnableCheckBox.isSelected());
+            }
+        });
+        // 监听
+        mClickCheckBox.addActionListener(e -> {
+            if (mClickListener != null) {
+                mClickListener.setClick(mClickCheckBox);
+            }
+        });
         // 监听
         mFieldJTextField.addFocusListener(new FocusListener() {
             @Override

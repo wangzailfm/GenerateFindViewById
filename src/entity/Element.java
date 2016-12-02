@@ -1,10 +1,9 @@
 package entity;
 
-import Utils.*;
+import Utils.Util;
 import com.intellij.psi.xml.XmlTag;
 import org.apache.http.util.TextUtils;
 
-import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -20,16 +19,22 @@ public class Element {
     private int fieldNameType = 3;
     private String fieldName;
     private XmlTag xml;
+    // 是否生成
     private boolean isEnable = true;
+    // 是否有clickable
+    private boolean clickEnable = false;
+    // 是否Clickable
+    private boolean clickable = false;
 
     /**
      * 构造函数
      *
      * @param name View的名字
      * @param id   android:id属性
+     * @param clickable clickable
      * @throws IllegalArgumentException When the arguments are invalid
      */
-    public Element(String name, String id, XmlTag xml) {
+    public Element(String name, String id, boolean clickable, XmlTag xml) {
         // id
         final Matcher matcher = sIdPattern.matcher(id);
         if (matcher.find() && matcher.groupCount() > 1) {
@@ -47,6 +52,10 @@ public class Element {
         } else {
             this.name = name;
         }
+
+        this.clickEnable = clickable;
+
+        this.clickable = clickable;
 
         this.xml = xml;
     }
@@ -89,6 +98,22 @@ public class Element {
 
     public void setEnable(boolean enable) {
         isEnable = enable;
+    }
+
+    public boolean isClickEnable() {
+        return clickEnable;
+    }
+
+    public void setClickEnable(boolean clickEnable) {
+        this.clickEnable = clickEnable;
+    }
+
+    public boolean isClickable() {
+        return clickable;
+    }
+
+    public void setClickable(boolean clickable) {
+        this.clickable = clickable;
     }
 
     /**

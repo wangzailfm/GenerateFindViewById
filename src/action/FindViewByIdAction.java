@@ -41,7 +41,7 @@ public class FindViewByIdAction extends AnAction {
         if (TextUtils.isEmpty(mSelectedText)) {
             mSelectedText = Messages.showInputDialog(project, "布局内容：（不需要输入R.layout.）", "未选中布局内容，请输入layout文件名", Messages.getInformationIcon());
             if (TextUtils.isEmpty(mSelectedText)) {
-                Util.showPopupBalloon(mEditor, "未输入layout文件名");
+                Util.showPopupBalloon(mEditor, "未输入layout文件名", 5);
                 return;
             }
         }
@@ -49,7 +49,7 @@ public class FindViewByIdAction extends AnAction {
         // GlobalSearchScope.allScope(project)搜索整个项目
         PsiFile[] psiFiles = FilenameIndex.getFilesByName(project, mSelectedText + ".xml", GlobalSearchScope.allScope(project));
         if (psiFiles.length <= 0) {
-            Util.showPopupBalloon(mEditor, "未找到选中的布局文件");
+            Util.showPopupBalloon(mEditor, "未找到选中的布局文件", 5);
             return;
         }
         XmlFile xmlFile = (XmlFile) psiFiles[0];
@@ -83,7 +83,7 @@ public class FindViewByIdAction extends AnAction {
             mDialog = new FindViewByIdDialog(mEditor, project, psiFile, psiClass, elements, mSelectedText);
             mDialog.showDialog();
         } else {
-            Util.showPopupBalloon(mEditor, "未找到任何Id");
+            Util.showPopupBalloon(mEditor, "未找到任何Id", 5);
         }
     }
 }

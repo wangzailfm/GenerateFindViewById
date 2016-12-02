@@ -1,18 +1,14 @@
 package Utils;
 
-import View.FindViewByIdDialog;
 import com.intellij.codeInsight.actions.ReformatCodeProcessor;
 import com.intellij.openapi.command.WriteCommandAction.Simple;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
-import com.intellij.psi.*;
+import com.intellij.psi.JavaPsiFacade;
+import com.intellij.psi.PsiClass;
+import com.intellij.psi.PsiElementFactory;
+import com.intellij.psi.PsiFile;
 import com.intellij.psi.codeStyle.JavaCodeStyleManager;
-import com.intellij.psi.search.FilenameIndex;
-import com.intellij.psi.search.GlobalSearchScope;
-import entity.Element;
-import org.apache.http.util.TextUtils;
-
-import java.util.List;
 
 public class CreateMethodCreator extends Simple {
 
@@ -42,7 +38,7 @@ public class CreateMethodCreator extends Simple {
         try {
             createMethod(mType);
         } catch (Exception e) {
-            Util.showPopupBalloon(mEditor, e.getMessage());
+            Util.showPopupBalloon(mEditor, e.getMessage(), 10);
             return;
         }
         // 重写class
@@ -51,9 +47,9 @@ public class CreateMethodCreator extends Simple {
         styleManager.shortenClassReferences(mClass);
         new ReformatCodeProcessor(mProject, mClass.getContainingFile(), null, false).runWithoutProgress();
         if (mType.equals("activity")) {
-            Util.showPopupBalloon(mEditor, "没有OnCreate方法，已创建OnCreate方法，请重新使用FindViewById");
+            Util.showPopupBalloon(mEditor, "没有OnCreate方法，已创建OnCreate方法，请重新使用FindViewById", 10);
         } else if (mType.equals("fragment")) {
-            Util.showPopupBalloon(mEditor, "没有OnCreateView方法，已创建OnCreate方法，请重新使用FindViewById");
+            Util.showPopupBalloon(mEditor, "没有OnCreateView方法，已创建OnCreate方法，请重新使用FindViewById", 10);
         }
     }
 
