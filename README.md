@@ -32,9 +32,7 @@
 7. LayoutInflater生成的变量名规则为mAaBbCc+View的变量名(如mView会去掉m)
 
 ## 更新
-- 1.2 添加快捷键Ctrl+Alt+E，text、hint的值添加到字段注释，添加LayoutInflater生成，添加OnClick生成代码。
-- 1.1 添加可选生成的字段，可编辑变量名，可选择是否LayoutInflater类型
-- 1.0 Activity and Fragment
+- 1.0 支持Activity和Fragment，添加可选生成的字段，可编辑变量名，可选择是否LayoutInflater类型，添加快捷键Ctrl+Alt+E，text、hint的值添加到字段注释，添加LayoutInflater生成，添加OnClick生成代码。
 
 ## License
 ```
