@@ -1,7 +1,7 @@
 # GenerateFindViewById
 
 ## 演示
-![演示](http://img.blog.csdn.net/20161122145239231)
+![演示](GenerateFindViewById.gif)
 
 ## 安装
 - 下载项目里面的GenerateFindViewById.jar包，然后打开AS的Plugins，点击Install plugin from disk...安装
