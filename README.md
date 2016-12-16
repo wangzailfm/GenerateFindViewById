@@ -9,6 +9,8 @@ ButterKnife
 ![演示](GenerateButterKnife1.gif)
 
 
+
+
 ## 安装
 - 下载项目里面的`GenerateFindViewById.ja`r包，然后打开AS的Plugins，点击`Install plugin from disk...`安装
 - 打开AS的Plugins，点击`Browse repositories...`然后搜索`GenerateFindViewById`，然后安装
