@@ -1,7 +1,13 @@
 # GenerateFindViewById
 
 ## 演示
+FindViewById
 ![演示](GenerateFindViewById.gif)
+
+ButterKnife
+![演示](GenerateButterKnife.gif)
+![演示](GenerateButterKnife1.gif)
+
 
 ## 安装
 - 下载项目里面的`GenerateFindViewById.ja`r包，然后打开AS的Plugins，点击`Install plugin from disk...`安装

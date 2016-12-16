@@ -384,8 +384,7 @@ public class ButterKnifeCreator extends Simple {
                         inflater = mLayoutInflaterText.substring(1);
                     }
                     String findViewById = element.getFieldName() + inflater
-                            + " = (" + element.getName() + ") "
-                            + "findViewById(" + element.getFullID() + ");";
+                            + " = " + "ButterKnife.findById(" + mLayoutInflaterText +", " + element.getFullID() + ");";
                     for (PsiStatement statement : statements) {
                         if (statement.getText().equals(findViewById)) {
                             isFdExist = true;
