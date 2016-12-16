@@ -1,13 +1,14 @@
-package View;
+package views;
 
-import Utils.Util;
-import Utils.WidgetFieldCreator;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
 import com.intellij.ui.components.JBScrollPane;
-import entity.Element;
-import entity.IdBean;
+import constant.Constant;
+import entitys.Element;
+import entitys.IdBean;
+import utils.ButterKnifeCreator;
+import utils.Util;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -19,8 +20,7 @@ import java.util.List;
 /**
  * Created by wangzai on 2016/11/24.
  */
-public class FindViewByIdDialog extends JFrame implements ActionListener {
-    private String mTitle = "FindViewByIdDialog";
+public class ButterKnifeDialog extends JFrame implements ActionListener {
     private Project mProject;
     private Editor mEditor;
     private String mSelectedText;
@@ -34,10 +34,10 @@ public class FindViewByIdDialog extends JFrame implements ActionListener {
 
     // 标签JPanel
     private JPanel mPanelTitle = new JPanel();
-    private JLabel mTitleName = new JLabel("ViewWidget");
-    private JLabel mTitleId = new JLabel("ViewId");
-    private JLabel mTitleClick = new JLabel("OnClick");
-    private JLabel mTitleField = new JLabel("ViewFiled");
+    private JLabel mTitleName = new JLabel(Constant.dialogs.tableFieldViewWidget);
+    private JLabel mTitleId = new JLabel(Constant.dialogs.tableFieldViewId);
+    private JLabel mTitleClick = new JLabel(Constant.FieldOnClick);
+    private JLabel mTitleField = new JLabel(Constant.dialogs.tableFieldViewFiled);
 
     // 内容JPanel
     private JPanel mContentJPanel = new JPanel();
@@ -49,23 +49,26 @@ public class FindViewByIdDialog extends JFrame implements ActionListener {
     // 底部JPanel
     // LayoutInflater JPanel
     private JPanel mPanelInflater = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    // 是否全选
+    private JCheckBox mCheckAll = new JCheckBox(Constant.dialogs.fieldCheckAll);
+    // 是否bind，默认是true
+    private JCheckBox mBind = new JCheckBox(Constant.dialogs.fieldButterKnifeBind, true);
     // 是否选择LayoutInflater
-    private JCheckBox mLayoutInflater = new JCheckBox("LayoutInflater.from(context).inflater", false);
+    private JCheckBox mLayoutInflater = new JCheckBox(Constant.dialogs.fieldLayoutInflater, false);
     // 手动修改LayoutInflater字段名
     private JTextField mLayoutInflaterField;
-    // 是否全选
-    private JCheckBox mCheckAll = new JCheckBox("CheckAll");
+
     // 确定、取消JPanel
     private JPanel mPanelButtonRight = new JPanel();
-    private JButton mButtonConfirm = new JButton("确定");
-    private JButton mButtonCancel = new JButton("取消");
+    private JButton mButtonConfirm = new JButton(Constant.dialogs.buttonConfirm);
+    private JButton mButtonCancel = new JButton(Constant.dialogs.buttonCancel);
 
     // GridBagLayout不要求组件的大小相同便可以将组件垂直、水平或沿它们的基线对齐
     private GridBagLayout mLayout = new GridBagLayout();
     // GridBagConstraints用来控制添加进的组件的显示位置
     private GridBagConstraints mConstraints = new GridBagConstraints();
 
-    public FindViewByIdDialog(Editor editor, Project project, PsiFile psiFile, PsiClass psiClass, List<Element> elements, String selectedText) {
+    public ButterKnifeDialog(Editor editor, Project project, PsiFile psiFile, PsiClass psiClass, List<Element> elements, String selectedText) {
         mEditor = editor;
         mProject = project;
         mSelectedText = selectedText;
@@ -88,37 +91,32 @@ public class FindViewByIdDialog extends JFrame implements ActionListener {
     private void initExist() {
         // 判断是否已存在的变量
         boolean isFdExist = false;
-        // 判断是否已存在setOnClickListener
-        boolean isClickExist = false;
         // 判断是否存在case R.id.id:
         boolean isCaseExist = false;
+        // 判断注解是否存在R.id.id
+        boolean isAnnotationValueExist = false;
         PsiField[] fields = mClass.getFields();
-        // 获取initView方法的内容
-        PsiStatement[] statements = Util.getInitViewBodyStatements(mClass);
-        PsiElement[] onClickStatement = Util.getOnClickStatement(mClass);
-        for (Element mElement : mElements) {
-            if (statements != null) {
-                for (PsiStatement statement : statements) {
-                    if (statement.getText().contains(mElement.getFieldName())
-                            && statement.getText().contains("findViewById(" + mElement.getFullID() + ");")) {
-                        isFdExist = true;
-                        break;
-                    } else {
-                        isFdExist = false;
-                    }
-                }
-                String setOnClickListener = mElement.getFieldName() + ".setOnClickListener(this);";
-                for (PsiStatement statement : statements) {
-                    if (statement.getText().equals(setOnClickListener)) {
-                        isClickExist = true;
-                        break;
-                    } else {
-                        isClickExist = false;
-                    }
+        PsiElement[] onClickStatement = null;
+        List<String> psiMethodByButterKnifeOnClickValue = Util.getPsiMethodByButterKnifeOnClickValue(mClass);
+        PsiMethod psiMethodByButterKnifeOnClick = Util.getPsiMethodByButterKnifeOnClick(mClass);
+        if (psiMethodByButterKnifeOnClick != null && psiMethodByButterKnifeOnClick.getBody() != null) {
+            onClickStatement = psiMethodByButterKnifeOnClick.getBody().getStatements();
+        }
+        for (Element element : mElements) {
+            element.setClickable(true);
+            element.setClickEnable(true);
+            for (PsiField field : fields) {
+                if (field.getName() != null
+                        && field.getName().equals(element.getFieldName())
+                        && field.getText().contains("@BindView(" + element.getFullID() + ")")) {
+                    isFdExist = true;
+                    break;
+                } else {
+                    isFdExist = false;
                 }
             }
             if (onClickStatement != null) {
-                String cass = "case " + mElement.getFullID() + ":";
+                String cass = "case " + element.getFullID() + ":";
                 for (PsiElement psiElement : onClickStatement) {
                     if (psiElement instanceof PsiSwitchStatement) {
                         PsiSwitchStatement psiSwitchStatement = (PsiSwitchStatement) psiElement;
@@ -140,15 +138,18 @@ public class FindViewByIdDialog extends JFrame implements ActionListener {
                     }
                 }
             }
+            if (psiMethodByButterKnifeOnClickValue.size() > 0) {
+                isAnnotationValueExist = psiMethodByButterKnifeOnClickValue.contains(element.getFullID());
+            }
             for (PsiField field : fields) {
                 String name = field.getName();
-                if (name != null && name.equals(mElement.getFieldName()) && isFdExist) {
+                if (name != null && name.equals(element.getFieldName()) && isFdExist) {
                     // 已存在的变量设置checkbox为false
-                    mElement.setEnable(false);
+                    element.setEnable(false);
                     mElementSize--;
-                    if (mElement.isClickEnable() && (!isClickExist || !isCaseExist)) {
-                        mElement.setClickable(true);
-                        mElement.setEnable(true);
+                    if (element.isClickEnable() && (!isCaseExist || !isAnnotationValueExist)) {
+                        element.setClickable(true);
+                        element.setEnable(true);
                         mElementSize++;
                     }
                     break;
@@ -157,6 +158,7 @@ public class FindViewByIdDialog extends JFrame implements ActionListener {
         }
         mCheckAll.setSelected(mElementSize == mElements.size());
         mCheckAll.addActionListener(this);
+        mBind.setSelected(Util.isButterKnifeBindExist(mClass));
     }
 
     /**
@@ -183,17 +185,17 @@ public class FindViewByIdDialog extends JFrame implements ActionListener {
      * 添加底部
      */
     private void initBottomPanel() {
+        String viewField = "m" + Util.getFieldName(mSelectedText) + "View";
+        mLayoutInflaterField = new JTextField(viewField, viewField.length());
         // 添加监听
         mButtonConfirm.addActionListener(this);
         mButtonCancel.addActionListener(this);
-        // 左边
-        String viewField = "m" + Util.getFieldName(mSelectedText) + "View";
-        mLayoutInflaterField = new JTextField(viewField, viewField.length());
         // 右边
         mPanelButtonRight.add(mButtonConfirm);
         mPanelButtonRight.add(mButtonCancel);
         // 添加到JPanel
         mPanelInflater.add(mCheckAll);
+        mPanelInflater.add(mBind);
         mPanelInflater.add(mLayoutInflater);
         mPanelInflater.add(mLayoutInflaterField);
         // 添加到JFrame
@@ -208,20 +210,20 @@ public class FindViewByIdDialog extends JFrame implements ActionListener {
         mContentJPanel.removeAll();
         // 设置内容
         for (int i = 0; i < mElements.size(); i++) {
-            Element mElement = mElements.get(i);
+            Element element = mElements.get(i);
             IdBean itemJPanel = new IdBean(new GridLayout(1, 4, 10, 10),
                     new EmptyBorder(5, 10, 5, 10),
-                    new JCheckBox(mElement.getName()),
-                    new JLabel(mElement.getId()),
+                    new JCheckBox(element.getName()),
+                    new JLabel(element.getId()),
                     new JCheckBox(),
-                    new JTextField(mElement.getFieldName()),
-                    mElement.isEnable(),
-                    mElement.isClickable(),
-                    mElement.isClickEnable());
+                    new JTextField(element.getFieldName()),
+                    element.isEnable(),
+                    element.isClickable(),
+                    element.isClickEnable());
             // 监听
-            itemJPanel.setEnableActionListener(enableCheckBox -> mElement.setEnable(enableCheckBox.isSelected()));
-            itemJPanel.setClickActionListener(clickCheckBox -> mElement.setClickable(clickCheckBox.isSelected()));
-            itemJPanel.setFieldFocusListener(fieldJTextField -> mElement.setFieldName(fieldJTextField.getText()));
+            itemJPanel.setEnableActionListener(enableCheckBox -> element.setEnable(enableCheckBox.isSelected()));
+            itemJPanel.setClickActionListener(clickCheckBox -> element.setClickable(clickCheckBox.isSelected()));
+            itemJPanel.setFieldFocusListener(fieldJTextField -> element.setFieldName(fieldJTextField.getText()));
             mContentJPanel.add(itemJPanel);
             mContentConstraints.fill = GridBagConstraints.HORIZONTAL;
             mContentConstraints.gridwidth = 0;
@@ -292,7 +294,7 @@ public class FindViewByIdDialog extends JFrame implements ActionListener {
      */
     private void setDialog() {
         // 设置标题
-        setTitle(mTitle);
+        setTitle(Constant.dialogs.titleButterKnife);
         // 设置布局管理
         setLayout(mLayout);
         // 不可拉伸
@@ -318,17 +320,17 @@ public class FindViewByIdDialog extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         switch (e.getActionCommand()) {
-            case "确定":
+            case Constant.dialogs.buttonConfirm:
                 cancelDialog();
-                setCreator(mLayoutInflater.isSelected(), mLayoutInflaterField.getText());
+                setCreator(mLayoutInflater.isSelected(), mLayoutInflaterField.getText(), mBind.isSelected());
                 break;
-            case "取消":
+            case Constant.dialogs.buttonCancel:
                 cancelDialog();
                 break;
-            case "CheckAll":
+            case Constant.dialogs.fieldCheckAll:
                 // 刷新
-                for (Element mElement : mElements) {
-                    mElement.setEnable(mCheckAll.isSelected());
+                for (Element element : mElements) {
+                    element.setEnable(mCheckAll.isSelected());
                 }
                 remove(jScrollPane);
                 initContentPanel();
@@ -343,10 +345,11 @@ public class FindViewByIdDialog extends JFrame implements ActionListener {
      *
      * @param isLayoutInflater 是否是LayoutInflater.from(this).inflate(R.layout.activity_main, null);
      * @param text             自定义text
+     * @param isBind
      */
-    private void setCreator(boolean isLayoutInflater, String text) {
-        new WidgetFieldCreator(this, mEditor, mPsiFile, mClass,
-                "Generate Injections", mElements, mSelectedText, isLayoutInflater, text)
+    private void setCreator(boolean isLayoutInflater, String text, boolean isBind) {
+        new ButterKnifeCreator(this, mEditor, mPsiFile, mClass,
+                Constant.creatorCommandName, mElements, mSelectedText, isLayoutInflater, text, true, isBind)
                 .execute();
     }
 }

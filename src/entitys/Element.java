@@ -1,6 +1,6 @@
-package entity;
+package entitys;
 
-import Utils.Util;
+import utils.Util;
 import com.intellij.psi.xml.XmlTag;
 import org.apache.http.util.TextUtils;
 
@@ -122,11 +122,8 @@ public class Element {
      * @return
      */
     public String getFullID() {
-        StringBuilder fullID = new StringBuilder();
         String rPrefix = "R.id.";
-        fullID.append(rPrefix);
-        fullID.append(id);
-        return fullID.toString();
+        return rPrefix + id;
     }
 
     /**

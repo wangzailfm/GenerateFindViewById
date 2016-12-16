@@ -1,4 +1,4 @@
-package entity;
+package entitys;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -98,32 +98,6 @@ public class IdBean extends JPanel {
      * @param clickEnable
      */
     private void initComponent(boolean enable, boolean clickable, boolean clickEnable) {
-        /*
-        // 是否生成 + name
-        JCheckBox enableCheckBox = new JCheckBox(mElement.getName(), true);
-        // 监听
-        enableCheckBox.addActionListener(e -> mElement.setEnable(enableCheckBox.isSelected()));
-        // 设置左对齐
-        enableCheckBox.setHorizontalAlignment(JLabel.LEFT);
-        // id
-        JLabel idJLabel = new JLabel(mElement.getId());
-        idJLabel.setHorizontalAlignment(JLabel.LEFT);
-        // 变量名
-        JTextField fieldJTextField = new JTextField(mElement.getFieldName());
-        fieldJTextField.setHorizontalAlignment(JTextField.LEFT);
-        // 监听
-        fieldJTextField.addFocusListener(new FocusListener() {
-            @Override
-            public void focusGained(FocusEvent e) {
-                mElement.setFieldName(fieldJTextField.getText());
-            }
-
-            @Override
-            public void focusLost(FocusEvent e) {
-                mElement.setFieldName(fieldJTextField.getText());
-            }
-        });
-        */
         mEnableCheckBox.setSelected(enable);
         if (clickEnable) {
             mClickCheckBox.setSelected(clickable);

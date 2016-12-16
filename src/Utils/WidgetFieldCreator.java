@@ -1,16 +1,15 @@
-package Utils;
+package utils;
 
-import View.FindViewByIdDialog;
 import com.intellij.codeInsight.actions.ReformatCodeProcessor;
 import com.intellij.openapi.command.WriteCommandAction.Simple;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
 import com.intellij.psi.codeStyle.JavaCodeStyleManager;
-import com.intellij.psi.search.FilenameIndex;
-import com.intellij.psi.search.GlobalSearchScope;
-import entity.Element;
+import constant.Constant;
+import entitys.Element;
 import org.apache.http.util.TextUtils;
+import views.FindViewByIdDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,8 +27,9 @@ public class WidgetFieldCreator extends Simple {
     private boolean mIsLayoutInflater;
     private String mLayoutInflaterText;
     private List<Element> mOnClickList = new ArrayList<>();
+    private boolean mIsButterKnife;
 
-    public WidgetFieldCreator(FindViewByIdDialog dialog, Editor editor, PsiFile psiFile, PsiClass psiClass, String command, List<Element> elements, String selectedText, boolean isLayoutInflater, String text) {
+    public WidgetFieldCreator(FindViewByIdDialog dialog, Editor editor, PsiFile psiFile, PsiClass psiClass, String command, List<Element> elements, String selectedText, boolean isLayoutInflater, String text, boolean isButterKnife) {
         super(psiClass.getProject(), command);
         mDialog = dialog;
         mEditor = editor;
@@ -42,9 +42,10 @@ public class WidgetFieldCreator extends Simple {
         mSelectedText = selectedText;
         mIsLayoutInflater = isLayoutInflater;
         mLayoutInflaterText = text;
-        for (Element mElement : mElements) {
-            if (mElement.isEnable() && mElement.isClickEnable() && mElement.isClickable()) {
-                mOnClickList.add(mElement);
+        mIsButterKnife = isButterKnife;
+        for (Element element : mElements) {
+            if (element.isEnable() && element.isClickEnable() && element.isClickable()) {
+                mOnClickList.add(element);
             }
         }
     }
@@ -64,7 +65,7 @@ public class WidgetFieldCreator extends Simple {
         styleManager.optimizeImports(mFile);
         styleManager.shortenClassReferences(mClass);
         new ReformatCodeProcessor(mProject, mClass.getContainingFile(), null, false).runWithoutProgress();
-        Util.showPopupBalloon(mEditor, "生成成功", 5);
+        Util.showPopupBalloon(mEditor, Constant.actions.selectedSuccess, 5);
     }
 
     /**
@@ -110,40 +111,10 @@ public class WidgetFieldCreator extends Simple {
                 continue;
             }
             // 设置变量名，获取text里面的内容
-            String text = element.getXml().getAttributeValue("android:text");
-            if (TextUtils.isEmpty(text)) {
-                // 如果是text为空，则获取hint里面的内容
-                text = element.getXml().getAttributeValue("android:hint");
-            }
-            // 如果是@string/app_name类似
-            if (!TextUtils.isEmpty(text) && text.contains("@string/")) {
-                text = text.replace("@string/", "");
-                // 获取strings.xml
-                PsiFile[] psiFiles = FilenameIndex.getFilesByName(mProject, "strings.xml", GlobalSearchScope.allScope(mProject));
-                if (psiFiles.length > 0) {
-                    for (PsiFile psiFile : psiFiles) {
-                        // 获取src\main\res\values下面的strings.xml文件
-                        String dirName = psiFile.getParent().toString();
-                        if (dirName.contains("src\\main\\res\\values")) {
-                            text = Util.getTextFromStringsXml(psiFile, text);
-                        }
-                    }
-                }
-            }
-
-            StringBuilder fromText = new StringBuilder();
-            if (!TextUtils.isEmpty(text)) {
-                 fromText.append("/** " + text + " */\n");
-            }
-            fromText.append("private ");
-            fromText.append(element.getName());
-            fromText.append(" ");
-            fromText.append(element.getFieldName());
-            if (mIsLayoutInflater) fromText.append(mLayoutInflaterText.substring(1));
-            fromText.append(";");
             if (element.isEnable()) {
                 // 添加到class
-                mClass.add(mFactory.createFieldFromText(fromText.toString(), mClass));
+                mClass.add(mFactory.createFieldFromText(Util.createFieldByElement(
+                        Util.createFieldText(element, mProject), element, mIsLayoutInflater, mLayoutInflaterText), mClass));
             }
         }
     }
@@ -154,9 +125,9 @@ public class WidgetFieldCreator extends Simple {
     private void generateFindViewById() {
         if (Util.isExtendsActivityOrActivityCompat(mProject, mClass)) {
             // 判断是否有onCreate方法
-            if (mClass.findMethodsByName("onCreate", false).length == 0) {
+            if (mClass.findMethodsByName(Constant.psiMethodByOnCreate, false).length == 0) {
                 // 添加
-                mClass.add(mFactory.createMethodFromText(Util.createOnCreateMethod(mSelectedText), mClass));
+                mClass.add(mFactory.createMethodFromText(Util.createOnCreateMethod(mSelectedText, mIsButterKnife), mClass));
             } else {
                 generateFields();
                 // 获取setContentView
@@ -164,32 +135,53 @@ public class WidgetFieldCreator extends Simple {
                 // onCreate是否存在initView方法
                 boolean hasInitViewStatement = false;
 
-                PsiMethod onCreate = mClass.findMethodsByName("onCreate", false)[0];
-                for (PsiStatement psiStatement : onCreate.getBody().getStatements()) {
-                    // 查找setContentView
-                    if (psiStatement.getFirstChild() instanceof PsiMethodCallExpression) {
-                        PsiReferenceExpression methodExpression = ((PsiMethodCallExpression) psiStatement.getFirstChild()).getMethodExpression();
-                        if (methodExpression.getText().equals("setContentView")) {
-                            setContentViewStatement = psiStatement;
-                        } else if (methodExpression.getText().equals("initView")) {
-                            hasInitViewStatement = true;
+                PsiMethod onCreate = mClass.findMethodsByName(Constant.psiMethodByOnCreate, false)[0];
+                if (onCreate.getBody() != null) {
+                    for (PsiStatement psiStatement : onCreate.getBody().getStatements()) {
+                        // 查找setContentView
+                        if (psiStatement.getFirstChild() instanceof PsiMethodCallExpression) {
+                            PsiReferenceExpression methodExpression = ((PsiMethodCallExpression) psiStatement.getFirstChild()).getMethodExpression();
+                            if (methodExpression.getText().equals(Constant.utils.creatorSetContentViewMethod)) {
+                                setContentViewStatement = psiStatement;
+                            } else if (methodExpression.getText().equals(Constant.utils.creatorInitViewName)) {
+                                hasInitViewStatement = true;
+                            }
                         }
                     }
-                }
+                    if (setContentViewStatement == null) {
+                        onCreate.getBody().add(mFactory.createStatementFromText("setContentView(R.layout." + mSelectedText + ");", mClass));
+                    }
 
-                if (!hasInitViewStatement && setContentViewStatement != null) {
-                    // 将initView()写到setContentView()后面
-                    onCreate.getBody().addAfter(mFactory.createStatementFromText("initView();", mClass), setContentViewStatement);
+                    if (!hasInitViewStatement) {
+                        // 将initView()写到setContentView()后面
+                        if (setContentViewStatement != null) {
+                            onCreate.getBody().addAfter(mFactory.createStatementFromText("initView();", mClass), setContentViewStatement);
+                        } else {
+                            onCreate.getBody().add(mFactory.createStatementFromText("initView();", mClass));
+                        }
+                    }
                 }
 
                 generatorLayoutCode(null, "getApplicationContext()");
             }
 
         } else if (Util.isExtendsFragmentOrFragmentV4(mProject, mClass)) {
+            boolean isViewExist = false;
+            for (PsiField psiField : mClass.getFields()) {
+                if (psiField.getText() != null && psiField.getText().equals("private View view;")) {
+                    isViewExist = true;
+                    break;
+                } else {
+                    isViewExist = false;
+                }
+            }
+            if (!isViewExist) {
+                mClass.add(mFactory.createFieldFromText("private View view;", mClass));
+            }
             // 判断是否有onCreateView方法
-            if (mClass.findMethodsByName("onCreateView", false).length == 0) {
+            if (mClass.findMethodsByName(Constant.psiMethodByOnCreateView, false).length == 0) {
                 // 添加
-                mClass.add(mFactory.createMethodFromText(Util.createOnCreateViewMethod(mSelectedText), mClass));
+                mClass.add(mFactory.createMethodFromText(Util.createOnCreateViewMethod(mSelectedText, mIsButterKnife), mClass));
 
             } else {
                 generateFields();
@@ -200,22 +192,26 @@ public class WidgetFieldCreator extends Simple {
                 // onCreateView是否存在initView方法
                 boolean hasInitViewStatement = false;
 
-                PsiMethod onCreate = mClass.findMethodsByName("onCreateView", false)[0];
-                for (PsiStatement psiStatement : onCreate.getBody().getStatements()) {
-                    if (psiStatement instanceof PsiReturnStatement) {
-                        // 获取view的值
-                        returnStatement = (PsiReturnStatement) psiStatement;
-                        returnValue = returnStatement.getReturnValue().getText();
-                    } else if (psiStatement.getFirstChild() instanceof PsiMethodCallExpression) {
-                        PsiReferenceExpression methodExpression = ((PsiMethodCallExpression) psiStatement.getFirstChild()).getMethodExpression();
-                        if (methodExpression.getText().equals("initView")) {
-                            hasInitViewStatement = true;
+                PsiMethod onCreate = mClass.findMethodsByName(Constant.psiMethodByOnCreateView, false)[0];
+                if (onCreate.getBody() != null) {
+                    for (PsiStatement psiStatement : onCreate.getBody().getStatements()) {
+                        if (psiStatement instanceof PsiReturnStatement) {
+                            // 获取view的值
+                            returnStatement = (PsiReturnStatement) psiStatement;
+                            if (returnStatement.getReturnValue() != null) {
+                                returnValue = returnStatement.getReturnValue().getText();
+                            }
+                        } else if (psiStatement.getFirstChild() instanceof PsiMethodCallExpression) {
+                            PsiReferenceExpression methodExpression = ((PsiMethodCallExpression) psiStatement.getFirstChild()).getMethodExpression();
+                            if (methodExpression.getText().equals(Constant.utils.creatorInitViewName)) {
+                                hasInitViewStatement = true;
+                            }
                         }
                     }
-                }
 
-                if (!hasInitViewStatement && returnStatement != null && returnValue != null) {
-                    onCreate.getBody().addBefore(mFactory.createStatementFromText("initView(" + returnValue + ");", mClass), returnStatement);
+                    if (!hasInitViewStatement && returnStatement != null && returnValue != null) {
+                        onCreate.getBody().addBefore(mFactory.createStatementFromText("initView(" + returnValue + ");", mClass), returnStatement);
+                    }
                 }
                 generatorLayoutCode(returnValue, "getActivity()");
             }
@@ -226,11 +222,11 @@ public class WidgetFieldCreator extends Simple {
      * 写initView方法
      *
      * @param findPre Fragment的话要view.findViewById
-     * @param context
+     * @param context context
      */
     private void generatorLayoutCode(String findPre, String context) {
         // 判断是否已有initView方法
-        PsiMethod[] initViewMethods = mClass.findMethodsByName("initView", false);
+        PsiMethod[] initViewMethods = mClass.findMethodsByName(Constant.utils.creatorInitViewName, false);
         // 有initView方法
         if (initViewMethods.length > 0 && initViewMethods[0].getBody() != null) {
             PsiCodeBlock initViewMethodBody = initViewMethods[0].getBody();
@@ -283,7 +279,7 @@ public class WidgetFieldCreator extends Simple {
                     if (element.isClickEnable()) {
                         // 判断是否已存在setOnClickListener
                         boolean isClickExist = false;
-                        String setOnClickListener = element.getFieldName()+ inflater + ".setOnClickListener(this);";
+                        String setOnClickListener = element.getFieldName() + inflater + ".setOnClickListener(this);";
                         for (PsiStatement statement : statements) {
                             if (statement.getText().equals(setOnClickListener)) {
                                 isClickExist = true;
@@ -299,48 +295,18 @@ public class WidgetFieldCreator extends Simple {
                 }
             }
         } else {
-            StringBuilder initView = new StringBuilder();
-            if (TextUtils.isEmpty(findPre)) {
-                initView.append("private void initView() {\n");
-            } else {
-                initView.append("private void initView(View " + findPre + ") {\n");
-            }
-            if (mIsLayoutInflater) {
-                // 添加LayoutInflater.from(this).inflate(R.layout.activity_main, null);
-                String layoutInflater = mLayoutInflaterText
-                        + " = LayoutInflater.from(" + context + ").inflate(R.layout." + mSelectedText + ", null);"
-                        + "\n";
-                initView.append(layoutInflater);
-            }
-
-            for (Element element : mElements) {
-                if (element.isEnable()) {
-                    String pre = TextUtils.isEmpty(findPre) ? "" : findPre + ".";
-                    String inflater = "";
-                    if (mIsLayoutInflater) {
-                        inflater = mLayoutInflaterText.substring(1);
-                        pre = mLayoutInflaterText + ".";
-                    }
-                    initView.append(element.getFieldName() + inflater
-                            + " = (" + element.getName() + ")"
-                            + pre + "findViewById(" + element.getFullID() + ");\n");
-                    if (element.isClickable() && element.isClickEnable()) {
-                        initView.append(element.getFieldName() + inflater + ".setOnClickListener(this);\n");
-                    }
-                }
-            }
-            initView.append("}\n");
-            mClass.add(mFactory.createMethodFromText(initView.toString(), mClass));
+            mClass.add(mFactory.createMethodFromText(
+                    Util.createFieldsByInitViewMethod(findPre, mIsLayoutInflater, mLayoutInflaterText, context, mSelectedText, mElements), mClass));
         }
         if (mOnClickList.size() != 0) {
-            generateOnClickCode();
+            generateOnClickListenerCode();
         }
     }
 
     /**
      * 添加实现OnClickListener接口
      */
-    private void generateOnClickCode() {
+    private void generateOnClickListenerCode() {
         // 获取已实现的接口
         PsiReferenceList implementsList = mClass.getImplementsList();
         boolean isImplOnClick = false;
@@ -352,12 +318,22 @@ public class WidgetFieldCreator extends Simple {
         }
         // 未实现添加OnClickListener接口
         if (!isImplOnClick) {
-            PsiJavaCodeReferenceElement referenceElementByFQClassName = mFactory.createReferenceElementByFQClassName("android.view.View.OnClickListener", mClass.getResolveScope());
+            PsiJavaCodeReferenceElement referenceElementByFQClassName =
+                    mFactory.createReferenceElementByFQClassName("android.view.View.OnClickListener", mClass.getResolveScope());
             // 添加的PsiReferenceList
-            implementsList.add(referenceElementByFQClassName);
+            if (implementsList != null) {
+                implementsList.add(referenceElementByFQClassName);
+            }
         }
+        generatorClickCode();
+    }
+
+    /**
+     * 写onClick方法
+     */
+    private void generatorClickCode() {
         // 判断是否已有onClick方法
-        PsiMethod[] onClickMethods = mClass.findMethodsByName("onClick", false);
+        PsiMethod[] onClickMethods = mClass.findMethodsByName(Constant.FieldonClick, false);
         // 已有onClick方法
         if (onClickMethods.length > 0 && onClickMethods[0].getBody() != null) {
             PsiCodeBlock onClickMethodBody = onClickMethods[0].getBody();
@@ -367,13 +343,13 @@ public class WidgetFieldCreator extends Simple {
                     PsiSwitchStatement psiSwitchStatement = (PsiSwitchStatement) psiElement;
                     // 获取switch的内容
                     PsiCodeBlock psiSwitchStatementBody = psiSwitchStatement.getBody();
-                    if(psiSwitchStatementBody != null) {
+                    if (psiSwitchStatementBody != null) {
                         for (Element element : mOnClickList) {
                             String cass = "case " + element.getFullID() + ":";
                             // 判断是否存在
                             boolean isExist = false;
                             for (PsiStatement statement : psiSwitchStatementBody.getStatements()) {
-                                if (statement.getText().replace("\n","").replace("break;","").equals(cass)) {
+                                if (statement.getText().replace("\n", "").replace("break;", "").equals(cass)) {
                                     isExist = true;
                                     break;
                                 } else {
@@ -391,17 +367,7 @@ public class WidgetFieldCreator extends Simple {
             }
         } else {
             if (mOnClickList.size() != 0) {
-                StringBuilder onClick = new StringBuilder();
-                onClick.append("@Override public void onClick(View v) {\n");
-                onClick.append("switch (v.getId()) {\n");
-                for (Element mElement : mOnClickList) {
-                    if (mElement.isClickable()) {
-                        onClick.append("case " + mElement.getFullID() + ":\nbreak;\n");
-                    }
-                }
-                onClick.append("}\n");
-                onClick.append("}\n");
-                mClass.add(mFactory.createMethodFromText(onClick.toString(), mClass));
+                mClass.add(mFactory.createMethodFromText(Util.createFindViewByIdOnClickMethodAndSwitch(mOnClickList), mClass));
             }
         }
     }

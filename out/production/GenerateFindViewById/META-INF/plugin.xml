@@ -1,19 +1,21 @@
-<idea-plugin version="2">
+<idea-plugin version="3">
     <id>com.wangzai.plugin.findViewById</id>
     <name>GenerateFindViewById</name>
-    <version>1.0</version>
+    <version>1.1</version>
     <vendor email="673173629@qq.com" url="https://github.com/wangzailfm/GenerateFindViewById">GitHub</vendor>
 
     <description><![CDATA[
-    可输入布局字段，可选中布局文件字段，自动生成有id控件相应的代码。<br/>
-    Can input, can be selected to auto generator findViewById code in Activity or etc.<br/>
+    可输入布局字段，可选中布局文件字段，自动生成有id控件相应的代码，支持ButterKnife(8.4.0)。<br/>
+    Can input, can be selected to auto generator findViewById code in Activity or etc, support ButterKnife(version 8.4.0).<br/>
     ]]></description>
 
     <change-notes><![CDATA[
-        1.0 支持Activity和Fragment，<br/>
-        添加可选生成的字段，可编辑变量名，可选择是否LayoutInflater类型，<br/>
-        添加快捷键Ctrl+Alt+E，text、hint的值添加到字段注释，添加LayoutInflater生成，<br/>
-        添加OnClick生成代码。
+        1.1 支持ButterKnife，版本为8.4.0，快捷键Ctrl+Alt+Shift+E，添加LayoutInflater生成<br/>
+        Support ButterKnife version for 8.4.0, shortcut Ctrl+Alt+Shift+E, add the LayoutInflater generated<br/>
+        1.0 支持Activity和Fragment，添加可选生成的字段，可编辑变量名，可选择是否LayoutInflater类型，<br/>
+        添加快捷键Ctrl+Alt+E，text、hint的值添加到字段注释，添加LayoutInflater生成，添加OnClick生成代码。<br/>
+        Support Activity and fragments, add the optional fields, generated editable variable names, you can choose whether LayoutInflater type, <br/>
+        add the shortcut Ctrl + Alt + E, text annotation, hint of value added to the field, add the LayoutInflater generated, add OnClick generated code.
     ]]>
     </change-notes>
 
@@ -32,7 +34,13 @@
 
     <actions>
         <!-- Add your actions here -->
-        <action id="GenerateFindViewByIdAction" class="action.FindViewByIdAction" text="FindViewById"
+        <action id="GenerateButterKnifeAction" class="actions.ButterKnifeAction" text="ButterKnife"
+                description="GenerateButterKnifeAction">
+            <add-to-group group-id="CodeMenu" anchor="first"/>
+            <add-to-group group-id="GenerateGroup" anchor="first"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt shift E"/>
+        </action>
+        <action id="GenerateFindViewByIdAction" class="actions.FindViewByIdAction" text="FindViewById"
                 description="GenerateFindViewByIdAction">
             <add-to-group group-id="CodeMenu" anchor="first"/>
             <add-to-group group-id="GenerateGroup" anchor="first"/>
