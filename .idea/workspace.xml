@@ -2,37 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b9e22246-1f88-4fd7-8fbf-6428f3319c81" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/markdown-navigator.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/markdown-navigator/profiles_settings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/actions/ButterKnifeAction.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/constant/Constant.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/utils/WidgetFieldCreator.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/views/ButterKnifeDialog.java" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/GenerateFindViewById/Utils/Util$3.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/GenerateFindViewById/View/FindViewByIdDialog.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/GenerateFindViewById/action/FindViewByIdAction.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/GenerateFindViewById/entity/Element.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/GenerateFindViewById/entity/IdBean$1.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/GenerateFindViewById/entity/IdBean$ClickActionListener.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/GenerateFindViewById/entity/IdBean$EnableActionListener.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/GenerateFindViewById/entity/IdBean$FieldFocusListener.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/GenerateFindViewById/entity/IdBean.class" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/Utils/CreateMethodCreator.java" afterPath="$PROJECT_DIR$/src/utils/CreateMethodCreator.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/Utils/Util.java" afterPath="$PROJECT_DIR$/src/utils/Util.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/Utils/WidgetFieldCreator.java" afterPath="$PROJECT_DIR$/src/utils/ButterKnifeCreator.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/View/FindViewByIdDialog.java" afterPath="$PROJECT_DIR$/src/views/FindViewByIdDialog.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/action/FindViewByIdAction.java" afterPath="$PROJECT_DIR$/src/actions/FindViewByIdAction.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/entity/Element.java" afterPath="$PROJECT_DIR$/src/entitys/Element.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/entity/IdBean.java" afterPath="$PROJECT_DIR$/src/entitys/IdBean.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/GenerateFindViewById.jar" afterPath="$PROJECT_DIR$/GenerateFindViewById.jar" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/GenerateFindViewById/Utils/CreateMethodCreator.class" afterPath="$PROJECT_DIR$/out/production/GenerateFindViewById/Utils/CreateMethodCreator.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/GenerateFindViewById/Utils/Util$1.class" afterPath="$PROJECT_DIR$/out/production/GenerateFindViewById/Utils/Util$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/GenerateFindViewById/Utils/Util$2.class" afterPath="$PROJECT_DIR$/out/production/GenerateFindViewById/Utils/Util$2.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/GenerateFindViewById/Utils/Util.class" afterPath="$PROJECT_DIR$/out/production/GenerateFindViewById/Utils/Util.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/GenerateFindViewById/Utils/WidgetFieldCreator.class" afterPath="$PROJECT_DIR$/out/production/GenerateFindViewById/Utils/WidgetFieldCreator.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/GenerateFindViewById/META-INF/plugin.xml" afterPath="$PROJECT_DIR$/out/production/GenerateFindViewById/META-INF/plugin.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/META-INF/plugin.xml" afterPath="$PROJECT_DIR$/resources/META-INF/plugin.xml" />
     </list>
     <ignored path="GenerateFindViewById.iws" />
@@ -53,155 +22,7 @@
     <favorites_list name="GenerateFindViewById" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="ButterKnifeCreator.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/utils/ButterKnifeCreator.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="330">
-              <caret line="194" column="67" selection-start-line="194" selection-start-column="67" selection-end-line="194" selection-end-column="67" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ButterKnifeAction.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/actions/ButterKnifeAction.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="462">
-              <caret line="73" column="42" selection-start-line="73" selection-start-column="42" selection-end-line="73" selection-end-column="42" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="FindViewByIdAction.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/actions/FindViewByIdAction.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1430">
-              <caret line="86" column="13" selection-start-line="86" selection-start-column="13" selection-end-line="88" selection-end-column="13" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CreateMethodCreator.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/utils/CreateMethodCreator.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="902">
-              <caret line="47" column="106" selection-start-line="47" selection-start-column="106" selection-end-line="47" selection-end-column="106" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Util.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/utils/Util.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="6270">
-              <caret line="705" column="53" selection-start-line="705" selection-start-column="53" selection-end-line="705" selection-end-column="53" />
-              <folding>
-                <element signature="docComment;field#StringValue#0;class#Util#0" expanded="false" />
-                <element signature="docComment;method#showPopupBalloon#0;class#Util#0" expanded="false" />
-                <element signature="method#showPopupBalloon#0;class#Util#0" expanded="false" />
-                <element signature="docComment;method#getFieldName#0;class#Util#0" expanded="false" />
-                <element signature="method#getFieldName#0;class#Util#0" expanded="false" />
-                <element signature="docComment;method#firstToUpperCase#0;class#Util#0" expanded="false" />
-                <element signature="method#firstToUpperCase#0;class#Util#0" expanded="false" />
-                <element signature="docComment;method#getTextFromStringsXml#0;class#Util#0" expanded="false" />
-                <element signature="method#getTextFromStringsXml#0;class#Util#0" expanded="false" />
-                <element signature="e#3259#3317#0" expanded="false" />
-                <element signature="docComment;method#getIDsFromLayout#0;class#Util#0" expanded="false" />
-                <element signature="method#getIDsFromLayout#0;class#Util#0" expanded="false" />
-                <element signature="e#3953#3994#0" expanded="false" />
-                <element signature="docComment;method#getLayoutName#0;class#Util#0" expanded="false" />
-                <element signature="method#getLayoutName#0;class#Util#0" expanded="false" />
-                <element signature="docComment;method#getTargetClass#0;class#Util#0" expanded="false" />
-                <element signature="method#getTargetClass#0;class#Util#0" expanded="false" />
-                <element signature="docComment;method#isExtendsActivityOrActivityCompat#0;class#Util#0" expanded="false" />
-                <element signature="method#isExtendsActivityOrActivityCompat#0;class#Util#0" expanded="false" />
-                <element signature="docComment;method#isExtendsFragmentOrFragmentV4#0;class#Util#0" expanded="false" />
-                <element signature="method#isExtendsFragmentOrFragmentV4#0;class#Util#0" expanded="false" />
-                <element signature="docComment;method#isButterKnifeBindExist#0;class#Util#0" expanded="false" />
-                <element signature="docComment;method#createOnCreateMethod#0;class#Util#0" expanded="false" />
-                <element signature="method#createOnCreateMethod#0;class#Util#0" expanded="false" />
-                <element signature="docComment;method#createFragmentOnCreateMethod#0;class#Util#0" expanded="false" />
-                <element signature="docComment;method#createOnCreateViewMethod#0;class#Util#0" expanded="false" />
-                <element signature="docComment;method#createFragmentInitViewMethod#0;class#Util#0" expanded="false" />
-                <element signature="method#createFragmentInitViewMethod#0;class#Util#0" expanded="false" />
-                <element signature="docComment;method#createInitViewMethod#0;class#Util#0" expanded="false" />
-                <element signature="method#createInitViewMethod#0;class#Util#0" expanded="false" />
-                <element signature="docComment;method#createOnDestroyViewMethod#0;class#Util#0" expanded="false" />
-                <element signature="method#createOnDestroyViewMethod#0;class#Util#0" expanded="false" />
-                <element signature="docComment;method#isImplementsOnClickListener#0;class#Util#0" expanded="false" />
-                <element signature="method#isImplementsOnClickListener#0;class#Util#0" expanded="false" />
-                <element signature="docComment;method#getInitViewBodyStatements#0;class#Util#0" expanded="false" />
-                <element signature="method#getInitViewBodyStatements#0;class#Util#0" expanded="false" />
-                <element signature="docComment;method#getPsiMethodByButterKnifeOnClick#0;class#Util#0" expanded="false" />
-                <element signature="method#getPsiMethodByButterKnifeOnClick#0;class#Util#0" expanded="false" />
-                <element signature="docComment;method#getPsiMethodParamsViewField#0;class#Util#0" expanded="false" />
-                <element signature="method#getPsiMethodParamsViewField#0;class#Util#0" expanded="false" />
-                <element signature="docComment;method#getPsiMethodByButterKnifeOnClickValue#0;class#Util#0" expanded="false" />
-                <element signature="method#getPsiMethodByButterKnifeOnClickValue#0;class#Util#0" expanded="false" />
-                <element signature="docComment;method#createOnClickAnnotation#0;class#Util#0" expanded="false" />
-                <element signature="docComment;method#getOnClickListById#0;class#Util#0" expanded="false" />
-                <element signature="docComment;method#createOnClickValue#0;class#Util#0" expanded="false" />
-                <element signature="method#createFieldText#0;class#Util#0" expanded="false" />
-                <element signature="docComment;method#createFindViewByIdOnClickMethodAndSwitch#0;class#Util#0" expanded="false" />
-                <element signature="method#createFindViewByIdOnClickMethodAndSwitch#0;class#Util#0" expanded="false" />
-                <element signature="docComment;method#createSwitchByOnClickMethod#0;class#Util#0" expanded="false" />
-                <element signature="method#createSwitchByOnClickMethod#0;class#Util#0" expanded="false" />
-                <element signature="docComment;method#createButterKnifeOnClickMethodAndSwitch#0;class#Util#0" expanded="false" />
-                <element signature="method#createButterKnifeOnClickMethodAndSwitch#0;class#Util#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Constant.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/constant/Constant.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="440">
-              <caret line="20" column="71" selection-start-line="20" selection-start-column="71" selection-end-line="20" selection-end-column="71" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="WidgetFieldCreator.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/utils/WidgetFieldCreator.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1342">
-              <caret line="73" column="35" selection-start-line="73" selection-start-column="35" selection-end-line="73" selection-end-column="35" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="plugin.xml" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/resources/META-INF/plugin.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="264">
-              <caret line="12" column="73" selection-start-line="12" selection-start-column="8" selection-end-line="12" selection-end-column="73" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="FindViewByIdDialog.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/views/FindViewByIdDialog.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="6754">
-              <caret line="322" column="77" selection-start-line="322" selection-start-column="57" selection-end-line="322" selection-end-column="77" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -243,12 +64,12 @@
         <option value="$PROJECT_DIR$/src/utils/WidgetFieldCreator.java" />
         <option value="$PROJECT_DIR$/src/views/ButterKnifeDialog.java" />
         <option value="$PROJECT_DIR$/src/utils/Util.java" />
-        <option value="$PROJECT_DIR$/resources/META-INF/plugin.xml" />
         <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/src/constant/Constant.java" />
         <option value="$PROJECT_DIR$/src/actions/FindViewByIdAction.java" />
         <option value="$PROJECT_DIR$/src/actions/ButterKnifeAction.java" />
         <option value="$PROJECT_DIR$/src/utils/ButterKnifeCreator.java" />
+        <option value="$PROJECT_DIR$/resources/META-INF/plugin.xml" />
       </list>
     </option>
   </component>
@@ -974,7 +795,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25893825" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -1426,29 +1247,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="814">
-          <caret line="37" column="54" selection-start-line="37" selection-start-column="54" selection-end-line="37" selection-end-column="54" />
-        </state>
-      </provider>
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="198">
-            <caret line="7" column="72" selection-start-line="7" selection-start-column="72" selection-end-line="7" selection-end-column="72" />
-          </first_editor>
-          <second_editor />
-        </state>
-      </provider>
-      <provider editor-type-id="split-provider[text-editor;MarkdownPreviewEditor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="0">
-            <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          </first_editor>
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/utils/CreateMethodCreator.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="902">
@@ -1472,14 +1270,6 @@
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/utils/WidgetFieldCreator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1342">
-          <caret line="73" column="35" selection-start-line="73" selection-start-column="35" selection-end-line="73" selection-end-column="35" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1509,10 +1299,43 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="814">
+          <caret line="37" column="54" selection-start-line="37" selection-start-column="54" selection-end-line="37" selection-end-column="54" />
+        </state>
+      </provider>
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="484">
+            <caret line="27" column="16" selection-start-line="27" selection-start-column="3" selection-end-line="27" selection-end-column="16" />
+            <folding />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+      <provider editor-type-id="split-provider[text-editor;MarkdownPreviewEditor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="0">
+            <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <folding />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/resources/META-INF/plugin.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="264">
-          <caret line="12" column="73" selection-start-line="12" selection-start-column="8" selection-end-line="12" selection-end-column="73" />
+        <state relative-caret-position="330">
+          <caret line="15" column="44" selection-start-line="15" selection-start-column="44" selection-end-line="15" selection-end-column="44" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/utils/WidgetFieldCreator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="265">
+          <caret line="73" column="35" selection-start-line="73" selection-start-column="35" selection-end-line="73" selection-end-column="35" />
           <folding />
         </state>
       </provider>
