@@ -15,7 +15,7 @@ import com.intellij.psi.util.PsiUtilBase;
 import com.intellij.psi.xml.XmlFile;
 import constant.Constant;
 import entitys.Element;
-import org.apache.http.util.TextUtils;
+import org.apache.commons.lang.StringUtils;
 import utils.CreateMethodCreator;
 import utils.Util;
 import views.FindViewByIdDialog;
@@ -39,9 +39,9 @@ public class FindViewByIdAction extends AnAction {
         String mSelectedText = model.getSelectedText();
         // 未选中布局内容，显示dialog
         int popupTime = 5;
-        if (TextUtils.isEmpty(mSelectedText)) {
+        if (StringUtils.isEmpty(mSelectedText)) {
             mSelectedText = Messages.showInputDialog(project, Constant.actions.selectedMessage, Constant.actions.selectedTitle, Messages.getInformationIcon());
-            if (TextUtils.isEmpty(mSelectedText)) {
+            if (StringUtils.isEmpty(mSelectedText)) {
                 Util.showPopupBalloon(mEditor, Constant.actions.selectedErrorNoName, popupTime);
                 return;
             }

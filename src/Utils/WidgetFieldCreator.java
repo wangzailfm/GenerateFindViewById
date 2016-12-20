@@ -8,7 +8,7 @@ import com.intellij.psi.*;
 import com.intellij.psi.codeStyle.JavaCodeStyleManager;
 import constant.Constant;
 import entitys.Element;
-import org.apache.http.util.TextUtils;
+import org.apache.commons.lang.StringUtils;
 import views.FindViewByIdDialog;
 
 import java.util.ArrayList;
@@ -255,7 +255,7 @@ public class WidgetFieldCreator extends Simple {
                 if (element.isEnable()) {
                     // 判断是否已存在findViewById
                     boolean isFdExist = false;
-                    String pre = TextUtils.isEmpty(findPre) ? "" : findPre + ".";
+                    String pre = StringUtils.isEmpty(findPre) ? "" : findPre + ".";
                     String inflater = "";
                     if (mIsLayoutInflater) {
                         inflater = mLayoutInflaterText.substring(1);

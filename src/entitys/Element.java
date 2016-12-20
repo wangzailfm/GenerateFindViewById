@@ -1,8 +1,8 @@
 package entitys;
 
-import utils.Util;
 import com.intellij.psi.xml.XmlTag;
-import org.apache.http.util.TextUtils;
+import org.apache.commons.lang.StringUtils;
+import utils.Util;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -132,7 +132,7 @@ public class Element {
      * @return
      */
     public String getFieldName() {
-        if (TextUtils.isEmpty(this.fieldName)) {
+        if (StringUtils.isEmpty(this.fieldName)) {
             String fieldName = id;
             String[] names = id.split("_");
             if (fieldNameType == 2) {
