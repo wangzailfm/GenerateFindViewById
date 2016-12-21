@@ -16,7 +16,7 @@ import com.intellij.psi.xml.XmlTag;
 import com.intellij.ui.JBColor;
 import constant.Constant;
 import entitys.Element;
-import org.apache.http.util.TextUtils;
+import org.apache.commons.lang.StringUtils;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -56,7 +56,7 @@ public class Util {
      * @return
      */
     public static String getFieldName(String fieldName) {
-        if (!TextUtils.isEmpty(fieldName)) {
+        if (!StringUtils.isEmpty(fieldName)) {
             String[] names = fieldName.split("_");
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < names.length; i++) {
@@ -167,7 +167,7 @@ public class Util {
                     // 获取clickable
                     XmlAttribute clickableAttr = tag.getAttribute("android:clickable", null);
                     boolean clickable = false;
-                    if (clickableAttr != null && !TextUtils.isEmpty(clickableAttr.getValue())) {
+                    if (clickableAttr != null && !StringUtils.isEmpty(clickableAttr.getValue())) {
                         clickable = clickableAttr.getValue().equals("true");
                     }
                     // 添加到list
@@ -504,10 +504,10 @@ public class Util {
                             .replace("(", "").replace(")", "")
                             .replace("{", "").replace("}", "")
                             .replace(" ", "").replace("@OnClick", "");
-                    if (!TextUtils.isEmpty(text)) {
+                    if (!StringUtils.isEmpty(text)) {
                         String[] split = text.split(",");
                         for (String value : split) {
-                            if (!TextUtils.isEmpty(value)) {
+                            if (!StringUtils.isEmpty(value)) {
                                 onClickValue.add(value);
                             }
                         }
@@ -591,12 +591,12 @@ public class Util {
      */
     public static String createFieldText(Element element, Project mProject){
         String text = element.getXml().getAttributeValue("android:text");
-        if (TextUtils.isEmpty(text)) {
+        if (StringUtils.isEmpty(text)) {
             // 如果是text为空，则获取hint里面的内容
             text = element.getXml().getAttributeValue("android:hint");
         }
         // 如果是@string/app_name类似
-        if (!TextUtils.isEmpty(text) && text.contains("@string/")) {
+        if (!StringUtils.isEmpty(text) && text.contains("@string/")) {
             text = text.replace("@string/", "");
             // 获取strings.xml
             PsiFile[] psiFiles = FilenameIndex.getFilesByName(mProject, "strings.xml", GlobalSearchScope.allScope(mProject));
@@ -622,7 +622,7 @@ public class Util {
      */
     public static String createFieldByElement(String text, Element element, boolean mIsLayoutInflater, String mLayoutInflaterText){
         StringBuilder fromText = new StringBuilder();
-        if (!TextUtils.isEmpty(text)) {
+        if (!StringUtils.isEmpty(text)) {
             fromText.append("/** ");
             fromText.append(text);
             fromText.append(" */\n");
@@ -648,7 +648,7 @@ public class Util {
      */
     public static String createFieldsByInitViewMethod(String findPre, boolean mIsLayoutInflater, String mLayoutInflaterText, String context, String mSelectedText, List<Element> mElements){
         StringBuilder initView = new StringBuilder();
-        if (TextUtils.isEmpty(findPre)) {
+        if (StringUtils.isEmpty(findPre)) {
             initView.append("private void initView() {\n");
         } else {
             initView.append("private void initView(View ");
@@ -664,7 +664,7 @@ public class Util {
         }
         for (Element element : mElements) {
             if (element.isEnable()) {
-                String pre = TextUtils.isEmpty(findPre) ? "" : findPre + ".";
+                String pre = StringUtils.isEmpty(findPre) ? "" : findPre + ".";
                 String inflater = "";
                 if (mIsLayoutInflater) {
                     inflater = mLayoutInflaterText.substring(1);

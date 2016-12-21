@@ -2,12 +2,20 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b9e22246-1f88-4fd7-8fbf-6428f3319c81" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/GenerateFindViewById.jar" afterPath="$PROJECT_DIR$/GenerateFindViewById.jar" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/GenerateFindViewById/Utils/ButterKnifeCreator.class" afterPath="$PROJECT_DIR$/out/production/GenerateFindViewById/Utils/ButterKnifeCreator.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/GenerateFindViewById/Utils/Util$2.class" afterPath="$PROJECT_DIR$/out/production/GenerateFindViewById/Utils/Util$2.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/GenerateFindViewById/Utils/Util.class" afterPath="$PROJECT_DIR$/out/production/GenerateFindViewById/Utils/Util.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/GenerateFindViewById/Utils/WidgetFieldCreator.class" afterPath="$PROJECT_DIR$/out/production/GenerateFindViewById/Utils/WidgetFieldCreator.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/GenerateFindViewById/actions/ButterKnifeAction.class" afterPath="$PROJECT_DIR$/out/production/GenerateFindViewById/actions/ButterKnifeAction.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/GenerateFindViewById/actions/FindViewByIdAction.class" afterPath="$PROJECT_DIR$/out/production/GenerateFindViewById/actions/FindViewByIdAction.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/GenerateFindViewById/entitys/Element.class" afterPath="$PROJECT_DIR$/out/production/GenerateFindViewById/entitys/Element.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/GenerateFindViewById/views/ButterKnifeDialog.class" afterPath="$PROJECT_DIR$/out/production/GenerateFindViewById/views/ButterKnifeDialog.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/GenerateFindViewById/views/FindViewByIdDialog.class" afterPath="$PROJECT_DIR$/out/production/GenerateFindViewById/views/FindViewByIdDialog.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/actions/ButterKnifeAction.java" afterPath="$PROJECT_DIR$/src/actions/ButterKnifeAction.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/actions/FindViewByIdAction.java" afterPath="$PROJECT_DIR$/src/actions/FindViewByIdAction.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/entitys/Element.java" afterPath="$PROJECT_DIR$/src/entitys/Element.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/utils/WidgetFieldCreator.java" afterPath="$PROJECT_DIR$/src/utils/WidgetFieldCreator.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/GenerateFindViewById/META-INF/plugin.xml" afterPath="$PROJECT_DIR$/out/production/GenerateFindViewById/META-INF/plugin.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/META-INF/plugin.xml" afterPath="$PROJECT_DIR$/resources/META-INF/plugin.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Utils/Util.java" afterPath="$PROJECT_DIR$/src/Utils/Util.java" />
     </list>
     <ignored path="GenerateFindViewById.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -28,13 +36,98 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="WidgetFieldCreator.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="WidgetFieldCreator.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/utils/WidgetFieldCreator.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="317">
-              <caret line="243" column="30" lean-forward="true" selection-start-line="243" selection-start-column="30" selection-end-line="243" selection-end-column="30" />
+            <state relative-caret-position="352">
+              <caret line="16" column="48" lean-forward="true" selection-start-line="16" selection-start-column="48" selection-end-line="16" selection-end-column="48" />
               <folding>
                 <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="plugin.xml" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/resources/META-INF/plugin.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="229">
+              <caret line="27" column="48" lean-forward="true" selection-start-line="27" selection-start-column="48" selection-end-line="27" selection-end-column="48" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Util.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/utils/Util.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="6270">
+              <caret line="683" column="46" lean-forward="false" selection-start-line="683" selection-start-column="46" selection-end-line="683" selection-end-column="46" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="docComment;field#StringValue#0;class#Util#0" expanded="false" />
+                <element signature="docComment;method#showPopupBalloon#0;class#Util#0" expanded="false" />
+                <element signature="method#showPopupBalloon#0;class#Util#0" expanded="false" />
+                <element signature="docComment;method#getFieldName#0;class#Util#0" expanded="false" />
+                <element signature="docComment;method#firstToUpperCase#0;class#Util#0" expanded="false" />
+                <element signature="method#firstToUpperCase#0;class#Util#0" expanded="false" />
+                <element signature="docComment;method#getTextFromStringsXml#0;class#Util#0" expanded="false" />
+                <element signature="method#getTextFromStringsXml#0;class#Util#0" expanded="false" />
+                <element signature="e#3266#3324#0" expanded="false" />
+                <element signature="docComment;method#getIDsFromLayout#0;class#Util#0" expanded="false" />
+                <element signature="e#3960#4001#0" expanded="false" />
+                <element signature="docComment;method#getLayoutName#0;class#Util#0" expanded="false" />
+                <element signature="method#getLayoutName#0;class#Util#0" expanded="false" />
+                <element signature="docComment;method#getTargetClass#0;class#Util#0" expanded="false" />
+                <element signature="method#getTargetClass#0;class#Util#0" expanded="false" />
+                <element signature="docComment;method#isExtendsActivityOrActivityCompat#0;class#Util#0" expanded="false" />
+                <element signature="method#isExtendsActivityOrActivityCompat#0;class#Util#0" expanded="false" />
+                <element signature="docComment;method#isExtendsFragmentOrFragmentV4#0;class#Util#0" expanded="false" />
+                <element signature="method#isExtendsFragmentOrFragmentV4#0;class#Util#0" expanded="false" />
+                <element signature="docComment;method#isButterKnifeBindExist#0;class#Util#0" expanded="false" />
+                <element signature="method#isButterKnifeBindExist#0;class#Util#0" expanded="false" />
+                <element signature="docComment;method#createOnCreateMethod#0;class#Util#0" expanded="false" />
+                <element signature="method#createOnCreateMethod#0;class#Util#0" expanded="false" />
+                <element signature="docComment;method#createFragmentOnCreateMethod#0;class#Util#0" expanded="false" />
+                <element signature="method#createFragmentOnCreateMethod#0;class#Util#0" expanded="false" />
+                <element signature="docComment;method#createOnCreateViewMethod#0;class#Util#0" expanded="false" />
+                <element signature="method#createOnCreateViewMethod#0;class#Util#0" expanded="false" />
+                <element signature="docComment;method#createFragmentInitViewMethod#0;class#Util#0" expanded="false" />
+                <element signature="method#createFragmentInitViewMethod#0;class#Util#0" expanded="false" />
+                <element signature="docComment;method#createInitViewMethod#0;class#Util#0" expanded="false" />
+                <element signature="method#createInitViewMethod#0;class#Util#0" expanded="false" />
+                <element signature="docComment;method#createOnDestroyViewMethod#0;class#Util#0" expanded="false" />
+                <element signature="method#createOnDestroyViewMethod#0;class#Util#0" expanded="false" />
+                <element signature="docComment;method#isImplementsOnClickListener#0;class#Util#0" expanded="false" />
+                <element signature="method#isImplementsOnClickListener#0;class#Util#0" expanded="false" />
+                <element signature="docComment;method#getInitViewBodyStatements#0;class#Util#0" expanded="false" />
+                <element signature="method#getInitViewBodyStatements#0;class#Util#0" expanded="false" />
+                <element signature="docComment;method#getOnClickStatement#0;class#Util#0" expanded="false" />
+                <element signature="method#getOnClickStatement#0;class#Util#0" expanded="false" />
+                <element signature="docComment;method#getPsiMethodByButterKnifeOnClick#0;class#Util#0" expanded="false" />
+                <element signature="method#getPsiMethodByButterKnifeOnClick#0;class#Util#0" expanded="false" />
+                <element signature="docComment;method#getPsiMethodByName#0;class#Util#0" expanded="false" />
+                <element signature="method#getPsiMethodByName#0;class#Util#0" expanded="false" />
+                <element signature="docComment;method#getPsiMethodParamsViewField#0;class#Util#0" expanded="false" />
+                <element signature="method#getPsiMethodParamsViewField#0;class#Util#0" expanded="false" />
+                <element signature="docComment;method#getPsiMethodByButterKnifeOnClickValue#0;class#Util#0" expanded="false" />
+                <element signature="docComment;method#createOnClickAnnotation#0;class#Util#0" expanded="false" />
+                <element signature="method#createOnClickAnnotation#0;class#Util#0" expanded="false" />
+                <element signature="docComment;method#getOnClickListById#0;class#Util#0" expanded="false" />
+                <element signature="method#getOnClickListById#0;class#Util#0" expanded="false" />
+                <element signature="docComment;method#createOnClickValue#0;class#Util#0" expanded="false" />
+                <element signature="method#createOnClickValue#0;class#Util#0" expanded="false" />
+                <element signature="docComment;method#createFieldText#0;class#Util#0" expanded="false" />
+                <element signature="docComment;method#createFieldByElement#0;class#Util#0" expanded="false" />
+                <element signature="docComment;method#createFieldsByInitViewMethod#0;class#Util#0" expanded="false" />
+                <element signature="docComment;method#createButterKnifeViewMethod#0;class#Util#0" expanded="false" />
+                <element signature="method#createButterKnifeViewMethod#0;class#Util#0" expanded="false" />
+                <element signature="docComment;method#createFindViewByIdOnClickMethodAndSwitch#0;class#Util#0" expanded="false" />
+                <element signature="method#createFindViewByIdOnClickMethodAndSwitch#0;class#Util#0" expanded="false" />
+                <element signature="docComment;method#createSwitchByOnClickMethod#0;class#Util#0" expanded="false" />
+                <element signature="method#createSwitchByOnClickMethod#0;class#Util#0" expanded="false" />
+                <element signature="docComment;method#createButterKnifeOnClickMethodAndSwitch#0;class#Util#0" expanded="false" />
+                <element signature="method#createButterKnifeOnClickMethodAndSwitch#0;class#Util#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -43,8 +136,8 @@
       <file leaf-file-name="Element.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/entitys/Element.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="176">
-              <caret line="134" column="23" lean-forward="false" selection-start-line="134" selection-start-column="12" selection-end-line="134" selection-end-column="23" />
+            <state relative-caret-position="2750">
+              <caret line="158" column="13" lean-forward="false" selection-start-line="158" selection-start-column="13" selection-end-line="158" selection-end-column="13" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -55,7 +148,7 @@
       <file leaf-file-name="ButterKnifeAction.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/actions/ButterKnifeAction.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="355">
+            <state relative-caret-position="484">
               <caret line="43" column="27" lean-forward="false" selection-start-line="43" selection-start-column="27" selection-end-line="43" selection-end-column="27" />
               <folding />
             </state>
@@ -65,11 +158,9 @@
       <file leaf-file-name="FindViewByIdAction.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/actions/FindViewByIdAction.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="572">
-              <caret line="26" column="39" lean-forward="true" selection-start-line="26" selection-start-column="39" selection-end-line="26" selection-end-column="39" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+            <state relative-caret-position="110">
+              <caret line="26" column="39" lean-forward="false" selection-start-line="26" selection-start-column="39" selection-end-line="26" selection-end-column="39" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -80,6 +171,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
+        <option value="Action" />
       </list>
     </option>
   </component>
@@ -113,15 +205,15 @@
         <option value="$PROJECT_DIR$/src/views/FindViewByIdDialog.java" />
         <option value="$PROJECT_DIR$/src/utils/CreateMethodCreator.java" />
         <option value="$PROJECT_DIR$/src/views/ButterKnifeDialog.java" />
-        <option value="$PROJECT_DIR$/src/utils/Util.java" />
         <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/src/constant/Constant.java" />
         <option value="$PROJECT_DIR$/src/utils/ButterKnifeCreator.java" />
-        <option value="$PROJECT_DIR$/resources/META-INF/plugin.xml" />
         <option value="$PROJECT_DIR$/src/entitys/Element.java" />
         <option value="$PROJECT_DIR$/src/actions/ButterKnifeAction.java" />
         <option value="$PROJECT_DIR$/src/actions/FindViewByIdAction.java" />
         <option value="$PROJECT_DIR$/src/utils/WidgetFieldCreator.java" />
+        <option value="$PROJECT_DIR$/src/utils/Util.java" />
+        <option value="$PROJECT_DIR$/resources/META-INF/plugin.xml" />
       </list>
     </option>
   </component>
@@ -391,9 +483,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
       <pane id="Scratches" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -526,11 +617,11 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="settings.editor.selected.configurable" value="editing.templates" />
-    <property name="settings.editor.splitter.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="GenerateAntBuildDialog.enableUiFormCompile" value="true" />
     <property name="GenerateAntBuildDialog.forceTargetJdk" value="true" />
@@ -558,6 +649,34 @@
       <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m -ea" />
       <option name="PROGRAM_PARAMETERS" />
       <predefined_log_file id="idea.log" enabled="true" />
+      <method />
+    </configuration>
+    <configuration default="true" type="AndroidRunConfigurationType" factoryName="Android App">
+      <module name="" />
+      <option name="DEPLOY" value="true" />
+      <option name="ARTIFACT_NAME" value="" />
+      <option name="PM_INSTALL_OPTIONS" value="" />
+      <option name="ACTIVITY_EXTRA_FLAGS" value="" />
+      <option name="MODE" value="default_activity" />
+      <option name="TARGET_SELECTION_MODE" value="SHOW_DIALOG" />
+      <option name="PREFERRED_AVD" value="" />
+      <option name="CLEAR_LOGCAT" value="false" />
+      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="false" />
+      <option name="SKIP_NOOP_APK_INSTALLATIONS" value="true" />
+      <option name="FORCE_STOP_RUNNING_APP" value="true" />
+      <option name="DEBUGGER_TYPE" value="Java" />
+      <option name="USE_LAST_SELECTED_DEVICE" value="false" />
+      <option name="PREFERRED_AVD" value="" />
+      <Java />
+      <Profilers>
+        <option name="ENABLE_ADVANCED_PROFILING" value="true" />
+        <option name="GAPID_ENABLED" value="false" />
+        <option name="GAPID_DISABLE_PCS" value="false" />
+        <option name="SUPPORT_LIB_ENABLED" value="true" />
+        <option name="INSTRUMENTATION_ENABLED" value="true" />
+      </Profilers>
+      <option name="DEEP_LINK" value="" />
+      <option name="ACTIVITY_CLASS" value="" />
       <method />
     </configuration>
     <configuration default="true" type="AndroidTestRunConfigurationType" factoryName="Android Tests">
@@ -804,23 +923,24 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25893825" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Nl-Palette" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.22968581" sideWeight="0.49520257" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.19068256" sideWeight="0.5063966" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32942432" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.40195015" sideWeight="0.4936034" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.19934994" sideWeight="0.4936034" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24593717" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Properties" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3206934" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20095949" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20522387" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24946696" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -831,7 +951,6 @@
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24946696" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.22968581" sideWeight="0.49520257" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.34669557" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
@@ -902,14 +1021,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/resources/META-INF/plugin.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="748">
-          <caret line="34" column="78" lean-forward="false" selection-start-line="34" selection-start-column="61" selection-end-line="34" selection-end-column="78" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/actions/ButterKnifeAction.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -1156,14 +1267,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/META-INF/plugin.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="220">
-          <caret line="10" column="0" lean-forward="false" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/views/ButterKnifeDialog.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="660">
@@ -1196,24 +1299,64 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/entitys/IdBean.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1246">
+          <caret line="99" column="88" lean-forward="false" selection-start-line="99" selection-start-column="88" selection-end-line="99" selection-end-column="88" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$APPLICATION_HOME_DIR$/lib/velocity.jar!/org/apache/commons/lang/StringUtils.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="276">
+          <caret line="27" column="5" lean-forward="true" selection-start-line="27" selection-start-column="5" selection-end-line="27" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/actions/ButterKnifeAction.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="484">
+          <caret line="43" column="27" lean-forward="false" selection-start-line="43" selection-start-column="27" selection-end-line="43" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/actions/FindViewByIdAction.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="110">
+          <caret line="26" column="39" lean-forward="false" selection-start-line="26" selection-start-column="39" selection-end-line="26" selection-end-column="39" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/entitys/Element.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2750">
+          <caret line="158" column="13" lean-forward="false" selection-start-line="158" selection-start-column="13" selection-end-line="158" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/utils/Util.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="588">
-          <caret line="691" column="0" lean-forward="true" selection-start-line="691" selection-start-column="0" selection-end-line="691" selection-end-column="0" />
+        <state relative-caret-position="6270">
+          <caret line="683" column="46" lean-forward="false" selection-start-line="683" selection-start-column="46" selection-end-line="683" selection-end-column="46" />
           <folding>
+            <element signature="imports" expanded="true" />
             <element signature="docComment;field#StringValue#0;class#Util#0" expanded="false" />
             <element signature="docComment;method#showPopupBalloon#0;class#Util#0" expanded="false" />
             <element signature="method#showPopupBalloon#0;class#Util#0" expanded="false" />
             <element signature="docComment;method#getFieldName#0;class#Util#0" expanded="false" />
-            <element signature="method#getFieldName#0;class#Util#0" expanded="false" />
             <element signature="docComment;method#firstToUpperCase#0;class#Util#0" expanded="false" />
             <element signature="method#firstToUpperCase#0;class#Util#0" expanded="false" />
             <element signature="docComment;method#getTextFromStringsXml#0;class#Util#0" expanded="false" />
             <element signature="method#getTextFromStringsXml#0;class#Util#0" expanded="false" />
-            <element signature="e#3259#3317#0" expanded="false" />
+            <element signature="e#3266#3324#0" expanded="false" />
             <element signature="docComment;method#getIDsFromLayout#0;class#Util#0" expanded="false" />
-            <element signature="method#getIDsFromLayout#0;class#Util#0" expanded="false" />
-            <element signature="e#3953#3994#0" expanded="false" />
+            <element signature="e#3960#4001#0" expanded="false" />
             <element signature="docComment;method#getLayoutName#0;class#Util#0" expanded="false" />
             <element signature="method#getLayoutName#0;class#Util#0" expanded="false" />
             <element signature="docComment;method#getTargetClass#0;class#Util#0" expanded="false" />
@@ -1249,7 +1392,6 @@
             <element signature="docComment;method#getPsiMethodParamsViewField#0;class#Util#0" expanded="false" />
             <element signature="method#getPsiMethodParamsViewField#0;class#Util#0" expanded="false" />
             <element signature="docComment;method#getPsiMethodByButterKnifeOnClickValue#0;class#Util#0" expanded="false" />
-            <element signature="method#getPsiMethodByButterKnifeOnClickValue#0;class#Util#0" expanded="false" />
             <element signature="docComment;method#createOnClickAnnotation#0;class#Util#0" expanded="false" />
             <element signature="method#createOnClickAnnotation#0;class#Util#0" expanded="false" />
             <element signature="docComment;method#getOnClickListById#0;class#Util#0" expanded="false" />
@@ -1257,11 +1399,8 @@
             <element signature="docComment;method#createOnClickValue#0;class#Util#0" expanded="false" />
             <element signature="method#createOnClickValue#0;class#Util#0" expanded="false" />
             <element signature="docComment;method#createFieldText#0;class#Util#0" expanded="false" />
-            <element signature="method#createFieldText#0;class#Util#0" expanded="false" />
             <element signature="docComment;method#createFieldByElement#0;class#Util#0" expanded="false" />
-            <element signature="method#createFieldByElement#0;class#Util#0" expanded="false" />
             <element signature="docComment;method#createFieldsByInitViewMethod#0;class#Util#0" expanded="false" />
-            <element signature="method#createFieldsByInitViewMethod#0;class#Util#0" expanded="false" />
             <element signature="docComment;method#createButterKnifeViewMethod#0;class#Util#0" expanded="false" />
             <element signature="method#createButterKnifeViewMethod#0;class#Util#0" expanded="false" />
             <element signature="docComment;method#createFindViewByIdOnClickMethodAndSwitch#0;class#Util#0" expanded="false" />
@@ -1274,60 +1413,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/entitys/IdBean.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1246">
-          <caret line="99" column="88" lean-forward="false" selection-start-line="99" selection-start-column="88" selection-end-line="99" selection-end-column="88" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$APPLICATION_HOME_DIR$/lib/velocity.jar!/org/apache/commons/lang/StringUtils.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="276">
-          <caret line="27" column="5" lean-forward="true" selection-start-line="27" selection-start-column="5" selection-end-line="27" selection-end-column="5" />
-          <folding>
-            <element signature="e#739#740#0" expanded="true" />
-            <element signature="e#794#795#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/entitys/Element.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="176">
-          <caret line="134" column="23" lean-forward="false" selection-start-line="134" selection-start-column="12" selection-end-line="134" selection-end-column="23" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/actions/ButterKnifeAction.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="355">
-          <caret line="43" column="27" lean-forward="false" selection-start-line="43" selection-start-column="27" selection-end-line="43" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/actions/FindViewByIdAction.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="572">
-          <caret line="26" column="39" lean-forward="true" selection-start-line="26" selection-start-column="39" selection-end-line="26" selection-end-column="39" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/actions/test.java" />
     <entry file="file://$PROJECT_DIR$/src/utils/WidgetFieldCreator.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="317">
-          <caret line="243" column="30" lean-forward="true" selection-start-line="243" selection-start-column="30" selection-end-line="243" selection-end-column="30" />
+        <state relative-caret-position="352">
+          <caret line="16" column="48" lean-forward="true" selection-start-line="16" selection-start-column="48" selection-end-line="16" selection-end-column="48" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/META-INF/plugin.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="229">
+          <caret line="27" column="48" lean-forward="true" selection-start-line="27" selection-start-column="48" selection-end-line="27" selection-end-column="48" />
+          <folding />
         </state>
       </provider>
     </entry>
