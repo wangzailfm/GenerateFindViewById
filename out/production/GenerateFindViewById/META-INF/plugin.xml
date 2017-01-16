@@ -1,7 +1,7 @@
-<idea-plugin version="3">
+<idea-plugin version="4">
     <id>com.wangzai.plugin.findViewById</id>
     <name>GenerateFindViewById</name>
-    <version>1.1.1</version>
+    <version>1.1.3</version>
     <vendor email="673173629@qq.com" url="https://github.com/wangzailfm/GenerateFindViewById">GitHub</vendor>
 
     <description><![CDATA[
@@ -10,6 +10,8 @@
     ]]></description>
 
     <change-notes><![CDATA[
+        1.1.3 Button默认勾选OnClick<br/>
+        The default check Button OnClick<br/>
         1.1 支持ButterKnife，版本为8.4.0，快捷键Ctrl+Alt+Shift+E，支持LayoutInflater生成<br/>
         Support ButterKnife version for 8.4.0, shortcut Ctrl+Alt+Shift+E, add the LayoutInflater generated<br/>
         1.0 支持Activity和Fragment，添加可选生成的字段，可编辑变量名，可选择是否LayoutInflater类型，<br/>

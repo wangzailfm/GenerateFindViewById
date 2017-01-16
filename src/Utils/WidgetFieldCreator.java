@@ -28,8 +28,9 @@ public class WidgetFieldCreator extends Simple {
     private String mLayoutInflaterText;
     private List<Element> mOnClickList = new ArrayList<>();
     private boolean mIsButterKnife;
+    //private boolean mViewHolder;
 
-    public WidgetFieldCreator(FindViewByIdDialog dialog, Editor editor, PsiFile psiFile, PsiClass psiClass, String command, List<Element> elements, String selectedText, boolean isLayoutInflater, String text, boolean isButterKnife) {
+    public WidgetFieldCreator(FindViewByIdDialog dialog, Editor editor, PsiFile psiFile, PsiClass psiClass, String command, List<Element> elements, String selectedText, boolean isLayoutInflater, String text, boolean isButterKnife, boolean viewHolder) {
         super(psiClass.getProject(), command);
         mDialog = dialog;
         mEditor = editor;
@@ -43,11 +44,7 @@ public class WidgetFieldCreator extends Simple {
         mIsLayoutInflater = isLayoutInflater;
         mLayoutInflaterText = text;
         mIsButterKnife = isButterKnife;
-        for (Element element : mElements) {
-            if (element.isEnable() && element.isClickEnable() && element.isClickable()) {
-                mOnClickList.add(element);
-            }
-        }
+        //mViewHolder = viewHolder;
     }
 
     @Override
@@ -298,6 +295,7 @@ public class WidgetFieldCreator extends Simple {
             mClass.add(mFactory.createMethodFromText(
                     Util.createFieldsByInitViewMethod(findPre, mIsLayoutInflater, mLayoutInflaterText, context, mSelectedText, mElements), mClass));
         }
+        getOnClickList();
         if (mOnClickList.size() != 0) {
             generateOnClickListenerCode();
         }
@@ -326,6 +324,17 @@ public class WidgetFieldCreator extends Simple {
             }
         }
         generatorClickCode();
+    }
+
+    /**
+     * 获取有OnClick属性的Element
+     */
+    private void getOnClickList() {
+        for (Element element : mElements) {
+            if (element.isEnable() && element.isClickEnable() && element.isClickable()) {
+                mOnClickList.add(element);
+            }
+        }
     }
 
     /**

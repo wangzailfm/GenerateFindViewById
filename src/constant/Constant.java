@@ -30,6 +30,7 @@ public final class Constant {
         public static final String tableFieldViewFiled = "ViewFiled";
         public static final String fieldLayoutInflater = "LayoutInflater.from(context).inflater";
         public static final String fieldCheckAll = "CheckAll";
+        public static final String viewHolderCheck = "Create ViewHolder";
         public static final String fieldButterKnifeBind = "ButterKnife.bind()";
         public static final String buttonConfirm = "确定";
         public static final String buttonCancel = "取消";

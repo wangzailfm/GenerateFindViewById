@@ -50,11 +50,16 @@ public class FindViewByIdDialog extends JFrame implements ActionListener {
     // LayoutInflater JPanel
     private JPanel mPanelInflater = new JPanel(new FlowLayout(FlowLayout.LEFT));
     // 是否选择LayoutInflater
-    private JCheckBox mLayoutInflater = new JCheckBox(Constant.dialogs.fieldLayoutInflater, false);
+    private JCheckBox mLayoutInflater = new JCheckBox(Constant.dialogs.viewHolderCheck, false);
     // 手动修改LayoutInflater字段名
     private JTextField mLayoutInflaterField;
     // 是否全选
     private JCheckBox mCheckAll = new JCheckBox(Constant.dialogs.fieldCheckAll);
+
+    // viewHolder
+    //private JPanel mPanelViewHolder = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    //private JCheckBox mViewHolderCheck = new JCheckBox(Constant.dialogs.viewHolderCheck, false);
+
     // 确定、取消JPanel
     private JPanel mPanelButtonRight = new JPanel();
     private JButton mButtonConfirm = new JButton(Constant.dialogs.buttonConfirm);
@@ -189,6 +194,8 @@ public class FindViewByIdDialog extends JFrame implements ActionListener {
         // 左边
         String viewField = "m" + Util.getFieldName(mSelectedText) + "View";
         mLayoutInflaterField = new JTextField(viewField, viewField.length());
+        // viewHolder
+        //mPanelViewHolder.add(mViewHolderCheck);
         // 右边
         mPanelButtonRight.add(mButtonConfirm);
         mPanelButtonRight.add(mButtonCancel);
@@ -198,6 +205,7 @@ public class FindViewByIdDialog extends JFrame implements ActionListener {
         mPanelInflater.add(mLayoutInflaterField);
         // 添加到JFrame
         getContentPane().add(mPanelInflater, 2);
+        //getContentPane().add(mPanelViewHolder, 3);
         getContentPane().add(mPanelButtonRight, 3);
     }
 
@@ -269,6 +277,13 @@ public class FindViewByIdDialog extends JFrame implements ActionListener {
         mConstraints.weightx = 1;
         mConstraints.weighty = 0;
         mLayout.setConstraints(mPanelInflater, mConstraints);
+//        mConstraints.fill = GridBagConstraints.HORIZONTAL;
+//        mConstraints.gridwidth = 0;
+//        mConstraints.gridx = 0;
+//        mConstraints.gridy = 3;
+//        mConstraints.weightx = 1;
+//        mConstraints.weighty = 0;
+//        mLayout.setConstraints(mPanelViewHolder, mConstraints);
         mConstraints.fill = GridBagConstraints.NONE;
         mConstraints.gridwidth = 0;
         mConstraints.gridx = 0;
@@ -320,7 +335,8 @@ public class FindViewByIdDialog extends JFrame implements ActionListener {
         switch (e.getActionCommand()) {
             case Constant.dialogs.buttonConfirm:
                 cancelDialog();
-                setCreator(mLayoutInflater.isSelected(), mLayoutInflaterField.getText());
+//                setCreator(mLayoutInflater.isSelected(), mLayoutInflaterField.getText(), mViewHolderCheck.isSelected());
+                setCreator(mLayoutInflater.isSelected(), mLayoutInflaterField.getText(), false);
                 break;
             case Constant.dialogs.buttonCancel:
                 cancelDialog();
@@ -340,13 +356,13 @@ public class FindViewByIdDialog extends JFrame implements ActionListener {
 
     /**
      * 生成
-     *
-     * @param isLayoutInflater 是否是LayoutInflater.from(this).inflate(R.layout.activity_main, null);
+     *  @param isLayoutInflater 是否是LayoutInflater.from(this).inflate(R.layout.activity_main, null);
      * @param text             自定义text
+     * @param viewHolder 是否创建ViewHolder
      */
-    private void setCreator(boolean isLayoutInflater, String text) {
+    private void setCreator(boolean isLayoutInflater, String text, boolean viewHolder) {
         new WidgetFieldCreator(this, mEditor, mPsiFile, mClass,
-                Constant.creatorCommandName, mElements, mSelectedText, isLayoutInflater, text, false)
+                Constant.creatorCommandName, mElements, mSelectedText, isLayoutInflater, text, false, viewHolder)
                 .execute();
     }
 }

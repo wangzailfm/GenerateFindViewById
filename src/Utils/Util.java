@@ -170,6 +170,9 @@ public class Util {
                     if (clickableAttr != null && !StringUtils.isEmpty(clickableAttr.getValue())) {
                         clickable = clickableAttr.getValue().equals("true");
                     }
+                    if (!StringUtils.isEmpty(name) && name.equals("Button")) {
+                        clickable = true;
+                    }
                     // 添加到list
                     try {
                         Element e = new Element(name, idValue, clickable, tag);
