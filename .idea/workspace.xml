@@ -3,23 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="b9e22246-1f88-4fd7-8fbf-6428f3319c81" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/GenerateFindViewById.jar" afterPath="$PROJECT_DIR$/GenerateFindViewById.jar" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/GenerateFindViewById/Utils/ButterKnifeCreator.class" afterPath="$PROJECT_DIR$/out/production/GenerateFindViewById/Utils/ButterKnifeCreator.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/GenerateFindViewById/Utils/Util$2.class" afterPath="$PROJECT_DIR$/out/production/GenerateFindViewById/Utils/Util$2.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/GenerateFindViewById/Utils/Util.class" afterPath="$PROJECT_DIR$/out/production/GenerateFindViewById/Utils/Util.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/GenerateFindViewById/Utils/WidgetFieldCreator.class" afterPath="$PROJECT_DIR$/out/production/GenerateFindViewById/Utils/WidgetFieldCreator.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/GenerateFindViewById/actions/ButterKnifeAction.class" afterPath="$PROJECT_DIR$/out/production/GenerateFindViewById/actions/ButterKnifeAction.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/GenerateFindViewById/actions/FindViewByIdAction.class" afterPath="$PROJECT_DIR$/out/production/GenerateFindViewById/actions/FindViewByIdAction.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/GenerateFindViewById/constant/Constant$dialogs.class" afterPath="$PROJECT_DIR$/out/production/GenerateFindViewById/constant/Constant$dialogs.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/GenerateFindViewById/constant/Constant$utils.class" afterPath="$PROJECT_DIR$/out/production/GenerateFindViewById/constant/Constant$utils.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/GenerateFindViewById/entitys/Element.class" afterPath="$PROJECT_DIR$/out/production/GenerateFindViewById/entitys/Element.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/GenerateFindViewById/views/ButterKnifeDialog.class" afterPath="$PROJECT_DIR$/out/production/GenerateFindViewById/views/ButterKnifeDialog.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/GenerateFindViewById/views/FindViewByIdDialog.class" afterPath="$PROJECT_DIR$/out/production/GenerateFindViewById/views/FindViewByIdDialog.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/GenerateFindViewById/META-INF/plugin.xml" afterPath="$PROJECT_DIR$/out/production/GenerateFindViewById/META-INF/plugin.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/META-INF/plugin.xml" afterPath="$PROJECT_DIR$/resources/META-INF/plugin.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Utils/WidgetFieldCreator.java" afterPath="$PROJECT_DIR$/src/Utils/WidgetFieldCreator.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/constant/Constant.java" afterPath="$PROJECT_DIR$/src/constant/Constant.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/views/FindViewByIdDialog.java" afterPath="$PROJECT_DIR$/src/views/FindViewByIdDialog.java" />
     </list>
     <ignored path="GenerateFindViewById.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -43,8 +27,8 @@
       <file leaf-file-name="WidgetFieldCreator.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/utils/WidgetFieldCreator.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="268">
-              <caret line="286" column="25" lean-forward="true" selection-start-line="286" selection-start-column="25" selection-end-line="286" selection-end-column="25" />
+            <state relative-caret-position="6028">
+              <caret line="286" column="25" lean-forward="false" selection-start-line="286" selection-start-column="25" selection-end-line="286" selection-end-column="25" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -55,8 +39,8 @@
       <file leaf-file-name="plugin.xml" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/resources/META-INF/plugin.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="264">
-              <caret line="12" column="31" lean-forward="false" selection-start-line="12" selection-start-column="14" selection-end-line="12" selection-end-column="31" />
+            <state relative-caret-position="484">
+              <caret line="22" column="0" lean-forward="true" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -65,8 +49,8 @@
       <file leaf-file-name="FindViewByIdDialog.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/views/FindViewByIdDialog.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="355">
-              <caret line="289" column="31" lean-forward="true" selection-start-line="289" selection-start-column="31" selection-end-line="289" selection-end-column="31" />
+            <state relative-caret-position="6028">
+              <caret line="289" column="31" lean-forward="false" selection-start-line="289" selection-start-column="31" selection-end-line="289" selection-end-column="31" />
               <folding />
             </state>
           </provider>
@@ -75,7 +59,7 @@
       <file leaf-file-name="Constant.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/constant/Constant.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="317">
+            <state relative-caret-position="704">
               <caret line="32" column="50" lean-forward="false" selection-start-line="32" selection-start-column="35" selection-end-line="32" selection-end-column="50" />
               <folding />
             </state>
@@ -85,7 +69,7 @@
       <file leaf-file-name="Util.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/utils/Util.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="184">
+            <state relative-caret-position="3454">
               <caret line="390" column="26" lean-forward="false" selection-start-line="390" selection-start-column="26" selection-end-line="390" selection-end-column="26" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -158,8 +142,8 @@
       <file leaf-file-name="Element.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/entitys/Element.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="531">
-              <caret line="53" column="9" lean-forward="true" selection-start-line="53" selection-start-column="9" selection-end-line="53" selection-end-column="9" />
+            <state relative-caret-position="1056">
+              <caret line="53" column="9" lean-forward="false" selection-start-line="53" selection-start-column="9" selection-end-line="53" selection-end-column="9" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -180,7 +164,7 @@
       <file leaf-file-name="FindViewByIdAction.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/actions/FindViewByIdAction.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="506">
+            <state relative-caret-position="792">
               <caret line="57" column="19" lean-forward="false" selection-start-line="57" selection-start-column="19" selection-end-line="57" selection-end-column="19" />
               <folding />
             </state>
@@ -505,6 +489,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
@@ -628,8 +614,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -935,7 +919,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25893825" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -944,16 +928,15 @@
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24377032" sideWeight="0.510661" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24377032" sideWeight="0.510661" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32942432" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24377032" sideWeight="0.48933902" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24377032" sideWeight="0.48933902" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31960997" sideWeight="0.4978678" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Properties" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3206934" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20948827" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.34669557" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21375267" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24946696" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -965,6 +948,7 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24946696" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.34669557" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -1257,17 +1241,17 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="814">
+          <caret line="37" column="54" lean-forward="false" selection-start-line="37" selection-start-column="54" selection-end-line="37" selection-end-column="54" />
+        </state>
+      </provider>
       <provider editor-type-id="split-provider[text-editor;MarkdownPreviewEditor]">
         <state split_layout="SPLIT">
           <first_editor relative-caret-position="0">
             <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           </first_editor>
           <second_editor />
-        </state>
-      </provider>
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="814">
-          <caret line="37" column="54" lean-forward="false" selection-start-line="37" selection-start-column="54" selection-end-line="37" selection-end-column="54" />
         </state>
       </provider>
     </entry>
@@ -1313,7 +1297,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/actions/FindViewByIdAction.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="506">
+        <state relative-caret-position="792">
           <caret line="57" column="19" lean-forward="false" selection-start-line="57" selection-start-column="19" selection-end-line="57" selection-end-column="19" />
           <folding />
         </state>
@@ -1321,7 +1305,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/constant/Constant.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="317">
+        <state relative-caret-position="704">
           <caret line="32" column="50" lean-forward="false" selection-start-line="32" selection-start-column="35" selection-end-line="32" selection-end-column="50" />
           <folding />
         </state>
@@ -1329,8 +1313,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/entitys/Element.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="531">
-          <caret line="53" column="9" lean-forward="true" selection-start-line="53" selection-start-column="9" selection-end-line="53" selection-end-column="9" />
+        <state relative-caret-position="1056">
+          <caret line="53" column="9" lean-forward="false" selection-start-line="53" selection-start-column="9" selection-end-line="53" selection-end-column="9" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1339,8 +1323,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/views/FindViewByIdDialog.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="355">
-          <caret line="289" column="31" lean-forward="true" selection-start-line="289" selection-start-column="31" selection-end-line="289" selection-end-column="31" />
+        <state relative-caret-position="6028">
+          <caret line="289" column="31" lean-forward="false" selection-start-line="289" selection-start-column="31" selection-end-line="289" selection-end-column="31" />
           <folding />
         </state>
       </provider>
@@ -1355,7 +1339,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/utils/Util.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="184">
+        <state relative-caret-position="3454">
           <caret line="390" column="26" lean-forward="false" selection-start-line="390" selection-start-column="26" selection-end-line="390" selection-end-column="26" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -1426,8 +1410,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/utils/WidgetFieldCreator.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="268">
-          <caret line="286" column="25" lean-forward="true" selection-start-line="286" selection-start-column="25" selection-end-line="286" selection-end-column="25" />
+        <state relative-caret-position="6028">
+          <caret line="286" column="25" lean-forward="false" selection-start-line="286" selection-start-column="25" selection-end-line="286" selection-end-column="25" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1436,8 +1420,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/resources/META-INF/plugin.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="264">
-          <caret line="12" column="31" lean-forward="false" selection-start-line="12" selection-start-column="14" selection-end-line="12" selection-end-column="31" />
+        <state relative-caret-position="484">
+          <caret line="22" column="0" lean-forward="true" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
           <folding />
         </state>
       </provider>
