@@ -50,7 +50,7 @@ public class FindViewByIdDialog extends JFrame implements ActionListener {
     // LayoutInflater JPanel
     private JPanel mPanelInflater = new JPanel(new FlowLayout(FlowLayout.LEFT));
     // 是否选择LayoutInflater
-    private JCheckBox mLayoutInflater = new JCheckBox(Constant.dialogs.viewHolderCheck, false);
+    private JCheckBox mLayoutInflater = new JCheckBox(Constant.dialogs.fieldLayoutInflater, false);
     // 手动修改LayoutInflater字段名
     private JTextField mLayoutInflaterField;
     // 是否全选
