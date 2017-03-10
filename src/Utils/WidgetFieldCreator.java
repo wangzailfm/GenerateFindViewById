@@ -16,41 +16,125 @@ import java.util.List;
 
 public class WidgetFieldCreator extends Simple {
 
-    private FindViewByIdDialog mDialog;
-    private Editor mEditor;
-    private PsiFile mFile;
-    private Project mProject;
-    private PsiClass mClass;
-    private List<Element> mElements;
-    private PsiElementFactory mFactory;
-    private String mSelectedText;
-    private boolean mIsLayoutInflater;
-    private String mLayoutInflaterText;
     private List<Element> mOnClickList = new ArrayList<>();
-    private boolean mIsButterKnife;
-    //private boolean mViewHolder;
+    private final FindViewByIdDialog mDialog;
+    private final Editor mEditor;
+    private final PsiFile mFile;
+    private final Project mProject;
+    private final PsiClass mClass;
+    private final List<Element> mElements;
+    private final PsiElementFactory mFactory;
+    private final String mSelectedText;
+    private final boolean mIsLayoutInflater;
+    private final String mLayoutInflaterText;
+    private final boolean mViewHolder;
 
-    public WidgetFieldCreator(FindViewByIdDialog dialog, Editor editor, PsiFile psiFile, PsiClass psiClass, String command, List<Element> elements, String selectedText, boolean isLayoutInflater, String text, boolean isButterKnife, boolean viewHolder) {
-        super(psiClass.getProject(), command);
-        mDialog = dialog;
-        mEditor = editor;
-        mFile = psiFile;
-        mProject = psiClass.getProject();
-        mClass = psiClass;
-        mElements = elements;
-        // 获取Factory
-        mFactory = JavaPsiFacade.getElementFactory(mProject);
-        mSelectedText = selectedText;
-        mIsLayoutInflater = isLayoutInflater;
-        mLayoutInflaterText = text;
-        mIsButterKnife = isButterKnife;
-        //mViewHolder = viewHolder;
+    /**
+     * Builder模式
+     */
+    public static class Builder {
+
+        private FindViewByIdDialog mDialog;
+        private Editor mEditor;
+        private PsiFile mFile;
+        private Project mProject;
+        private PsiClass mClass;
+        private final String mCommand;
+        private List<Element> mElements;
+        private PsiElementFactory mFactory;
+        private String mSelectedText;
+        private boolean mIsLayoutInflater;
+        private String mLayoutInflaterText;
+        private boolean mViewHolder;
+
+
+        public Builder(String mCommand) {
+            this.mCommand = mCommand;
+        }
+
+        public Builder setDialog(FindViewByIdDialog mDialog) {
+            this.mDialog = mDialog;
+            return this;
+        }
+
+        public Builder setEditor(Editor mEditor) {
+            this.mEditor = mEditor;
+            return this;
+        }
+
+        public Builder setFile(PsiFile mFile) {
+            this.mFile = mFile;
+            return this;
+        }
+
+        public Builder setProject(Project mProject) {
+            this.mProject = mProject;
+            return this;
+        }
+
+        public Builder setClass(PsiClass mClass) {
+            this.mClass = mClass;
+            return this;
+        }
+
+        public Builder setElements(List<Element> mElements) {
+            this.mElements = mElements;
+            return this;
+        }
+
+        public Builder setFactory(PsiElementFactory mFactory) {
+            this.mFactory = mFactory;
+            return this;
+        }
+
+        public Builder setSelectedText(String mSelectedText) {
+            this.mSelectedText = mSelectedText;
+            return this;
+        }
+
+        public Builder setIsLayoutInflater(boolean mIsLayoutInflater) {
+            this.mIsLayoutInflater = mIsLayoutInflater;
+            return this;
+        }
+
+        public Builder setLayoutInflaterText(String mLayoutInflaterText) {
+            this.mLayoutInflaterText = mLayoutInflaterText;
+            return this;
+        }
+
+        public Builder setViewHolder(boolean mViewHolder) {
+            this.mViewHolder = mViewHolder;
+            return this;
+        }
+
+        public WidgetFieldCreator build() {
+            return new WidgetFieldCreator(this);
+        }
+    }
+
+    private WidgetFieldCreator(Builder builder) {
+        super(builder.mProject, builder.mCommand);
+        mDialog = builder.mDialog;
+        mEditor = builder.mEditor;
+        mFile = builder.mFile;
+        mClass = builder.mClass;
+        mProject = builder.mProject;
+        mElements = builder.mElements;
+        mFactory = builder.mFactory;
+        mSelectedText = builder.mSelectedText;
+        mIsLayoutInflater = builder.mIsLayoutInflater;
+        mLayoutInflaterText = builder.mLayoutInflaterText;
+        mViewHolder = builder.mViewHolder;
     }
 
     @Override
     protected void run() throws Throwable {
         try {
-            generateFindViewById();
+            if (mViewHolder) {
+                generateViewHolder();
+            } else {
+                generateFindViewById();
+            }
         } catch (Exception e) {
             // 异常打印
             mDialog.cancelDialog();
@@ -63,6 +147,23 @@ public class WidgetFieldCreator extends Simple {
         styleManager.shortenClassReferences(mClass);
         new ReformatCodeProcessor(mProject, mClass.getContainingFile(), null, false).runWithoutProgress();
         Util.showPopupBalloon(mEditor, Constant.actions.selectedSuccess, 5);
+    }
+
+
+    /**
+     * 创建ViewHolder
+     */
+    private void generateViewHolder() {
+        String viewHolderName = "ViewHolder";
+        String viewHolderRootView = "view";
+        // 创建ViewHolder类
+        PsiClass viewHolder = mFactory.createClassFromText(Util.createFindViewByIdViewHolder(viewHolderName, viewHolderRootView, mElements), mClass);
+        // 设置名字
+        viewHolder.setName(viewHolderName);
+        // 添加ViewHolder类到类中
+        mClass.add(viewHolder);
+        // 添加static
+        mClass.addBefore(mFactory.createKeyword("static"), mClass.findInnerClassByName(viewHolderName, true));
     }
 
     /**
@@ -124,7 +225,7 @@ public class WidgetFieldCreator extends Simple {
             // 判断是否有onCreate方法
             if (mClass.findMethodsByName(Constant.psiMethodByOnCreate, false).length == 0) {
                 // 添加
-                mClass.add(mFactory.createMethodFromText(Util.createOnCreateMethod(mSelectedText, mIsButterKnife), mClass));
+                mClass.add(mFactory.createMethodFromText(Util.createOnCreateMethod(mSelectedText, false), mClass));
             } else {
                 generateFields();
                 // 获取setContentView
@@ -178,7 +279,7 @@ public class WidgetFieldCreator extends Simple {
             // 判断是否有onCreateView方法
             if (mClass.findMethodsByName(Constant.psiMethodByOnCreateView, false).length == 0) {
                 // 添加
-                mClass.add(mFactory.createMethodFromText(Util.createOnCreateViewMethod(mSelectedText, mIsButterKnife), mClass));
+                mClass.add(mFactory.createMethodFromText(Util.createOnCreateViewMethod(mSelectedText, false), mClass));
 
             } else {
                 generateFields();

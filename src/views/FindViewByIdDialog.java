@@ -57,8 +57,8 @@ public class FindViewByIdDialog extends JFrame implements ActionListener {
     private JCheckBox mCheckAll = new JCheckBox(Constant.dialogs.fieldCheckAll);
 
     // viewHolder
-    //private JPanel mPanelViewHolder = new JPanel(new FlowLayout(FlowLayout.LEFT));
-    //private JCheckBox mViewHolderCheck = new JCheckBox(Constant.dialogs.viewHolderCheck, false);
+    private JPanel mPanelViewHolder = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    private JCheckBox mViewHolderCheck = new JCheckBox(Constant.dialogs.viewHolderCheck, false);
 
     // 确定、取消JPanel
     private JPanel mPanelButtonRight = new JPanel();
@@ -195,7 +195,7 @@ public class FindViewByIdDialog extends JFrame implements ActionListener {
         String viewField = "m" + Util.getFieldName(mSelectedText) + "View";
         mLayoutInflaterField = new JTextField(viewField, viewField.length());
         // viewHolder
-        //mPanelViewHolder.add(mViewHolderCheck);
+        mPanelViewHolder.add(mViewHolderCheck);
         // 右边
         mPanelButtonRight.add(mButtonConfirm);
         mPanelButtonRight.add(mButtonCancel);
@@ -205,8 +205,8 @@ public class FindViewByIdDialog extends JFrame implements ActionListener {
         mPanelInflater.add(mLayoutInflaterField);
         // 添加到JFrame
         getContentPane().add(mPanelInflater, 2);
-        //getContentPane().add(mPanelViewHolder, 3);
-        getContentPane().add(mPanelButtonRight, 3);
+        getContentPane().add(mPanelViewHolder, 3);
+        getContentPane().add(mPanelButtonRight, 4);
     }
 
     /**
@@ -277,17 +277,17 @@ public class FindViewByIdDialog extends JFrame implements ActionListener {
         mConstraints.weightx = 1;
         mConstraints.weighty = 0;
         mLayout.setConstraints(mPanelInflater, mConstraints);
-//        mConstraints.fill = GridBagConstraints.HORIZONTAL;
-//        mConstraints.gridwidth = 0;
-//        mConstraints.gridx = 0;
-//        mConstraints.gridy = 3;
-//        mConstraints.weightx = 1;
-//        mConstraints.weighty = 0;
-//        mLayout.setConstraints(mPanelViewHolder, mConstraints);
-        mConstraints.fill = GridBagConstraints.NONE;
+        mConstraints.fill = GridBagConstraints.HORIZONTAL;
         mConstraints.gridwidth = 0;
         mConstraints.gridx = 0;
         mConstraints.gridy = 3;
+        mConstraints.weightx = 1;
+        mConstraints.weighty = 0;
+        mLayout.setConstraints(mPanelViewHolder, mConstraints);
+        mConstraints.fill = GridBagConstraints.NONE;
+        mConstraints.gridwidth = 0;
+        mConstraints.gridx = 0;
+        mConstraints.gridy = 4;
         mConstraints.weightx = 0;
         mConstraints.weighty = 0;
         mConstraints.anchor = GridBagConstraints.EAST;
@@ -335,8 +335,7 @@ public class FindViewByIdDialog extends JFrame implements ActionListener {
         switch (e.getActionCommand()) {
             case Constant.dialogs.buttonConfirm:
                 cancelDialog();
-//                setCreator(mLayoutInflater.isSelected(), mLayoutInflaterField.getText(), mViewHolderCheck.isSelected());
-                setCreator(mLayoutInflater.isSelected(), mLayoutInflaterField.getText(), false);
+                setCreator(mLayoutInflater.isSelected(), mLayoutInflaterField.getText(), mViewHolderCheck.isSelected());
                 break;
             case Constant.dialogs.buttonCancel:
                 cancelDialog();
@@ -361,8 +360,20 @@ public class FindViewByIdDialog extends JFrame implements ActionListener {
      * @param viewHolder 是否创建ViewHolder
      */
     private void setCreator(boolean isLayoutInflater, String text, boolean viewHolder) {
-        new WidgetFieldCreator(this, mEditor, mPsiFile, mClass,
-                Constant.creatorCommandName, mElements, mSelectedText, isLayoutInflater, text, false, viewHolder)
+        // 使用Builder模式
+        new WidgetFieldCreator.Builder(Constant.creatorCommandName)
+                .setDialog(this)
+                .setEditor(mEditor)
+                .setFile(mPsiFile)
+                .setClass(mClass)
+                .setProject(mClass.getProject())
+                .setElements(mElements)
+                .setFactory(JavaPsiFacade.getElementFactory(mClass.getProject()))
+                .setSelectedText(mSelectedText)
+                .setIsLayoutInflater(isLayoutInflater)
+                .setLayoutInflaterText(text)
+                .setViewHolder(viewHolder)
+                .build()
                 .execute();
     }
 }

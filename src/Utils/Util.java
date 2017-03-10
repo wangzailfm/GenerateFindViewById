@@ -17,6 +17,7 @@ import com.intellij.ui.JBColor;
 import constant.Constant;
 import entitys.Element;
 import org.apache.commons.lang.StringUtils;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -35,7 +36,7 @@ public class Util {
     /**
      * 显示dialog
      *
-     * @param editor
+     * @param editor editor
      * @param result 内容
      * @param time   显示时间，单位秒
      */
@@ -52,15 +53,15 @@ public class Util {
     /**
      * 驼峰
      *
-     * @param fieldName
-     * @return
+     * @param fieldName fieldName
+     * @return String
      */
     public static String getFieldName(String fieldName) {
         if (!StringUtils.isEmpty(fieldName)) {
             String[] names = fieldName.split("_");
             StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < names.length; i++) {
-                sb.append(firstToUpperCase(names[i]));
+            for (String name : names) {
+                sb.append(firstToUpperCase(name));
             }
             fieldName = sb.toString();
         }
@@ -70,8 +71,8 @@ public class Util {
     /**
      * 第一个字母大写
      *
-     * @param key
-     * @return
+     * @param key key
+     * @return String
      */
     public static String firstToUpperCase(String key) {
         return key.substring(0, 1).toUpperCase(Locale.CHINA) + key.substring(1);
@@ -80,11 +81,11 @@ public class Util {
     /**
      * 解析xml获取string的值
      *
-     * @param psiFile
-     * @param text
-     * @return
+     * @param psiFile psiFile
+     * @param text text
+     * @return String
      */
-    public static String getTextFromStringsXml(PsiFile psiFile, String text) {
+    private static String getTextFromStringsXml(PsiFile psiFile, String text) {
         psiFile.accept(new XmlRecursiveElementVisitor() {
             @Override
             public void visitElement(PsiElement element) {
@@ -115,9 +116,9 @@ public class Util {
     /**
      * 获取所有id
      *
-     * @param file
-     * @param elements
-     * @return
+     * @param file file
+     * @param elements elements
+     * @return List<Element>
      */
     public static java.util.List<Element> getIDsFromLayout(final PsiFile file, final java.util.List<Element> elements) {
         // To iterate over the elements in a file
@@ -140,7 +141,10 @@ public class Util {
                         Project project = file.getProject();
                         // 布局文件
                         XmlFile include = null;
-                        PsiFile[] psiFiles = FilenameIndex.getFilesByName(project, getLayoutName(layout.getValue()) + Constant.selectedTextSUFFIX, GlobalSearchScope.allScope(project));
+                        PsiFile[] psiFiles = new PsiFile[0];
+                        if (layout != null) {
+                            psiFiles = FilenameIndex.getFilesByName(project, getLayoutName(layout.getValue()) + Constant.selectedTextSUFFIX, GlobalSearchScope.allScope(project));
+                        }
                         if (psiFiles.length > 0) {
                             include = (XmlFile) psiFiles[0];
                         }
@@ -177,7 +181,7 @@ public class Util {
                     try {
                         Element e = new Element(name, idValue, clickable, tag);
                         elements.add(e);
-                    } catch (IllegalArgumentException e) {
+                    } catch (IllegalArgumentException ignored) {
 
                     }
                 }
@@ -191,10 +195,10 @@ public class Util {
     /**
      * layout.getValue()返回的值为@layout/layout_view
      *
-     * @param layout
-     * @return
+     * @param layout layout
+     * @return String
      */
-    public static String getLayoutName(String layout) {
+    private static String getLayoutName(String layout) {
         if (layout == null || !layout.startsWith("@") || !layout.contains("/")) {
             return null;
         }
@@ -211,9 +215,9 @@ public class Util {
     /**
      * 根据当前文件获取对应的class文件
      *
-     * @param editor
-     * @param file
-     * @return
+     * @param editor editor
+     * @param file file
+     * @return PsiClass
      */
     public static PsiClass getTargetClass(Editor editor, PsiFile file) {
         int offset = editor.getCaretModel().getOffset();
@@ -229,9 +233,9 @@ public class Util {
     /**
      * 判断mClass是不是继承activityClass或者activityCompatClass
      *
-     * @param mProject
-     * @param mClass
-     * @return
+     * @param mProject mProject
+     * @param mClass mClass
+     * @return boolean
      */
     public static boolean isExtendsActivityOrActivityCompat(Project mProject, PsiClass mClass) {
         // 根据类名查找类
@@ -244,9 +248,9 @@ public class Util {
     /**
      * 判断mClass是不是继承fragmentClass或者fragmentV4Class
      *
-     * @param mProject
-     * @param mClass
-     * @return
+     * @param mProject mProject
+     * @param mClass mClass
+     * @return boolean
      */
     public static boolean isExtendsFragmentOrFragmentV4(Project mProject, PsiClass mClass) {
         // 根据类名查找类
@@ -258,29 +262,26 @@ public class Util {
 
     /**
      * 判断是否存在ButterKnife.bind(this)/ButterKnife.bind(this, view)
-     * @param mClass
-     * @return
+     * @param mClass mClass
+     * @return boolean
      */
     public static boolean isButterKnifeBindExist(PsiClass mClass){
         PsiMethod onCreateMethod = getPsiMethodByName(mClass, Constant.psiMethodByOnCreate);
         PsiMethod onCreateViewMethod = getPsiMethodByName(mClass, Constant.psiMethodByOnCreateView);
-        if (onCreateMethod != null && onCreateMethod.getBody() != null
+        return !(onCreateMethod != null && onCreateMethod.getBody() != null
                 && onCreateMethod.getBody().getText().contains(Constant.utils.fieldButterKnifeBind)
                 || (onCreateViewMethod != null && onCreateViewMethod.getBody() != null
-                        && onCreateViewMethod.getBody().getText().contains(Constant.utils.fieldButterKnifeBind))) {
-            return false;
-        }
-        return true;
+                && onCreateViewMethod.getBody().getText().contains(Constant.utils.fieldButterKnifeBind)));
     }
 
     /**
      * 创建onCreate方法
      *
-     * @param mSelectedText
-     * @param mIsButterKnife
-     * @return
+     * @param mSelectedText mSelectedText
+     * @param mIsButterKnife mIsButterKnife
+     * @return String
      */
-    public static String createOnCreateMethod(String mSelectedText, boolean mIsButterKnife) {
+    static String createOnCreateMethod(String mSelectedText, boolean mIsButterKnife) {
         StringBuilder method = new StringBuilder();
         String viewStr = "\tsetContentView(R.layout." + mSelectedText + ");\n";
         method.append("@Override protected void onCreate(android.os.Bundle savedInstanceState) {\n");
@@ -297,7 +298,6 @@ public class Util {
             method.append(viewStr);
             method.append("\t\tButterKnife.bind(this);\n");
         }
-        ;
         method.append("}");
         return method.toString();
     }
@@ -305,28 +305,24 @@ public class Util {
     /**
      * 创建onCreate方法(Fragment)
      *
-     * @param mSelectedText
-     * @return
+     * @param mSelectedText mSelectedText
+     * @return String
      */
-    public static String createFragmentOnCreateMethod(String mSelectedText) {
-        StringBuilder method = new StringBuilder();
-        method.append("@Override public void onCreate(@Nullable android.os.Bundle savedInstanceState) {\n");
-        method.append("super.onCreate(savedInstanceState);\n");
-        method.append("\tview = View.inflate(getActivity(), R.layout.");
-        method.append(mSelectedText);
-        method.append(", null);\n");
-        method.append("}");
-        return method.toString();
+    static String createFragmentOnCreateMethod(String mSelectedText) {
+        return "@Override public void onCreate(@Nullable android.os.Bundle savedInstanceState) {\n" +
+                "super.onCreate(savedInstanceState);\n" +
+                "\tview = View.inflate(getActivity(), R.layout." + mSelectedText + ", null);\n" +
+                "}";
     }
 
     /**
      * 创建onCreateView方法
      *
-     * @param mSelectedText
-     * @param mIsButterKnife
-     * @return
+     * @param mSelectedText mSelectedText
+     * @param mIsButterKnife mIsButterKnife
+     * @return String
      */
-    public static String createOnCreateViewMethod(String mSelectedText, boolean mIsButterKnife) {
+    static String createOnCreateViewMethod(String mSelectedText, boolean mIsButterKnife) {
         StringBuilder method = new StringBuilder();
         method.append("@Nullable @Override public View onCreateView(android.view.LayoutInflater inflater, @Nullable android.view.ViewGroup container, @Nullable android.os.Bundle savedInstanceState) {\n");
         method.append("\t// TODO:OnCreateView Method has been created, run ");
@@ -347,48 +343,42 @@ public class Util {
     /**
      * 创建initView方法，Fragment
      *
-     * @return
+     * @return String
      */
-    public static String createFragmentInitViewMethod() {
-        StringBuilder method = new StringBuilder();
-        method.append("public void initView(View view) {\n");
-        method.append("}");
-        return method.toString();
+    static String createFragmentInitViewMethod() {
+        return "public void initView(View view) {\n" +
+                "}";
     }
 
     /**
      * 创建initView方法
      *
-     * @return
+     * @return String
      */
-    public static String createInitViewMethod() {
-        StringBuilder method = new StringBuilder();
-        method.append("public void initView() {\n");
-        method.append("}");
-        return method.toString();
+    static String createInitViewMethod() {
+        return "public void initView() {\n" +
+                "}";
     }
 
     /**
      * 创建OnDestroyView方法，里面包含unbinder.unbind()
      *
-     * @return
+     * @return String
      */
-    public static String createOnDestroyViewMethod() {
-        StringBuilder method = new StringBuilder();
-        method.append("@Override public void onDestroyView() {\n");
-        method.append("\tsuper.onDestroyView();");
-        method.append("\tunbinder.unbind();");
-        method.append("}");
-        return method.toString();
+    static String createOnDestroyViewMethod() {
+        return "@Override public void onDestroyView() {\n" +
+                "\tsuper.onDestroyView();" +
+                "\tunbinder.unbind();" +
+                "}";
     }
 
     /**
      * 判断是否实现了OnClickListener接口
      *
-     * @param referenceElements
-     * @return
+     * @param referenceElements referenceElements
+     * @return boolean
      */
-    public static boolean isImplementsOnClickListener(PsiJavaCodeReferenceElement[] referenceElements) {
+    static boolean isImplementsOnClickListener(PsiJavaCodeReferenceElement[] referenceElements) {
         for (PsiJavaCodeReferenceElement referenceElement : referenceElements) {
             if (referenceElement.getText().contains("OnClickListener")) {
                 return true;
@@ -400,8 +390,8 @@ public class Util {
     /**
      * 获取initView方法里面的每条数据
      *
-     * @param mClass
-     * @return
+     * @param mClass mClass
+     * @return PsiStatement[]
      */
     public static PsiStatement[] getInitViewBodyStatements(PsiClass mClass) {
         // 获取initView方法
@@ -417,8 +407,8 @@ public class Util {
     /**
      * 获取onClick方法里面的每条数据
      *
-     * @param mClass
-     * @return
+     * @param mClass mClass
+     * @return PsiElement[]
      */
     public static PsiElement[] getOnClickStatement(PsiClass mClass) {
         // 获取onClick方法
@@ -434,8 +424,8 @@ public class Util {
     /**
      * 获取包含@OnClick注解的方法
      *
-     * @param mClass
-     * @return
+     * @param mClass mClass
+     * @return PsiMethod
      */
     public static PsiMethod getPsiMethodByButterKnifeOnClick(PsiClass mClass) {
         for (PsiMethod psiMethod : mClass.getMethods()) {
@@ -456,11 +446,11 @@ public class Util {
     /**
      * 根据方法名获取方法
      *
-     * @param mClass
-     * @param methodName
-     * @return
+     * @param mClass mClass
+     * @param methodName methodName
+     * @return PsiMethod
      */
-    public static PsiMethod getPsiMethodByName(PsiClass mClass, String methodName) {
+    static PsiMethod getPsiMethodByName(PsiClass mClass, String methodName) {
         for (PsiMethod psiMethod : mClass.getMethods()) {
             if (psiMethod.getName().equals(methodName)) {
                 return psiMethod;
@@ -472,10 +462,10 @@ public class Util {
     /**
      * 获取View类型的变量名
      *
-     * @param mClass
-     * @return
+     * @param mClass mClass
+     * @return String
      */
-    public static String getPsiMethodParamsViewField(PsiClass mClass) {
+    static String getPsiMethodParamsViewField(PsiClass mClass) {
         PsiMethod butterKnifeOnClickMethod = getPsiMethodByButterKnifeOnClick(mClass);
         if (butterKnifeOnClickMethod != null) {
             // 获取方法的指定参数类型的变量名
@@ -493,7 +483,7 @@ public class Util {
     /**
      * 获取包含@OnClick注解里面的值
      *
-     * @return
+     * @return List<String>
      */
     public static List<String> getPsiMethodByButterKnifeOnClickValue(PsiClass mClass) {
         List<String> onClickValue = new ArrayList<>();
@@ -525,11 +515,11 @@ public class Util {
     /**
      * 添加注解到方法
      *
-     * @param mClass
-     * @param mFactory
-     * @param onClickValue
+     * @param mClass mClass
+     * @param mFactory mFactory
+     * @param onClickValue onClickValue
      */
-    public static void createOnClickAnnotation(PsiClass mClass, PsiElementFactory mFactory, List<String> onClickValue) {
+    static void createOnClickAnnotation(PsiClass mClass, PsiElementFactory mFactory, List<String> onClickValue) {
         PsiMethod butterKnifeOnClickMethod = Util.getPsiMethodByButterKnifeOnClick(mClass);
         if (butterKnifeOnClickMethod != null) {// 获取方法的注解
             PsiModifierList modifierList = butterKnifeOnClickMethod.getModifierList();
@@ -564,9 +554,9 @@ public class Util {
      * 获取OnClickList里面的id集合
      *
      * @param mOnClickList clickable的Element集合
-     * @return
+     * @return List<String>
      */
-    public static List<String> getOnClickListById(List<Element> mOnClickList) {
+    static List<String> getOnClickListById(List<Element> mOnClickList) {
         return mOnClickList.stream().map(Element::getFullID).collect(Collectors.toList());
     }
 
@@ -575,9 +565,9 @@ public class Util {
      *
      * @param annotationList OnClick注解里面的id集合
      * @param onClickIdList  clickable的Element集合
-     * @return
+     * @return List<String>
      */
-    public static List<String> createOnClickValue(List<String> annotationList, List<String> onClickIdList) {
+    static List<String> createOnClickValue(List<String> annotationList, List<String> onClickIdList) {
         for (String value : onClickIdList) {
             if (!annotationList.contains(value)) {
                 annotationList.add(value);
@@ -590,9 +580,9 @@ public class Util {
      * FindViewById，获取xml里面的text
      * @param element Element
      * @param mProject Project
-     * @return
+     * @return String
      */
-    public static String createFieldText(Element element, Project mProject){
+    static String createFieldText(Element element, Project mProject){
         String text = element.getXml().getAttributeValue("android:text");
         if (StringUtils.isEmpty(text)) {
             // 如果是text为空，则获取hint里面的内容
@@ -621,9 +611,9 @@ public class Util {
      * @param element Element
      * @param mIsLayoutInflater 是否选中LayoutInflater
      * @param mLayoutInflaterText 选中的布局的变量名
-     * @return
+     * @return String
      */
-    public static String createFieldByElement(String text, Element element, boolean mIsLayoutInflater, String mLayoutInflaterText){
+    static String createFieldByElement(String text, Element element, boolean mIsLayoutInflater, String mLayoutInflaterText){
         StringBuilder fromText = new StringBuilder();
         if (!StringUtils.isEmpty(text)) {
             fromText.append("/** ");
@@ -647,9 +637,9 @@ public class Util {
      * @param context context
      * @param mSelectedText 选中的布局
      * @param mElements Element的List
-     * @return
+     * @return String
      */
-    public static String createFieldsByInitViewMethod(String findPre, boolean mIsLayoutInflater, String mLayoutInflaterText, String context, String mSelectedText, List<Element> mElements){
+    static String createFieldsByInitViewMethod(String findPre, boolean mIsLayoutInflater, String mLayoutInflaterText, String context, String mSelectedText, List<Element> mElements){
         StringBuilder initView = new StringBuilder();
         if (StringUtils.isEmpty(findPre)) {
             initView.append("private void initView() {\n");
@@ -697,15 +687,15 @@ public class Util {
     /**
      *
      * ButterKnife，创建findById代码到init方法里面
-     * @param mIsLayoutInflater
-     * @param mLayoutInflaterText
-     * @param context
-     * @param mSelectedText
-     * @param mElements
-     * @param viewMethodName
-     * @return
+     * @param mIsLayoutInflater mIsLayoutInflater
+     * @param mLayoutInflaterText mLayoutInflaterText
+     * @param context context
+     * @param mSelectedText mSelectedText
+     * @param mElements mElements
+     * @param viewMethodName viewMethodName
+     * @return String
      */
-    public static String createButterKnifeViewMethod(boolean mIsLayoutInflater, String mLayoutInflaterText, String context, String mSelectedText, List<Element> mElements, String viewMethodName){
+    static String createButterKnifeViewMethod(boolean mIsLayoutInflater, String mLayoutInflaterText, String context, String mSelectedText, List<Element> mElements, String viewMethodName){
         StringBuilder initView = new StringBuilder();
         initView.append("// TODO:Copy method name to use\n");
         initView.append("private void ");
@@ -741,9 +731,9 @@ public class Util {
     /**
      * FindViewById，创建OnClick方法和switch
      * @param mOnClickList 可onclick的Element的集合
-     * @return
+     * @return String
      */
-    public static String createFindViewByIdOnClickMethodAndSwitch(List<Element> mOnClickList){
+    static String createFindViewByIdOnClickMethodAndSwitch(List<Element> mOnClickList){
         StringBuilder onClick = new StringBuilder();
         onClick.append("@Override public void onClick(View v) {\n");
         onClick.append("switch (v.getId()) {\n");
@@ -764,9 +754,9 @@ public class Util {
      * ButterKnife，在OnClick方法里面创建switch
      * @param psiMethodParamsViewField View类型的变量名
      * @param onClickValues 注解里面跟OnClickList的id集合
-     * @return
+     * @return String
      */
-    public static String createSwitchByOnClickMethod(String psiMethodParamsViewField, List<String> onClickValues){
+    static String createSwitchByOnClickMethod(String psiMethodParamsViewField, List<String> onClickValues){
         StringBuilder psiSwitch = new StringBuilder();
         psiSwitch.append("switch (");
         psiSwitch.append(psiMethodParamsViewField);
@@ -784,9 +774,9 @@ public class Util {
     /**
      * ButterKnife，创建OnClick方法和switch
      * @param mOnClickList 可onclick的Element的集合
-     * @return
+     * @return String
      */
-    public static String createButterKnifeOnClickMethodAndSwitch(List<Element> mOnClickList){
+    static String createButterKnifeOnClickMethodAndSwitch(List<Element> mOnClickList){
         StringBuilder onClick = new StringBuilder();
         onClick.append("@butterknife.OnClick(");
         if (mOnClickList.size() == 1) {
@@ -814,6 +804,89 @@ public class Util {
         onClick.append("}\n");
         onClick.append("}\n");
         return onClick.toString();
+    }
+
+    /**
+     * FindViewById，创建ViewHolder
+     * @param viewHolderName viewHolderName
+     * @param viewHolderRootView viewHolderRootView
+     * @param mElements mElements
+     * @return String
+     */
+    @NotNull
+    static String createFindViewByIdViewHolder(String viewHolderName, String viewHolderRootView, List<Element> mElements) {
+        // ViewHolder
+        StringBuilder viewHolderText = new StringBuilder();
+        // ViewHolder的Constructor
+        StringBuilder viewHolderConstructorText = new StringBuilder();
+        // rootView
+        viewHolderText.append("android.view.View ");
+        viewHolderText.append(viewHolderRootView);
+        viewHolderText.append(";\n");
+        // Constructor
+        viewHolderConstructorText.append(viewHolderName);
+        viewHolderConstructorText.append("(android.view.View ");
+        viewHolderConstructorText.append(viewHolderRootView);
+        viewHolderConstructorText.append(") {\n");
+        viewHolderConstructorText.append("this.");
+        viewHolderConstructorText.append(viewHolderRootView);
+        viewHolderConstructorText.append(" = ");
+        viewHolderConstructorText.append(viewHolderRootView);
+        viewHolderConstructorText.append(";\n");
+        // 添加field和findViewById
+        for (Element element : mElements) {
+            // 添加Field
+            viewHolderText.append(element.getName());
+            viewHolderText.append(" ");
+            viewHolderText.append(element.getFieldName());
+            viewHolderText.append(";\n");
+            // 添加findViewById
+            viewHolderConstructorText.append("this.");
+            viewHolderConstructorText.append(element.getFieldName());
+            viewHolderConstructorText.append(" = (");
+            viewHolderConstructorText.append(element.getName());
+            viewHolderConstructorText.append(") ");
+            viewHolderConstructorText.append(viewHolderRootView);
+            viewHolderConstructorText.append(".findViewById(");
+            viewHolderConstructorText.append(element.getFullID());
+            viewHolderConstructorText.append(");\n");
+        }
+        viewHolderConstructorText.append("}");
+        // 添加Constructor到ViewHolder
+        viewHolderText.append(viewHolderConstructorText.toString());
+        return viewHolderText.toString();
+    }
+
+
+    @NotNull
+    static String createButterKnifeViewHolder(String viewHolderName, String viewHolderRootView, List<Element> mElements) {
+        // ViewHolder
+        StringBuilder viewHolderText = new StringBuilder();
+        // ViewHolder的Constructor
+        StringBuilder viewHolderConstructorText = new StringBuilder();
+        // 添加field和findViewById
+        for (Element element : mElements) {
+            // 添加Field
+            viewHolderText.append("@BindView(");
+            viewHolderText.append(element.getFullID());
+            viewHolderText.append(")\n");
+            viewHolderText.append(element.getName());
+            viewHolderText.append(" ");
+            viewHolderText.append(element.getFieldName());
+            viewHolderText.append(";\n");
+        }
+        // Constructor
+        viewHolderConstructorText.append(viewHolderName);
+        viewHolderConstructorText.append("(android.view.View ");
+        viewHolderConstructorText.append(viewHolderRootView);
+        viewHolderConstructorText.append(") {\n");
+        viewHolderConstructorText.append("ButterKnife.bind(this, ");
+        viewHolderConstructorText.append(viewHolderRootView);
+        viewHolderConstructorText.append(");\n");
+        viewHolderConstructorText.append("}");
+        // 添加Constructor到ViewHolder
+        viewHolderText.append(viewHolderConstructorText.toString());
+        return viewHolderText.toString();
     }
 
 }

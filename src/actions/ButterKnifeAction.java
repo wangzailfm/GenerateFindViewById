@@ -48,7 +48,10 @@ public class ButterKnifeAction extends AnAction {
         }
         // 获取布局文件，通过FilenameIndex.getFilesByName获取
         // GlobalSearchScope.allScope(project)搜索整个项目
-        PsiFile[] psiFiles = FilenameIndex.getFilesByName(project, mSelectedText + Constant.selectedTextSUFFIX, GlobalSearchScope.allScope(project));
+        PsiFile[] psiFiles = new PsiFile[0];
+        if (project != null) {
+            psiFiles = FilenameIndex.getFilesByName(project, mSelectedText + Constant.selectedTextSUFFIX, GlobalSearchScope.allScope(project));
+        }
         if (psiFiles.length <= 0) {
             Util.showPopupBalloon(mEditor, Constant.actions.selectedErrorNoSelected, popupTime);
             return;
@@ -59,7 +62,10 @@ public class ButterKnifeAction extends AnAction {
         // 将代码写入文件，不允许在主线程中进行实时的文件写入
         if (elements.size() != 0) {
             // 判断是否有onCreate/onCreateView方法
-            PsiFile psiFile = PsiUtilBase.getPsiFileInEditor(mEditor, project);
+            PsiFile psiFile = null;
+            if (project != null) {
+                psiFile = PsiUtilBase.getPsiFileInEditor(mEditor, project);
+            }
             PsiClass psiClass = Util.getTargetClass(mEditor, psiFile);
             if (psiClass != null) {
                 if (Util.isExtendsActivityOrActivityCompat(project, psiClass)) {

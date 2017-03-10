@@ -16,35 +16,123 @@ import java.util.stream.Collectors;
 
 public class ButterKnifeCreator extends Simple {
 
-    private ButterKnifeDialog mDialog;
-    private Editor mEditor;
-    private PsiFile mFile;
-    private Project mProject;
-    private PsiClass mClass;
-    private List<Element> mElements;
-    private PsiElementFactory mFactory;
-    private String mSelectedText;
-    private boolean mIsLayoutInflater;
-    private String mLayoutInflaterText;
     private List<Element> mOnClickList = new ArrayList<>();
-    private boolean mIsButterKnife;
-    private boolean mIsBind;
+    private final ButterKnifeDialog mDialog;
+    private final Editor mEditor;
+    private final PsiFile mFile;
+    private final Project mProject;
+    private final PsiClass mClass;
+    private final List<Element> mElements;
+    private final PsiElementFactory mFactory;
+    private final String mSelectedText;
+    private final boolean mIsLayoutInflater;
+    private final String mLayoutInflaterText;
+    private final boolean mIsBind;
+    private final boolean mViewHolder;
 
-    public ButterKnifeCreator(ButterKnifeDialog dialog, Editor editor, PsiFile psiFile, PsiClass psiClass, String command, List<Element> elements, String selectedText, boolean isLayoutInflater, String text, boolean isButterKnife, boolean isBind) {
-        super(psiClass.getProject(), command);
-        mDialog = dialog;
-        mEditor = editor;
-        mFile = psiFile;
-        mProject = psiClass.getProject();
-        mClass = psiClass;
-        mElements = elements;
-        // 获取Factory
-        mFactory = JavaPsiFacade.getElementFactory(mProject);
-        mSelectedText = selectedText;
-        mIsLayoutInflater = isLayoutInflater;
-        mLayoutInflaterText = text;
-        mIsButterKnife = isButterKnife;
-        mIsBind = isBind;
+    /**
+     * Builder模式
+     */
+    public static class Builder {
+
+        private ButterKnifeDialog mDialog;
+        private Editor mEditor;
+        private PsiFile mFile;
+        private Project mProject;
+        private PsiClass mClass;
+        private final String mCommand;
+        private List<Element> mElements;
+        private PsiElementFactory mFactory;
+        private String mSelectedText;
+        private boolean mIsLayoutInflater;
+        private String mLayoutInflaterText;
+        private boolean mIsBind;
+        private boolean mViewHolder;
+
+
+        public Builder(String mCommand) {
+            this.mCommand = mCommand;
+        }
+
+        public Builder setDialog(ButterKnifeDialog mDialog) {
+            this.mDialog = mDialog;
+            return this;
+        }
+
+        public Builder setEditor(Editor mEditor) {
+            this.mEditor = mEditor;
+            return this;
+        }
+
+        public Builder setFile(PsiFile mFile) {
+            this.mFile = mFile;
+            return this;
+        }
+
+        public Builder setProject(Project mProject) {
+            this.mProject = mProject;
+            return this;
+        }
+
+        public Builder setClass(PsiClass mClass) {
+            this.mClass = mClass;
+            return this;
+        }
+
+        public Builder setElements(List<Element> mElements) {
+            this.mElements = mElements;
+            return this;
+        }
+
+        public Builder setFactory(PsiElementFactory mFactory) {
+            this.mFactory = mFactory;
+            return this;
+        }
+
+        public Builder setSelectedText(String mSelectedText) {
+            this.mSelectedText = mSelectedText;
+            return this;
+        }
+
+        public Builder setIsLayoutInflater(boolean mIsLayoutInflater) {
+            this.mIsLayoutInflater = mIsLayoutInflater;
+            return this;
+        }
+
+        public Builder setLayoutInflaterText(String mLayoutInflaterText) {
+            this.mLayoutInflaterText = mLayoutInflaterText;
+            return this;
+        }
+
+        public Builder setIsBind(boolean mIsBind) {
+            this.mIsBind = mIsBind;
+            return this;
+        }
+
+        public Builder setViewHolder(boolean mViewHolder) {
+            this.mViewHolder = mViewHolder;
+            return this;
+        }
+
+        public ButterKnifeCreator build() {
+            return new ButterKnifeCreator(this);
+        }
+    }
+
+    private ButterKnifeCreator(Builder builder) {
+        super(builder.mClass.getProject(), builder.mCommand);
+        mDialog = builder.mDialog;
+        mEditor = builder.mEditor;
+        mFile = builder.mFile;
+        mClass = builder.mClass;
+        mProject = builder.mProject;
+        mElements = builder.mElements;
+        mFactory = builder.mFactory;
+        mSelectedText = builder.mSelectedText;
+        mIsLayoutInflater = builder.mIsLayoutInflater;
+        mLayoutInflaterText = builder.mLayoutInflaterText;
+        mIsBind = builder.mIsBind;
+        mViewHolder = builder.mViewHolder;
         // 添加有onclick的list
         mOnClickList.addAll(mElements.stream().filter(element -> element.isEnable() && element.isClickable()).collect(Collectors.toList()));
     }
@@ -52,7 +140,11 @@ public class ButterKnifeCreator extends Simple {
     @Override
     protected void run() throws Throwable {
         try {
-            generateButterKnife();
+            if (mViewHolder) {
+                generateViewHolder();
+            } else {
+                generateButterKnife();
+            }
         } catch (Exception e) {
             // 异常打印
             mDialog.cancelDialog();
@@ -68,9 +160,25 @@ public class ButterKnifeCreator extends Simple {
     }
 
     /**
+     * 创建ViewHolder
+     */
+    private void generateViewHolder() {
+        String viewHolderName = "ViewHolder";
+        String viewHolderRootView = "view";
+        // 创建ViewHolder类
+        PsiClass viewHolder = mFactory.createClassFromText(Util.createButterKnifeViewHolder(viewHolderName, viewHolderRootView, mElements), mClass);
+        // 设置名字
+        viewHolder.setName(viewHolderName);
+        // 添加ViewHolder类到类中
+        mClass.add(viewHolder);
+        // 添加static
+        mClass.addBefore(mFactory.createKeyword("static"), mClass.findInnerClassByName(viewHolderName, true));
+    }
+
+    /**
      * 创建变量
      *
-     * @param type
+     * @param type type
      */
     private void generateFields(String type) {
         if (type.equals(Constant.classTypeByFragment)) {
@@ -124,7 +232,7 @@ public class ButterKnifeCreator extends Simple {
                     }
                     // 添加到class
                     mClass.add(mFactory.createFieldFromText(Util.createFieldByElement(
-                            Util.createFieldText(element, mProject), element, mIsLayoutInflater, mLayoutInflaterText), mClass));
+                            Util.createFieldText(element, mProject), element, true, mLayoutInflaterText), mClass));
                 } else {
                     // 已存在的变量就不创建
                     boolean isFieldExist = false;
@@ -172,7 +280,7 @@ public class ButterKnifeCreator extends Simple {
             // 判断是否有onCreate方法
             if (mClass.findMethodsByName(Constant.psiMethodByOnCreate, false).length == 0) {
                 // 添加
-                mClass.add(mFactory.createMethodFromText(Util.createOnCreateMethod(mSelectedText, mIsButterKnife), mClass));
+                mClass.add(mFactory.createMethodFromText(Util.createOnCreateMethod(mSelectedText, true), mClass));
             } else {
                 generateFields(Constant.classTypeByActivity);
                 if (mIsLayoutInflater) {
@@ -218,7 +326,7 @@ public class ButterKnifeCreator extends Simple {
             // 判断是否有onCreateView方法
             if (mClass.findMethodsByName(Constant.psiMethodByOnCreateView, false).length == 0) {
                 // 添加
-                mClass.add(mFactory.createMethodFromText(Util.createOnCreateViewMethod(mSelectedText, mIsButterKnife), mClass));
+                mClass.add(mFactory.createMethodFromText(Util.createOnCreateViewMethod(mSelectedText, true), mClass));
 
             } else {
                 generateFields(Constant.classTypeByFragment);
@@ -236,7 +344,9 @@ public class ButterKnifeCreator extends Simple {
                         if (psiStatement instanceof PsiReturnStatement) {
                             // 获取view的值
                             returnStatement = (PsiReturnStatement) psiStatement;
-                            returnValue = returnStatement.getReturnValue().getText();
+                            if (returnStatement.getReturnValue() != null) {
+                                returnValue = returnStatement.getReturnValue().getText();
+                            }
                         }
                     }
 
@@ -366,7 +476,7 @@ public class ButterKnifeCreator extends Simple {
 
     /**
      * 创建LayoutInflater的方法，包含ButterKnife.findById(view, R.id.id)
-     * @param context
+     * @param context context
      */
     private void generatorViewMethod(String context){
         String ViewMethodName = "init" + mLayoutInflaterText.substring(1);
