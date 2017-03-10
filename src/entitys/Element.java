@@ -53,7 +53,7 @@ public class Element {
             this.name = name;
         }
 
-        this.clickEnable = clickable;
+        this.clickEnable = true;
 
         this.clickable = clickable;
 
