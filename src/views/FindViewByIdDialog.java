@@ -18,9 +18,9 @@ public class FindViewByIdDialog extends GenerateDialog {
     public FindViewByIdDialog(Builder builder) {
         super(builder);
         initExist();
-        setCheckAll();
         initTopPanel();
         initContentPanel();
+        setCheckAll();
         initBottomPanel();
         setConstraints();
         setDialog();
@@ -33,7 +33,6 @@ public class FindViewByIdDialog extends GenerateDialog {
     private void initExist() {
         PsiClass mClass = getPsiClass();
         List<Element> mElements = getElements();
-        int mElementSize = getElementSize();
         // 判断是否已存在的变量
         boolean isFdExist = false;
         // 判断是否已存在setOnClickListener
@@ -53,7 +52,7 @@ public class FindViewByIdDialog extends GenerateDialog {
             if (onClickStatement != null) {
                 isCaseExist = checkCaseExist(onClickStatement, element);
             }
-            setElementProperty(mElementSize, isFdExist, isClickExist, isCaseExist, fields, element);
+            setElementProperty(getElementSize(), isFdExist, isClickExist, isCaseExist, fields, element);
         }
     }
 
@@ -134,7 +133,7 @@ public class FindViewByIdDialog extends GenerateDialog {
                 if (element.isClickEnable() && (!isClickExist || !isCaseExist)) {
                     element.setClickable(true);
                     element.setEnable(true);
-                    mElementSize = mElementSize + 1;
+                    mElementSize = getElementSize() + 1;
                     setElementSize(mElementSize);
                 }
                 break;

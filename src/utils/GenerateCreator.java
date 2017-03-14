@@ -480,8 +480,10 @@ public class GenerateCreator extends Simple {
     private void generateFindViewByIdClickCode() {
         // 判断是否已有onClick方法
         PsiMethod[] onClickMethods = mClass.findMethodsByName(Constant.FieldonClick, false);
+        // 判断是否包含@OnClick注解
+        PsiMethod butterKnifeOnClickMethod = Util.getPsiMethodByButterKnifeOnClick(mClass);
         // 已有onClick方法
-        if (onClickMethods.length > 0 && onClickMethods[0].getBody() != null) {
+        if (butterKnifeOnClickMethod == null && onClickMethods.length > 0 && onClickMethods[0].getBody() != null) {
             PsiCodeBlock onClickMethodBody = onClickMethods[0].getBody();
             // 获取switch
             for (PsiElement psiElement : onClickMethodBody.getChildren()) {

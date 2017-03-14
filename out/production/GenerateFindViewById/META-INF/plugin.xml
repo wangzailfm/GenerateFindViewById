@@ -1,7 +1,7 @@
 <idea-plugin version="5">
     <id>com.wangzai.plugin.findViewById</id>
     <name>GenerateFindViewById</name>
-    <version>1.2.1</version>
+    <version>1.2.2</version>
     <vendor email="673173629@qq.com" url="https://github.com/wangzailfm/GenerateFindViewById">GitHub</vendor>
 
     <description><![CDATA[
@@ -10,6 +10,7 @@
     ]]></description>
 
     <change-notes><![CDATA[
+        1.2.2 Onclick可以全选或取消全选<br/>
         1.2.1 修复ImageView和TextView不能点击OnClick<br/>
         1.2 支持ViewHolder<br/>
         1.1.2 Button默认勾选OnClick<br/>

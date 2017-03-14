@@ -1,14 +1,16 @@
 package views;
 
-import utils.GenerateCreator;
-import utils.Util;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
-import com.intellij.psi.*;
+import com.intellij.psi.JavaPsiFacade;
+import com.intellij.psi.PsiClass;
+import com.intellij.psi.PsiFile;
 import com.intellij.ui.components.JBScrollPane;
 import constant.Constant;
 import entitys.Element;
 import entitys.IdBean;
+import utils.GenerateCreator;
+import utils.Util;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -31,6 +33,8 @@ public class GenerateDialog extends JFrame implements ActionListener {
     private final PsiClass mClass;
     // 判断是否全选
     private int mElementSize;
+    // 判断OnClick是否全选
+    private int mOnClickSize;
     // 判断是否是ButterKnife
     private final boolean mIsButterKnife;
 
@@ -38,7 +42,7 @@ public class GenerateDialog extends JFrame implements ActionListener {
     private JPanel mPanelTitle = new JPanel();
     private JLabel mTitleName = new JLabel(Constant.dialogs.tableFieldViewWidget);
     private JLabel mTitleId = new JLabel(Constant.dialogs.tableFieldViewId);
-    private JLabel mTitleClick = new JLabel(Constant.FieldOnClick);
+    private JCheckBox mTitleClick = new JCheckBox(Constant.FieldOnClick, false);
     private JLabel mTitleField = new JLabel(Constant.dialogs.tableFieldViewFiled);
 
     // 内容JPanel
@@ -89,39 +93,8 @@ public class GenerateDialog extends JFrame implements ActionListener {
         private PsiClass mClass;
         // 判断是否全选
         private int mElementSize;
+        // 判断是否是ButterKnife
         private boolean mIsButterKnife;
-
-        Project getProject() {
-            return mProject;
-        }
-
-        Editor getEditor() {
-            return mEditor;
-        }
-
-        String getSelectedText() {
-            return mSelectedText;
-        }
-
-        List<Element> getElements() {
-            return mElements;
-        }
-
-        PsiFile getPsiFile() {
-            return mPsiFile;
-        }
-
-        PsiClass getMClass() {
-            return mClass;
-        }
-
-        int getElementSize() {
-            return mElementSize;
-        }
-
-        boolean getButterKnife() {
-            return mIsButterKnife;
-        }
 
         public Builder(int mElementSize) {
             this.mElementSize = mElementSize;
@@ -180,14 +153,6 @@ public class GenerateDialog extends JFrame implements ActionListener {
     }
 
     /**
-     * 设置mElementSize
-     * @param elementSize elementSize
-     */
-    void setElementSize(int elementSize) {
-        mElementSize = elementSize;
-    }
-
-    /**
      * 获取mElementSize
      * @return int
      */
@@ -196,7 +161,16 @@ public class GenerateDialog extends JFrame implements ActionListener {
     }
 
     /**
+     * 设置mElementSize
+     * @param elementSize elementSize
+     */
+    void setElementSize(int elementSize) {
+        mElementSize = elementSize;
+    }
+
+    /**
      * 获取mElements
+     *
      * @return List<Element>
      */
     List<Element> getElements() {
@@ -205,6 +179,7 @@ public class GenerateDialog extends JFrame implements ActionListener {
 
     /**
      * 获取mClass
+     *
      * @return PsiClass
      */
     PsiClass getPsiClass() {
@@ -215,8 +190,15 @@ public class GenerateDialog extends JFrame implements ActionListener {
      * 全选设置
      */
     void setCheckAll() {
+        for (Element element : mElements) {
+            if (element.isClickable() || mIsButterKnife) {
+                mOnClickSize++;
+            }
+        }
         mCheckAll.setSelected(mElementSize == mElements.size());
         mCheckAll.addActionListener(this);
+        mTitleClick.setSelected(mOnClickSize == mElements.size());
+        mTitleClick.addActionListener(this);
     }
 
     /**
@@ -291,8 +273,16 @@ public class GenerateDialog extends JFrame implements ActionListener {
                     element.isClickable(),
                     element.isClickEnable());
             // 监听
-            itemJPanel.setEnableActionListener(enableCheckBox -> element.setEnable(enableCheckBox.isSelected()));
-            itemJPanel.setClickActionListener(clickCheckBox -> element.setClickable(clickCheckBox.isSelected()));
+            itemJPanel.setEnableActionListener(enableCheckBox -> {
+                element.setEnable(enableCheckBox.isSelected());
+                mElementSize = enableCheckBox.isSelected() ? mElementSize + 1 : mElementSize - 1;
+                mCheckAll.setSelected(mElementSize == mElements.size());
+            });
+            itemJPanel.setClickActionListener(clickCheckBox -> {
+                element.setClickable(clickCheckBox.isSelected());
+                mOnClickSize = clickCheckBox.isSelected() ? mOnClickSize + 1 : mOnClickSize - 1;
+                mTitleClick.setSelected(mOnClickSize == mElements.size());
+            });
             itemJPanel.setFieldFocusListener(fieldJTextField -> element.setFieldName(fieldJTextField.getText()));
             mContentJPanel.add(itemJPanel);
             mContentConstraints.fill = GridBagConstraints.HORIZONTAL;
@@ -374,7 +364,7 @@ public class GenerateDialog extends JFrame implements ActionListener {
         if (mIsButterKnife) {
             setTitle(Constant.dialogs.titleButterKnife);
         } else {
-            setTitle(Constant.dialogs.titleFindViewById);
+            setTitle(Constant.dialogs.titleFindViewById + mOnClickSize);
         }
         // 设置布局管理
         setLayout(mLayout);
@@ -408,11 +398,23 @@ public class GenerateDialog extends JFrame implements ActionListener {
             case Constant.dialogs.buttonCancel:
                 cancelDialog();
                 break;
+            case Constant.FieldOnClick:
+                // 刷新
+                for (Element element : mElements) {
+                    element.setClickable(mTitleClick.isSelected());
+                }
+                mOnClickSize = mTitleClick.isSelected() ? mElements.size() : 0;
+                remove(jScrollPane);
+                initContentPanel();
+                setConstraints();
+                revalidate();
+                break;
             case Constant.dialogs.fieldCheckAll:
                 // 刷新
                 for (Element element : mElements) {
                     element.setEnable(mCheckAll.isSelected());
                 }
+                mElementSize = mCheckAll.isSelected() ? mElements.size() : 0;
                 remove(jScrollPane);
                 initContentPanel();
                 setConstraints();
@@ -423,11 +425,12 @@ public class GenerateDialog extends JFrame implements ActionListener {
 
     /**
      * 生成
-     * @param isLayoutInflater      是否是LayoutInflater.from(this).inflate(R.layout.activity_main, null);
-     * @param text                  自定义text
-     * @param isBind                是否是bind
-     * @param viewHolder            是否是viewHolder
-     * @param isButterKnife         是否是ButterKnife
+     *
+     * @param isLayoutInflater 是否是LayoutInflater.from(this).inflate(R.layout.activity_main, null);
+     * @param text             自定义text
+     * @param isBind           是否是bind
+     * @param viewHolder       是否是viewHolder
+     * @param isButterKnife    是否是ButterKnife
      */
     private void setCreator(boolean isLayoutInflater, String text, boolean isBind, boolean viewHolder, boolean isButterKnife) {
         // 使用Builder模式

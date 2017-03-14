@@ -18,9 +18,10 @@ public class ButterKnifeDialog extends GenerateDialog {
     public ButterKnifeDialog(Builder builder) {
         super(builder);
         initExist();
-        setCheckAll();
         initTopPanel();
         initContentPanel();
+        setCheckAll();
+        checkBind();
         initBottomPanel();
         setConstraints();
         setDialog();
@@ -33,7 +34,6 @@ public class ButterKnifeDialog extends GenerateDialog {
     private void initExist() {
         PsiClass mClass = getPsiClass();
         List<Element> mElements = getElements();
-        int mElementSize = getElementSize();
         // 判断是否已存在的变量
         boolean isFdExist;
         // 判断是否存在case R.id.id:
@@ -57,10 +57,8 @@ public class ButterKnifeDialog extends GenerateDialog {
             if (psiMethodByButterKnifeOnClickValue.size() > 0) {
                 isAnnotationValueExist = psiMethodByButterKnifeOnClickValue.contains(element.getFullID());
             }
-            setElementProperty(mElementSize, isFdExist, isCaseExist, isAnnotationValueExist, fields, element);
+            setElementProperty(getElementSize(), isFdExist, isCaseExist, isAnnotationValueExist, fields, element);
         }
-        setCheckAll();
-        checkBind();
     }
 
     /**
