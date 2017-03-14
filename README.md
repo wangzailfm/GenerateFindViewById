@@ -11,6 +11,7 @@ ButterKnife
 
 
 ## 更新
+- 1.2.2 Onclick可以全选或取消全选
 - 1.2.1 修复ImageView和TextView不能点击OnClick
 - 1.2 支持ViewHolder
 - 1.1.2 Button默认勾选OnClick
