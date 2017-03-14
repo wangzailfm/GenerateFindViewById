@@ -104,8 +104,8 @@ public class Element {
         return clickEnable;
     }
 
-    public void setClickEnable(boolean clickEnable) {
-        this.clickEnable = clickEnable;
+    public void setClickEnable() {
+        this.clickEnable = true;
     }
 
     public boolean isClickable() {

@@ -8,6 +8,9 @@ import com.intellij.psi.*;
 import com.intellij.psi.codeStyle.JavaCodeStyleManager;
 import constant.Constant;
 
+/**
+ * 生成Activity的onCreate方法和Fragment的onCreateView方法
+ */
 public class CreateMethodCreator extends Simple {
 
     private Editor mEditor;

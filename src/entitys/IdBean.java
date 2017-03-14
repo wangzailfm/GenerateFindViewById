@@ -93,9 +93,9 @@ public class IdBean extends JPanel {
     /**
      * 设置Component
      *
-     * @param enable
-     * @param clickable
-     * @param clickEnable
+     * @param enable enable
+     * @param clickable clickable
+     * @param clickEnable clickEnable
      */
     private void initComponent(boolean enable, boolean clickable, boolean clickEnable) {
         mEnableCheckBox.setSelected(enable);
@@ -103,7 +103,7 @@ public class IdBean extends JPanel {
             mClickCheckBox.setSelected(clickable);
             mClickCheckBox.setEnabled(enable);
         } else {
-            mClickCheckBox.setEnabled(clickEnable);
+            mClickCheckBox.setEnabled(false);
         }
 
         mIdJLabel.setEnabled(enable);
@@ -149,8 +149,8 @@ public class IdBean extends JPanel {
     /**
      * 设置布局相关
      *
-     * @param layout
-     * @param emptyBorder
+     * @param layout layout
+     * @param emptyBorder emptyBorder
      */
     private void initLayout(LayoutManager layout, EmptyBorder emptyBorder) {
         // 设置布局内容

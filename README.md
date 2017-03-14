@@ -10,6 +10,13 @@ ButterKnife
 
 
 
+## 更新
+- 1.2.1 修复ImageView和TextView不能点击OnClick
+- 1.2 支持ViewHolder
+- 1.1.2 Button默认勾选OnClick
+- 1.1 支持ButterKnife，版本为8.4.0，快捷键Ctrl+Alt+Shift+E，支持LayoutInflater生成
+- 1.0 支持Activity和Fragment，添加可选生成的字段，可编辑变量名，可选择是否LayoutInflater类型，添加快捷键Ctrl+Alt+E，text、hint的值添加到字段注释，添加LayoutInflater生成，添加OnClick生成代码。
+
 
 ## 安装
 - 下载项目里面的`GenerateFindViewById.ja`r包，然后打开AS的Plugins，点击`Install plugin from disk...`安装
@@ -50,10 +57,6 @@ ButterKnife
 7. 识别到的控件中有`text`或者`hint`属性，会自动生成里面的值到字段注释
 8. `LayoutInflater`生成的变量名规则为`mAaBbCc+View`的变量名(如`mView`会去掉`m`)
 9. `ButterKnife`生成的`LayoutInflater`是`ButterKnife.findById()`来替换`view.findViewById()`
-
-## 更新
-- 1.1 支持`ButterKnife`，版本为8.4.0，快捷键`Ctrl+Alt+Shift+E`，可选择是否生成`ButterKnife.bind()`，对`Fragment`的`view`的初始化放在`onCreate`里面，添加`LayoutInflater`生成。
-- 1.0 支持`Activity`和`Fragment`，添加可选生成的字段，可编辑变量名，可选择是否`LayoutInflater`类型，添加快捷键`Ctrl+Alt+E`，`text`、`hint`的值添加到字段注释，添加`LayoutInflater`生成，添加`OnClick`生成代码。
 
 ## License
 ```

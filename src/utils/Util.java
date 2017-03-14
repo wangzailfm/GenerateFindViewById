@@ -857,7 +857,13 @@ public class Util {
         return viewHolderText.toString();
     }
 
-
+    /**
+     * ButterKnife，创建ViewHolder
+     * @param viewHolderName viewHolderName
+     * @param viewHolderRootView viewHolderRootView
+     * @param mElements mElements
+     * @return String
+     */
     @NotNull
     static String createButterKnifeViewHolder(String viewHolderName, String viewHolderRootView, List<Element> mElements) {
         // ViewHolder
