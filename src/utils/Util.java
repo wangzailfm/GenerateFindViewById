@@ -54,16 +54,38 @@ public class Util {
      * 驼峰
      *
      * @param fieldName fieldName
+     * @param type type
      * @return String
      */
-    public static String getFieldName(String fieldName) {
+    public static String getFieldName(String fieldName, int type) {
         if (!StringUtils.isEmpty(fieldName)) {
             String[] names = fieldName.split("_");
-            StringBuilder sb = new StringBuilder();
-            for (String name : names) {
-                sb.append(firstToUpperCase(name));
+            if (type == 2) {
+                // aaBbCc
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < names.length; i++) {
+                    if (i == 0) {
+                        sb.append(names[i]);
+                    } else {
+                        sb.append(Util.firstToUpperCase(names[i]));
+                    }
+                }
+                sb.append("View");
+                fieldName = sb.toString();
+            } else if (type == 3) {
+                // mAaBbCc
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < names.length; i++) {
+                    if (i == 0) {
+                        sb.append("m");
+                    }
+                    sb.append(Util.firstToUpperCase(names[i]));
+                }
+                sb.append("View");
+                fieldName = sb.toString();
+            } else {
+                fieldName += "_view";
             }
-            fieldName = sb.toString();
         }
         return fieldName;
     }
@@ -611,9 +633,10 @@ public class Util {
      * @param element Element
      * @param mIsLayoutInflater 是否选中LayoutInflater
      * @param mLayoutInflaterText 选中的布局的变量名
+     * @param mLayoutInflaterType mLayoutInflaterType
      * @return String
      */
-    static String createFieldByElement(String text, Element element, boolean mIsLayoutInflater, String mLayoutInflaterText){
+    static String createFieldByElement(String text, Element element, boolean mIsLayoutInflater, String mLayoutInflaterText, int mLayoutInflaterType){
         StringBuilder fromText = new StringBuilder();
         if (!StringUtils.isEmpty(text)) {
             fromText.append("/** ");
@@ -624,7 +647,7 @@ public class Util {
         fromText.append(element.getName());
         fromText.append(" ");
         fromText.append(element.getFieldName());
-        if (mIsLayoutInflater) fromText.append(mLayoutInflaterText.substring(1));
+        if (mIsLayoutInflater) fromText.append(layoutInflaterType2Str(mLayoutInflaterText, mLayoutInflaterType));
         fromText.append(";");
         return fromText.toString();
     }
@@ -637,9 +660,10 @@ public class Util {
      * @param context context
      * @param mSelectedText 选中的布局
      * @param mElements Element的List
+     * @param mLayoutInflaterType type
      * @return String
      */
-    static String createFieldsByInitViewMethod(String findPre, boolean mIsLayoutInflater, String mLayoutInflaterText, String context, String mSelectedText, List<Element> mElements){
+    static String createFieldsByInitViewMethod(String findPre, boolean mIsLayoutInflater, String mLayoutInflaterText, String context, String mSelectedText, List<Element> mElements, int mLayoutInflaterType){
         StringBuilder initView = new StringBuilder();
         if (StringUtils.isEmpty(findPre)) {
             initView.append("private void initView() {\n");
@@ -660,7 +684,7 @@ public class Util {
                 String pre = StringUtils.isEmpty(findPre) ? "" : findPre + ".";
                 String inflater = "";
                 if (mIsLayoutInflater) {
-                    inflater = mLayoutInflaterText.substring(1);
+                    inflater = layoutInflaterType2Str(mLayoutInflaterText, mLayoutInflaterType);
                     pre = mLayoutInflaterText + ".";
                 }
                 initView.append(element.getFieldName());
@@ -683,6 +707,23 @@ public class Util {
         return initView.toString();
     }
 
+    /**
+     * 根据layoutInflaterType生成不同内容
+     * @param mLayoutInflaterText mLayoutInflaterText
+     * @param mLayoutInflaterType mLayoutInflaterType
+     * @return String
+     */
+    static String layoutInflaterType2Str(String mLayoutInflaterText, int mLayoutInflaterType) {
+        switch (mLayoutInflaterType) {
+            case 1:
+                return "_" + mLayoutInflaterText;
+            case 2:
+                return Util.firstToUpperCase(mLayoutInflaterText);
+            default:
+                return mLayoutInflaterText.substring(1);
+        }
+    }
+
 
     /**
      *
@@ -695,7 +736,7 @@ public class Util {
      * @param viewMethodName viewMethodName
      * @return String
      */
-    static String createButterKnifeViewMethod(boolean mIsLayoutInflater, String mLayoutInflaterText, String context, String mSelectedText, List<Element> mElements, String viewMethodName){
+    static String createButterKnifeViewMethod(boolean mIsLayoutInflater, String mLayoutInflaterText, String context, String mSelectedText, List<Element> mElements, String viewMethodName, int mLayoutInflaterType){
         StringBuilder initView = new StringBuilder();
         initView.append("// TODO:Copy method name to use\n");
         initView.append("private void ");
@@ -712,7 +753,7 @@ public class Util {
             if (element.isEnable()) {
                 String inflater = "";
                 if (mIsLayoutInflater) {
-                    inflater = mLayoutInflaterText.substring(1);
+                    inflater = layoutInflaterType2Str(mLayoutInflaterText, mLayoutInflaterType);
                 }
                 initView.append(element.getFieldName());
                 initView.append(inflater);

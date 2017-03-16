@@ -11,6 +11,7 @@ ButterKnife
 
 
 ## 更新
+- 1.3 变量名支持三种命名格式1、mAaBbCc，2、aa_bb_cc，3、aaBbCc
 - 1.2.2 Onclick可以全选或取消全选
 - 1.2.1 修复ImageView和TextView不能点击OnClick
 - 1.2 支持ViewHolder

@@ -31,6 +31,7 @@ public class GenerateCreator extends Simple {
     private final String mSelectedText;
     private final boolean mIsLayoutInflater;
     private final String mLayoutInflaterText;
+    private final int mLayoutInflaterType;
     private final boolean mIsButterKnife;
     private final boolean mIsBind;
     private final boolean mViewHolder;
@@ -51,6 +52,7 @@ public class GenerateCreator extends Simple {
         private String mSelectedText;
         private boolean mIsLayoutInflater;
         private String mLayoutInflaterText;
+        private int mLayoutInflaterType;
         private boolean mIsButterKnife;
         private boolean mIsBind;
         private boolean mViewHolder;
@@ -110,6 +112,11 @@ public class GenerateCreator extends Simple {
             return this;
         }
 
+        public Builder setLayoutInflaterType(int mLayoutInflaterType) {
+            this.mLayoutInflaterType = mLayoutInflaterType;
+            return this;
+        }
+
         public Builder setIsButterKnife(boolean mIsButterKnife) {
             this.mIsButterKnife = mIsButterKnife;
             return this;
@@ -142,6 +149,7 @@ public class GenerateCreator extends Simple {
         mSelectedText = builder.mSelectedText;
         mIsLayoutInflater = builder.mIsLayoutInflater;
         mLayoutInflaterText = builder.mLayoutInflaterText;
+        mLayoutInflaterType = builder.mLayoutInflaterType;
         mIsButterKnife = builder.mIsButterKnife;
         mIsBind = builder.mIsBind;
         mViewHolder = builder.mViewHolder;
@@ -332,8 +340,8 @@ public class GenerateCreator extends Simple {
                         break;
                     }
                 } else {
-                    if (name != null && name.equals(element.getFieldName()
-                            + mLayoutInflaterText.substring(1))) {
+                    String layoutField = element.getFieldName() + Util.layoutInflaterType2Str(mLayoutInflaterText, mLayoutInflaterType);
+                    if (name != null && name.equals(layoutField)) {
                         duplicateField = true;
                         break;
                     }
@@ -347,7 +355,7 @@ public class GenerateCreator extends Simple {
             if (element.isEnable()) {
                 // 添加到class
                 mClass.add(mFactory.createFieldFromText(Util.createFieldByElement(
-                        Util.createFieldText(element, mProject), element, mIsLayoutInflater, mLayoutInflaterText), mClass));
+                        Util.createFieldText(element, mProject), element, mIsLayoutInflater, mLayoutInflaterText, mLayoutInflaterType), mClass));
             }
         }
     }
@@ -392,7 +400,7 @@ public class GenerateCreator extends Simple {
                     String pre = StringUtils.isEmpty(findPre) ? "" : findPre + ".";
                     String inflater = "";
                     if (mIsLayoutInflater) {
-                        inflater = mLayoutInflaterText.substring(1);
+                        inflater = Util.layoutInflaterType2Str(mLayoutInflaterText, mLayoutInflaterType);
                         pre = mLayoutInflaterText + ".";
                     }
                     String findViewById = element.getFieldName() + inflater
@@ -430,7 +438,7 @@ public class GenerateCreator extends Simple {
             }
         } else {
             mClass.add(mFactory.createMethodFromText(
-                    Util.createFieldsByInitViewMethod(findPre, mIsLayoutInflater, mLayoutInflaterText, context, mSelectedText, mElements), mClass));
+                    Util.createFieldsByInitViewMethod(findPre, mIsLayoutInflater, mLayoutInflaterText, context, mSelectedText, mElements, mLayoutInflaterType), mClass));
         }
         getFindViewByIdOnClickList();
         if (mOnClickList.size() != 0) {
@@ -672,9 +680,10 @@ public class GenerateCreator extends Simple {
             if (element.isEnable()) {
                 if (mIsLayoutInflater) {
                     boolean duplicateField = false;
+                    String layoutField = element.getFieldName() + Util.layoutInflaterType2Str(mLayoutInflaterText, mLayoutInflaterType);
                     for (PsiField psiField : mClass.getFields()) {
                         if (psiField.getName() != null
-                                && psiField.getName().equals(element.getFieldName() + mLayoutInflaterText.substring(1))) {
+                                && psiField.getName().equals(layoutField)) {
                             duplicateField = true;
                         }
                     }
@@ -684,7 +693,7 @@ public class GenerateCreator extends Simple {
                     }
                     // 添加到class
                     mClass.add(mFactory.createFieldFromText(Util.createFieldByElement(
-                            Util.createFieldText(element, mProject), element, true, mLayoutInflaterText), mClass));
+                            Util.createFieldText(element, mProject), element, true, mLayoutInflaterText, mLayoutInflaterType), mClass));
                 } else {
                     // 已存在的变量就不创建
                     boolean isFieldExist = false;
@@ -824,7 +833,7 @@ public class GenerateCreator extends Simple {
      * @param context context
      */
     private void generateButterKnifeViewMethod(String context){
-        String ViewMethodName = "init" + mLayoutInflaterText.substring(1);
+        String ViewMethodName = "init" + Util.layoutInflaterType2Str(mLayoutInflaterText, mLayoutInflaterType);
         PsiMethod ViewMethod = Util.getPsiMethodByName(mClass, ViewMethodName);
         if (ViewMethod != null && ViewMethod.getBody() != null) {
             PsiCodeBlock body = ViewMethod.getBody();
@@ -836,7 +845,7 @@ public class GenerateCreator extends Simple {
                     boolean isFdExist = false;
                     String inflater = "";
                     if (mIsLayoutInflater) {
-                        inflater = mLayoutInflaterText.substring(1);
+                        inflater = Util.layoutInflaterType2Str(mLayoutInflaterText, mLayoutInflaterType);
                     }
                     String findViewById = element.getFieldName() + inflater
                             + " = " + "ButterKnife.findById(" + mLayoutInflaterText +", " + element.getFullID() + ");";
@@ -856,7 +865,7 @@ public class GenerateCreator extends Simple {
             }
         } else {
             mClass.add(mFactory.createMethodFromText(
-                    Util.createButterKnifeViewMethod(mIsLayoutInflater, mLayoutInflaterText, context, mSelectedText, mElements, ViewMethodName), mClass));
+                    Util.createButterKnifeViewMethod(mIsLayoutInflater, mLayoutInflaterText, context, mSelectedText, mElements, ViewMethodName, mLayoutInflaterType), mClass));
         }
     }
 

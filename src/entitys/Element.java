@@ -156,6 +156,8 @@ public class Element {
                     sb.append(Util.firstToUpperCase(names[i]));
                 }
                 fieldName = sb.toString();
+            } else if (fieldNameType == 1) {
+                fieldName = id;
             }
             this.fieldName = fieldName;
         }

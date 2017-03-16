@@ -17,12 +17,14 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.List;
 
 /**
  * GenerateDialog
  */
-public class GenerateDialog extends JFrame implements ActionListener {
+public class GenerateDialog extends JFrame implements ActionListener, ItemListener {
     private final Project mProject;
     private final Editor mEditor;
     private final String mSelectedText;
@@ -40,10 +42,18 @@ public class GenerateDialog extends JFrame implements ActionListener {
 
     // 标签JPanel
     private JPanel mPanelTitle = new JPanel();
-    private JLabel mTitleName = new JLabel(Constant.dialogs.tableFieldViewWidget);
+    private JCheckBox mTitleName = new JCheckBox(Constant.dialogs.tableFieldViewWidget);
     private JLabel mTitleId = new JLabel(Constant.dialogs.tableFieldViewId);
     private JCheckBox mTitleClick = new JCheckBox(Constant.FieldOnClick, false);
-    private JLabel mTitleField = new JLabel(Constant.dialogs.tableFieldViewFiled);
+    // 命名JPanel
+    private JPanel mPanelTitleField = new JPanel();
+    private ButtonGroup mTitleFieldGroup = new ButtonGroup();
+    // aa_bb
+    private JRadioButton mTitleFieldUnderline = new JRadioButton("aa_bb");
+    // aaBb
+    private JRadioButton mTitleFieldHump = new JRadioButton("aaBb");
+    // mAaBb
+    private JRadioButton mTitleFieldPrefix = new JRadioButton("mAaBb", true);
 
     // 内容JPanel
     private JPanel mContentJPanel = new JPanel();
@@ -59,8 +69,7 @@ public class GenerateDialog extends JFrame implements ActionListener {
     private JCheckBox mLayoutInflater = new JCheckBox(Constant.dialogs.fieldLayoutInflater, false);
     // 手动修改LayoutInflater字段名
     private JTextField mLayoutInflaterField;
-    // 是否全选
-    private JCheckBox mCheckAll = new JCheckBox(Constant.dialogs.fieldCheckAll);
+    private int type = 3;
 
     // viewHolder
     private JPanel mPanelViewHolder = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -195,8 +204,8 @@ public class GenerateDialog extends JFrame implements ActionListener {
                 mOnClickSize++;
             }
         }
-        mCheckAll.setSelected(mElementSize == mElements.size());
-        mCheckAll.addActionListener(this);
+        mTitleName.setSelected(mElementSize == mElements.size());
+        mTitleName.addActionListener(this);
         mTitleClick.setSelected(mOnClickSize == mElements.size());
         mTitleClick.addActionListener(this);
     }
@@ -214,16 +223,29 @@ public class GenerateDialog extends JFrame implements ActionListener {
     void initTopPanel() {
         mPanelTitle.setLayout(new GridLayout(1, 4, 10, 10));
         mPanelTitle.setBorder(new EmptyBorder(5, 10, 5, 10));
+        mPanelTitleField.setLayout(new GridLayout(1, 3, 0, 0));
         mTitleName.setHorizontalAlignment(JLabel.LEFT);
-        mTitleName.setBorder(new EmptyBorder(0, 25, 0, 0));
+        mTitleName.setBorder(new EmptyBorder(0, 5, 0, 0));
         mTitleId.setHorizontalAlignment(JLabel.LEFT);
         mTitleClick.setHorizontalAlignment(JLabel.LEFT);
-        mTitleField.setHorizontalAlignment(JLabel.LEFT);
+        // 添加listener
+        mTitleFieldUnderline.addItemListener(this);
+        mTitleFieldHump.addItemListener(this);
+        mTitleFieldPrefix.addItemListener(this);
+        // 添加到group
+        mTitleFieldGroup.add(mTitleFieldUnderline);
+        mTitleFieldGroup.add(mTitleFieldHump);
+        mTitleFieldGroup.add(mTitleFieldPrefix);
+        // 添加到JPanel
+        mPanelTitleField.add(mTitleFieldPrefix);
+        mPanelTitleField.add(mTitleFieldUnderline);
+        mPanelTitleField.add(mTitleFieldHump);
+        // 添加到JPanel
         mPanelTitle.add(mTitleName);
         mPanelTitle.add(mTitleId);
         mPanelTitle.add(mTitleClick);
-        mPanelTitle.add(mTitleField);
-        mPanelTitle.setSize(720, 30);
+        mPanelTitle.add(mPanelTitleField);
+        mPanelTitle.setSize(900, 30);
         // 添加到JFrame
         getContentPane().add(mPanelTitle, 0);
     }
@@ -232,18 +254,19 @@ public class GenerateDialog extends JFrame implements ActionListener {
      * 添加底部
      */
     void initBottomPanel() {
-        String viewField = "m" + Util.getFieldName(mSelectedText) + "View";
+        String viewField = Util.getFieldName(mSelectedText, 3);
         mLayoutInflaterField = new JTextField(viewField, viewField.length());
         // 添加监听
         mButtonConfirm.addActionListener(this);
         mButtonCancel.addActionListener(this);
+        mViewHolderCheck.addActionListener(this);
         // viewHolder
         mPanelViewHolder.add(mViewHolderCheck);
         // 右边
         mPanelButtonRight.add(mButtonConfirm);
         mPanelButtonRight.add(mButtonCancel);
         // 添加到JPanel
-        mPanelInflater.add(mCheckAll);
+        //mPanelInflater.add(mCheckAll);
         if (mIsButterKnife) {
             mPanelInflater.add(mBind);
         }
@@ -276,14 +299,16 @@ public class GenerateDialog extends JFrame implements ActionListener {
             itemJPanel.setEnableActionListener(enableCheckBox -> {
                 element.setEnable(enableCheckBox.isSelected());
                 mElementSize = enableCheckBox.isSelected() ? mElementSize + 1 : mElementSize - 1;
-                mCheckAll.setSelected(mElementSize == mElements.size());
+                mTitleName.setSelected(mElementSize == mElements.size());
             });
             itemJPanel.setClickActionListener(clickCheckBox -> {
                 element.setClickable(clickCheckBox.isSelected());
                 mOnClickSize = clickCheckBox.isSelected() ? mOnClickSize + 1 : mOnClickSize - 1;
                 mTitleClick.setSelected(mOnClickSize == mElements.size());
             });
-            itemJPanel.setFieldFocusListener(fieldJTextField -> element.setFieldName(fieldJTextField.getText()));
+            itemJPanel.setFieldFocusListener(
+                    fieldJTextField -> element.setFieldName(fieldJTextField.getText())
+            );
             mContentJPanel.add(itemJPanel);
             mContentConstraints.fill = GridBagConstraints.HORIZONTAL;
             mContentConstraints.gridwidth = 0;
@@ -364,14 +389,14 @@ public class GenerateDialog extends JFrame implements ActionListener {
         if (mIsButterKnife) {
             setTitle(Constant.dialogs.titleButterKnife);
         } else {
-            setTitle(Constant.dialogs.titleFindViewById + mOnClickSize);
+            setTitle(Constant.dialogs.titleFindViewById);
         }
         // 设置布局管理
         setLayout(mLayout);
         // 不可拉伸
         setResizable(false);
         // 设置大小
-        setSize(720, 405);
+        setSize(810, 405);
         // 自适应大小
         // pack();
         // 设置居中，放在setSize后面
@@ -388,39 +413,14 @@ public class GenerateDialog extends JFrame implements ActionListener {
         dispose();
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        switch (e.getActionCommand()) {
-            case Constant.dialogs.buttonConfirm:
-                cancelDialog();
-                setCreator(mLayoutInflater.isSelected(), mLayoutInflaterField.getText(), mBind.isSelected(), mViewHolderCheck.isSelected(), mIsButterKnife);
-                break;
-            case Constant.dialogs.buttonCancel:
-                cancelDialog();
-                break;
-            case Constant.FieldOnClick:
-                // 刷新
-                for (Element element : mElements) {
-                    element.setClickable(mTitleClick.isSelected());
-                }
-                mOnClickSize = mTitleClick.isSelected() ? mElements.size() : 0;
-                remove(jScrollPane);
-                initContentPanel();
-                setConstraints();
-                revalidate();
-                break;
-            case Constant.dialogs.fieldCheckAll:
-                // 刷新
-                for (Element element : mElements) {
-                    element.setEnable(mCheckAll.isSelected());
-                }
-                mElementSize = mCheckAll.isSelected() ? mElements.size() : 0;
-                remove(jScrollPane);
-                initContentPanel();
-                setConstraints();
-                revalidate();
-                break;
-        }
+    /**
+     * 刷新JScrollPane内容
+     */
+    private void refreshJScrollPane() {
+        remove(jScrollPane);
+        initContentPanel();
+        setConstraints();
+        revalidate();
     }
 
     /**
@@ -445,10 +445,58 @@ public class GenerateDialog extends JFrame implements ActionListener {
                 .setSelectedText(mSelectedText)
                 .setIsLayoutInflater(isLayoutInflater)
                 .setLayoutInflaterText(text)
+                .setLayoutInflaterType(type)
                 .setIsButterKnife(isButterKnife)
                 .setIsBind(isBind)
                 .setViewHolder(viewHolder)
                 .build()
                 .execute();
+    }
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        switch (e.getActionCommand()) {
+            case Constant.dialogs.buttonConfirm:
+                cancelDialog();
+                setCreator(mLayoutInflater.isSelected(), mLayoutInflaterField.getText(), mBind.isSelected(), mViewHolderCheck.isSelected(), mIsButterKnife);
+                break;
+            case Constant.dialogs.buttonCancel:
+                cancelDialog();
+                break;
+            case Constant.FieldOnClick:
+                // 刷新
+                for (Element element : mElements) {
+                    element.setClickable(mTitleClick.isSelected());
+                }
+                mOnClickSize = mTitleClick.isSelected() ? mElements.size() : 0;
+                refreshJScrollPane();
+                break;
+            case Constant.dialogs.tableFieldViewWidget:
+                // 刷新
+                for (Element element : mElements) {
+                    element.setEnable(mTitleName.isSelected());
+                }
+                mElementSize = mTitleName.isSelected() ? mElements.size() : 0;
+                refreshJScrollPane();
+                break;
+            case Constant.dialogs.viewHolderCheck:
+                mBind.setSelected(!mViewHolderCheck.isSelected());
+                mBind.setEnabled(!mViewHolderCheck.isSelected());
+                break;
+        }
+    }
+
+    @Override
+    public void itemStateChanged(ItemEvent e) {
+        type = e.getSource() == mTitleFieldPrefix ? 3 : e.getSource() == mTitleFieldHump ? 2 : 1;
+        for (Element element : mElements) {
+            if (element.isEnable()) {
+                // 设置类型
+                element.setFieldNameType(type);
+                // 置空
+                element.setFieldName("");
+            }
+        }
+        mLayoutInflaterField.setText(Util.getFieldName(mSelectedText, type));
+        refreshJScrollPane();
     }
 }
