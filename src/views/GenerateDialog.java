@@ -479,7 +479,8 @@ public class GenerateDialog extends JFrame implements ActionListener, ItemListen
                 refreshJScrollPane();
                 break;
             case Constant.dialogs.viewHolderCheck:
-                mBind.setSelected(!mViewHolderCheck.isSelected());
+                mLayoutInflater.setEnabled(!mViewHolderCheck.isSelected());
+                mLayoutInflaterField.setEnabled(!mViewHolderCheck.isSelected());
                 mBind.setEnabled(!mViewHolderCheck.isSelected());
                 break;
         }
