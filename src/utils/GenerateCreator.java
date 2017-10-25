@@ -219,44 +219,46 @@ public class GenerateCreator extends Simple {
             if (mClass.findMethodsByName(Constant.psiMethodByOnCreate, false).length == 0) {
                 // 添加
                 mClass.add(mFactory.createMethodFromText(Util.createOnCreateMethod(mSelectedText, false), mClass));
-            } else {
-                generateFindViewByIdFields();
-                // 获取setContentView
-                PsiStatement setContentViewStatement = null;
-                // onCreate是否存在initView方法
-                boolean hasInitViewStatement = false;
-
-                PsiMethod onCreate = mClass.findMethodsByName(Constant.psiMethodByOnCreate, false)[0];
-                if (onCreate.getBody() != null) {
-                    for (PsiStatement psiStatement : onCreate.getBody().getStatements()) {
-                        // 查找setContentView
-                        if (psiStatement.getFirstChild() instanceof PsiMethodCallExpression) {
-                            PsiReferenceExpression methodExpression = ((PsiMethodCallExpression) psiStatement.getFirstChild()).getMethodExpression();
-                            if (methodExpression.getText().equals(Constant.utils.creatorSetContentViewMethod)) {
-                                setContentViewStatement = psiStatement;
-                            } else if (methodExpression.getText().equals(Constant.utils.creatorInitViewName)) {
-                                hasInitViewStatement = true;
-                            }
-                        }
-                    }
-                    if (setContentViewStatement == null) {
-                        onCreate.getBody().add(mFactory.createStatementFromText("setContentView(R.layout." + mSelectedText + ");", mClass));
-                    }
-
-                    if (!hasInitViewStatement) {
-                        // 将initView()写到setContentView()后面
-                        if (setContentViewStatement != null) {
-                            onCreate.getBody().addAfter(mFactory.createStatementFromText("initView();", mClass), setContentViewStatement);
-                        } else {
-                            onCreate.getBody().add(mFactory.createStatementFromText("initView();", mClass));
+                return;
+            }
+            generateFindViewByIdFields();
+            // 获取setContentView
+            PsiStatement setContentViewStatement = null;
+            // onCreate是否存在initView方法
+            boolean hasInitViewStatement = false;
+            // 获取onCreate方法对象
+            PsiMethod onCreate = mClass.findMethodsByName(Constant.psiMethodByOnCreate, false)[0];
+            if (onCreate.getBody() != null) {
+                for (PsiStatement psiStatement : onCreate.getBody().getStatements()) {
+                    // 查找setContentView
+                    if (psiStatement.getFirstChild() instanceof PsiMethodCallExpression) {
+                        PsiReferenceExpression methodExpression = ((PsiMethodCallExpression) psiStatement.getFirstChild()).getMethodExpression();
+                        if (methodExpression.getText().equals(Constant.utils.creatorSetContentViewMethod)) {
+                            setContentViewStatement = psiStatement;
+                        } else if (methodExpression.getText().equals(Constant.utils.creatorInitViewName)) {
+                            hasInitViewStatement = true;
                         }
                     }
                 }
+                if (setContentViewStatement == null) {
+                    onCreate.getBody().add(mFactory.createStatementFromText("setContentView(R.layout." + mSelectedText + ");", mClass));
+                }
 
-                generateFindViewByIdLayoutCode(null, "getApplicationContext()");
+                if (!hasInitViewStatement) {
+                    // 将initView()写到setContentView()后面
+                    if (setContentViewStatement != null) {
+                        onCreate.getBody().addAfter(mFactory.createStatementFromText("initView();", mClass), setContentViewStatement);
+                    } else {
+                        onCreate.getBody().add(mFactory.createStatementFromText("initView();", mClass));
+                    }
+                }
             }
 
-        } else if (Util.isExtendsFragmentOrFragmentV4(mProject, mClass)) {
+            generateFindViewByIdLayoutCode(null, "getApplicationContext()");
+
+            return;
+        }
+        if (Util.isExtendsFragmentOrFragmentV4(mProject, mClass)) {
             boolean isViewExist = false;
             for (PsiField psiField : mClass.getFields()) {
                 if (psiField.getText() != null && psiField.getText().equals("private View view;")) {
@@ -272,40 +274,39 @@ public class GenerateCreator extends Simple {
             // 判断是否有onCreateView方法
             if (mClass.findMethodsByName(Constant.psiMethodByOnCreateView, false).length == 0) {
                 // 添加
-                mClass.add(mFactory.createMethodFromText(Util.createOnCreateViewMethod(mSelectedText, false), mClass));
+                mClass.add(mFactory.createMethodFromText(Util.createOnCreateViewMethod(false), mClass));
+                return;
+            }
+            generateFindViewByIdFields();
+            // 查找onCreateView
+            PsiReturnStatement returnStatement = null;
+            // view
+            String returnValue = null;
+            // onCreateView是否存在initView方法
+            boolean hasInitViewStatement = false;
 
-            } else {
-                generateFindViewByIdFields();
-                // 查找onCreateView
-                PsiReturnStatement returnStatement = null;
-                // view
-                String returnValue = null;
-                // onCreateView是否存在initView方法
-                boolean hasInitViewStatement = false;
-
-                PsiMethod onCreate = mClass.findMethodsByName(Constant.psiMethodByOnCreateView, false)[0];
-                if (onCreate.getBody() != null) {
-                    for (PsiStatement psiStatement : onCreate.getBody().getStatements()) {
-                        if (psiStatement instanceof PsiReturnStatement) {
-                            // 获取view的值
-                            returnStatement = (PsiReturnStatement) psiStatement;
-                            if (returnStatement.getReturnValue() != null) {
-                                returnValue = returnStatement.getReturnValue().getText();
-                            }
-                        } else if (psiStatement.getFirstChild() instanceof PsiMethodCallExpression) {
-                            PsiReferenceExpression methodExpression = ((PsiMethodCallExpression) psiStatement.getFirstChild()).getMethodExpression();
-                            if (methodExpression.getText().equals(Constant.utils.creatorInitViewName)) {
-                                hasInitViewStatement = true;
-                            }
+            PsiMethod onCreate = mClass.findMethodsByName(Constant.psiMethodByOnCreateView, false)[0];
+            if (onCreate.getBody() != null) {
+                for (PsiStatement psiStatement : onCreate.getBody().getStatements()) {
+                    if (psiStatement instanceof PsiReturnStatement) {
+                        // 获取view的值
+                        returnStatement = (PsiReturnStatement) psiStatement;
+                        if (returnStatement.getReturnValue() != null) {
+                            returnValue = returnStatement.getReturnValue().getText();
+                        }
+                    } else if (psiStatement.getFirstChild() instanceof PsiMethodCallExpression) {
+                        PsiReferenceExpression methodExpression = ((PsiMethodCallExpression) psiStatement.getFirstChild()).getMethodExpression();
+                        if (methodExpression.getText().equals(Constant.utils.creatorInitViewName)) {
+                            hasInitViewStatement = true;
                         }
                     }
-
-                    if (!hasInitViewStatement && returnStatement != null && returnValue != null) {
-                        onCreate.getBody().addBefore(mFactory.createStatementFromText("initView(" + returnValue + ");", mClass), returnStatement);
-                    }
                 }
-                generateFindViewByIdLayoutCode(returnValue, "getActivity()");
+
+                if (!hasInitViewStatement && returnStatement != null && returnValue != null) {
+                    onCreate.getBody().addBefore(mFactory.createStatementFromText("initView(" + returnValue + ");", mClass), returnStatement);
+                }
             }
+            generateFindViewByIdLayoutCode(returnValue, "getActivity()");
         }
     }
 
@@ -332,6 +333,7 @@ public class GenerateCreator extends Simple {
             // 已存在的变量就不创建
             PsiField[] fields = mClass.getFields();
             boolean duplicateField = false;
+            String beforeFieldName = "";
             for (PsiField field : fields) {
                 String name = field.getName();
                 if (!mIsLayoutInflater) {
@@ -521,10 +523,10 @@ public class GenerateCreator extends Simple {
                     }
                 }
             }
-        } else {
-            if (mOnClickList.size() != 0) {
-                mClass.add(mFactory.createMethodFromText(Util.createFindViewByIdOnClickMethodAndSwitch(mOnClickList), mClass));
-            }
+            return;
+        }
+        if (mOnClickList.size() != 0) {
+            mClass.add(mFactory.createMethodFromText(Util.createFindViewByIdOnClickMethodAndSwitch(mOnClickList), mClass));
         }
     }
 
@@ -577,12 +579,13 @@ public class GenerateCreator extends Simple {
             if (mOnClickList.size() > 0 && !mIsLayoutInflater) {
                 generateButterKnifeClickCode();
             }
-
-        } else if (Util.isExtendsFragmentOrFragmentV4(mProject, mClass)) {
+            return;
+        }
+        if (Util.isExtendsFragmentOrFragmentV4(mProject, mClass)) {
             // 判断是否有onCreateView方法
             if (mClass.findMethodsByName(Constant.psiMethodByOnCreateView, false).length == 0) {
                 // 添加
-                mClass.add(mFactory.createMethodFromText(Util.createOnCreateViewMethod(mSelectedText, true), mClass));
+                mClass.add(mFactory.createMethodFromText(Util.createOnCreateViewMethod(true), mClass));
 
             } else {
                 generateButterKnifeFields(Constant.classTypeByFragment);
@@ -786,10 +789,10 @@ public class GenerateCreator extends Simple {
                 }
             }
             Util.createOnClickAnnotation(mClass, mFactory, onClickValues);
-        } else {
-            if (mOnClickList.size() != 0) {
-                mClass.add(mFactory.createMethodFromText(Util.createButterKnifeOnClickMethodAndSwitch(mOnClickList), mClass));
-            }
+            return;
+        }
+        if (mOnClickList.size() != 0) {
+            mClass.add(mFactory.createMethodFromText(Util.createButterKnifeOnClickMethodAndSwitch(mOnClickList), mClass));
         }
     }
 
@@ -823,9 +826,9 @@ public class GenerateCreator extends Simple {
                     }
                 }
             }
-        } else {
-            mClass.add(mFactory.createMethodFromText(Util.createOnDestroyViewMethod(), mClass));
+            return;
         }
+        mClass.add(mFactory.createMethodFromText(Util.createOnDestroyViewMethod(), mClass));
     }
 
     /**
@@ -863,10 +866,10 @@ public class GenerateCreator extends Simple {
                     }
                 }
             }
-        } else {
-            mClass.add(mFactory.createMethodFromText(
-                    Util.createButterKnifeViewMethod(mIsLayoutInflater, mLayoutInflaterText, context, mSelectedText, mElements, ViewMethodName, mLayoutInflaterType), mClass));
+            return;
         }
+        mClass.add(mFactory.createMethodFromText(
+                Util.createButterKnifeViewMethod(mIsLayoutInflater, mLayoutInflaterText, context, mSelectedText, mElements, ViewMethodName, mLayoutInflaterType), mClass));
     }
 
 }

@@ -119,7 +119,7 @@ public class Element {
     /**
      * 获取id，R.id.id
      *
-     * @return
+     * @return R.id.id
      */
     public String getFullID() {
         String rPrefix = "R.id.";
@@ -129,7 +129,7 @@ public class Element {
     /**
      * 获取变量名
      *
-     * @return
+     * @return 变量名
      */
     public String getFieldName() {
         if (StringUtils.isEmpty(this.fieldName)) {

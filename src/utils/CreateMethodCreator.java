@@ -115,7 +115,7 @@ public class CreateMethodCreator extends Simple {
             // 判断是否有onCreateView方法
             if (mClass.findMethodsByName(Constant.psiMethodByOnCreateView, false).length == 0) {
                 // 添加
-                mClass.add(mFactory.createMethodFromText(Util.createOnCreateViewMethod(mSelectedText, mIsButterKnife), mClass));
+                mClass.add(mFactory.createMethodFromText(Util.createOnCreateViewMethod(mIsButterKnife), mClass));
                 if (!mIsButterKnife && mClass.findMethodsByName(Constant.utils.creatorInitViewName, false).length == 0) {
                     mClass.add(mFactory.createMethodFromText(Util.createFragmentInitViewMethod(), mClass));
                 }

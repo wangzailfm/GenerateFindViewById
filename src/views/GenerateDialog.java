@@ -48,8 +48,6 @@ public class GenerateDialog extends JFrame implements ActionListener, ItemListen
     // 命名JPanel
     private JPanel mPanelTitleField = new JPanel();
     private ButtonGroup mTitleFieldGroup = new ButtonGroup();
-    // aa_bb
-    private JRadioButton mTitleFieldUnderline = new JRadioButton("aa_bb");
     // aaBb
     private JRadioButton mTitleFieldHump = new JRadioButton("aaBb");
     // mAaBb
@@ -229,16 +227,13 @@ public class GenerateDialog extends JFrame implements ActionListener, ItemListen
         mTitleId.setHorizontalAlignment(JLabel.LEFT);
         mTitleClick.setHorizontalAlignment(JLabel.LEFT);
         // 添加listener
-        mTitleFieldUnderline.addItemListener(this);
         mTitleFieldHump.addItemListener(this);
         mTitleFieldPrefix.addItemListener(this);
         // 添加到group
-        mTitleFieldGroup.add(mTitleFieldUnderline);
         mTitleFieldGroup.add(mTitleFieldHump);
         mTitleFieldGroup.add(mTitleFieldPrefix);
         // 添加到JPanel
         mPanelTitleField.add(mTitleFieldPrefix);
-        mPanelTitleField.add(mTitleFieldUnderline);
         mPanelTitleField.add(mTitleFieldHump);
         // 添加到JPanel
         mPanelTitle.add(mTitleName);
@@ -426,11 +421,11 @@ public class GenerateDialog extends JFrame implements ActionListener, ItemListen
     /**
      * 生成
      *
-     * @param isLayoutInflater 是否是LayoutInflater.from(this).inflate(R.layout.activity_main, null);
-     * @param text             自定义text
-     * @param isBind           是否是bind
-     * @param viewHolder       是否是viewHolder
-     * @param isButterKnife    是否是ButterKnife
+     * @param isLayoutInflater      是否是LayoutInflater.from(this).inflate(R.layout.activity_main, null);
+     * @param text                  自定义text
+     * @param isBind                是否是bind
+     * @param viewHolder            是否是viewHolder
+     * @param isButterKnife         是否是ButterKnife
      */
     private void setCreator(boolean isLayoutInflater, String text, boolean isBind, boolean viewHolder, boolean isButterKnife) {
         // 使用Builder模式
@@ -488,7 +483,7 @@ public class GenerateDialog extends JFrame implements ActionListener, ItemListen
 
     @Override
     public void itemStateChanged(ItemEvent e) {
-        type = e.getSource() == mTitleFieldPrefix ? 3 : e.getSource() == mTitleFieldHump ? 2 : 1;
+        type = e.getSource() == mTitleFieldPrefix ? 3 : 2;
         for (Element element : mElements) {
             if (element.isEnable()) {
                 // 设置类型

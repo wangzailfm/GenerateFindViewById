@@ -1,22 +1,23 @@
-<idea-plugin version="7">
+<idea-plugin>
     <id>com.wangzai.plugin.findViewById</id>
     <name>GenerateFindViewById</name>
-    <version>1.3</version>
+    <version>1.4</version>
     <vendor email="673173629@qq.com" url="https://github.com/wangzailfm/GenerateFindViewById">GitHub</vendor>
 
     <description><![CDATA[
-    可输入布局字段，可选中布局文件字段，自动生成有id控件相应的代码，支持ButterKnife(8.4.0)，支持ViewHolder。<br/>
     Can input, can be selected to auto generator findViewById code in Activity or etc, support ButterKnife(version 8.4.0), support ViewHolder.<br/>
     ]]></description>
 
     <change-notes><![CDATA[
-        1.3 变量名支持三种命名格式1、mAaBbCc，2、aa_bb_cc，3、aaBbCc<br/>
-        1.2.2 Onclick可以全选或取消全选<br/>
-        1.2.1 修复ImageView和TextView不能点击OnClick<br/>
-        1.2 支持ViewHolder<br/>
-        1.1.2 Button默认勾选OnClick<br/>
-        1.1 支持ButterKnife，版本为8.4.0，快捷键Ctrl+Alt+Shift+E<br/>
-        1.0 支持Activity和Fragment，快捷键Ctrl+Alt+E<br/>
+        1.4 Variable names only support mAaBbCc and aaBbCc naming formats, The switch block adds the default statement.</br>
+        <a href="https://github.com/alibaba/p3c">Alibaba Java Coding Guidelines</a><br/>
+        1.3 Variable names support three naming formats: 1, mAaBbCc, 2, aa_bb_cc, 3, aaBbCc<br/>
+        1.2.2 Onclick can select all or deselect all<br/>
+        1.2.1 Fix ImageView and TextView can not click the OnClick option<br/>
+        1.2 Support ViewHolder<br/>
+        1.1.2 Button defaults to the OnClick option<br/>
+        1.1 Support ButterKnife, version 8.4.0, shortcut keys Ctrl+Alt+Shift+E<br/>
+        1.0 Support Activity and Fragment, shortcut keys Ctrl+Alt+E<br/>
     ]]>
     </change-notes>
 

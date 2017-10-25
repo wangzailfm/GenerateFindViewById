@@ -1,7 +1,5 @@
 package actions;
 
-import utils.CreateMethodCreator;
-import utils.Util;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
@@ -17,6 +15,8 @@ import com.intellij.psi.xml.XmlFile;
 import constant.Constant;
 import entitys.Element;
 import org.apache.commons.lang.StringUtils;
+import utils.CreateMethodCreator;
+import utils.Util;
 import views.FindViewByIdDialog;
 import views.GenerateDialog;
 
@@ -53,7 +53,7 @@ public class FindViewByIdAction extends AnAction {
         }
         // 获取布局文件，通过FilenameIndex.getFilesByName获取
         // GlobalSearchScope.allScope(project)搜索整个项目
-        PsiFile[] psiFiles = new PsiFile[0];
+        PsiFile[] psiFiles;
         psiFiles = FilenameIndex.getFilesByName(project,
                 mSelectedText + Constant.selectedTextSUFFIX,
                 GlobalSearchScope.allScope(project));

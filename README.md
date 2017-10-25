@@ -11,13 +11,14 @@ ButterKnife
 
 
 ## 更新
-- 1.3 变量名支持三种命名格式1、mAaBbCc，2、aa_bb_cc，3、aaBbCc
-- 1.2.2 Onclick可以全选或取消全选
-- 1.2.1 修复ImageView和TextView不能点击OnClick
-- 1.2 支持ViewHolder
-- 1.1.2 Button默认勾选OnClick
-- 1.1 支持ButterKnife，版本为8.4.0，快捷键Ctrl+Alt+Shift+E，支持LayoutInflater生成
-- 1.0 支持Activity和Fragment，添加可选生成的字段，可编辑变量名，可选择是否LayoutInflater类型，添加快捷键Ctrl+Alt+E，text、hint的值添加到字段注释，添加LayoutInflater生成，添加OnClick生成代码。
+- 1.4 Variable names only support mAaBbCc and aaBbCc naming formats, The switch block adds the default statement.[Alibaba Java Coding Guidelines](https://github.com/alibaba/p3c)
+- 1.3 Variable names support three naming formats: 1, mAaBbCc, 2, aa_bb_cc, 3, aaBbCc
+- 1.2.2 Onclick can select all or deselect all
+- 1.2.1 Fix ImageView and TextView can not click the OnClick option
+- 1.2 Support ViewHolder
+- 1.1.2 Button defaults to the OnClick option
+- 1.1 Support ButterKnife, version 8.4.0, shortcut keys Ctrl+Alt+Shift+E
+- 1.0 Support Activity and Fragment, shortcut keys Ctrl+Alt+E
 
 
 ## 安装
