@@ -50,8 +50,8 @@ open class GenerateDialog(
 
     // 标签JPanel
     private val mPanelTitle = JPanel()
-    private val mTitleName = JCheckBox(Constant.dialogs.TABLE_FIELD_VIEW_WIDGET)
-    private val mTitleId = JLabel(Constant.dialogs.TABLE_FIELD_VIEW_ID)
+    private val mTitleName = JCheckBox(Constant.Dialog.TABLE_FIELD_VIEW_WIDGET)
+    private val mTitleId = JLabel(Constant.Dialog.TABLE_FIELD_VIEW_ID)
     private val mTitleClick = JCheckBox(Constant.FIELD_ON_CLICK, false)
     // 命名JPanel
     private val mPanelTitleField = JPanel()
@@ -72,26 +72,26 @@ open class GenerateDialog(
     // LayoutInflater JPanel
     private val mPanelInflater = JPanel(FlowLayout(FlowLayout.LEFT))
     // 是否选择LayoutInflater
-    private val mLayoutInflater = JCheckBox(Constant.dialogs.FIELD_LAYOUT_INFLATER, false)
+    private val mLayoutInflater = JCheckBox(Constant.Dialog.FIELD_LAYOUT_INFLATER, false)
     // 手动修改LayoutInflater字段名
     private lateinit var mLayoutInflaterField: JTextField
     private var type = 3
 
     // viewHolder
     private val mPanelViewHolder = JPanel(FlowLayout(FlowLayout.LEFT))
-    private val mViewHolderCheck = JCheckBox(Constant.dialogs.VIEWHOLDER_CHECK, false)
+    private val mViewHolderCheck = JCheckBox(Constant.Dialog.VIEWHOLDER_CHECK, false)
 
     // 是否需要强转
     private val mPanelNeedCasts = JPanel(FlowLayout(FlowLayout.LEFT))
-    private val mNeedCastsCheck = JCheckBox(Constant.dialogs.NEED_CASTS, true)
+    private val mNeedCastsCheck = JCheckBox(Constant.Dialog.NEED_CASTS, true)
 
     // 是否bind，默认是true
-    private val mBind = JCheckBox(Constant.dialogs.FIELD_BUTTERKNIFE_BIND, true)
+    private val mBind = JCheckBox(Constant.Dialog.FIELD_BUTTERKNIFE_BIND, true)
 
     // 确定、取消JPanel
     private val mPanelButtonRight = JPanel()
-    private val mButtonConfirm = JButton(Constant.dialogs.BUTTON_CONFIRM)
-    private val mButtonCancel = JButton(Constant.dialogs.BUTTON_CANCEL)
+    private val mButtonConfirm = JButton(Constant.Dialog.BUTTON_CONFIRM)
+    private val mButtonCancel = JButton(Constant.Dialog.BUTTON_CANCEL)
 
     // GridBagLayout不要求组件的大小相同便可以将组件垂直、水平或沿它们的基线对齐
     private val mLayout = GridBagLayout()
@@ -295,9 +295,9 @@ open class GenerateDialog(
     internal fun setDialog() {
         // 设置标题
         title = if (mIsButterKnife) {
-            Constant.dialogs.TITLE_BUTTERKNIFE
+            Constant.Dialog.TITLE_BUTTERKNIFE
         } else {
-            Constant.dialogs.TITLE_FINDVIEWBYID
+            Constant.Dialog.TITLE_FINDVIEWBYID
         }
         // 设置布局管理
         layout = mLayout
@@ -367,15 +367,15 @@ open class GenerateDialog(
 
     override fun actionPerformed(e: ActionEvent) {
         when (e.actionCommand) {
-            Constant.dialogs.BUTTON_CONFIRM -> {
+            Constant.Dialog.BUTTON_CONFIRM -> {
                 cancelDialog()
                 if (mLayoutInflater.isSelected && mLayoutInflaterField.text.isEmpty()) {
-                    mEditor.showPopupBalloon(Constant.actions.SELECTED_LAYOUT_FIELD_TEXT_NO_NULL, 5)
+                    mEditor.showPopupBalloon(Constant.Action.SELECTED_LAYOUT_FIELD_TEXT_NO_NULL, 5)
                     return
                 }
                 setCreator(mLayoutInflater.isSelected, mLayoutInflaterField.text, mBind.isSelected, mViewHolderCheck.isSelected, mIsButterKnife, mNeedCastsCheck.isSelected)
             }
-            Constant.dialogs.BUTTON_CANCEL -> cancelDialog()
+            Constant.Dialog.BUTTON_CANCEL -> cancelDialog()
             Constant.FIELD_ON_CLICK -> {
                 // 刷新
                 for (element in elements) {
@@ -384,7 +384,7 @@ open class GenerateDialog(
                 mOnClickSize = if (mTitleClick.isSelected) elements.size else 0
                 refreshJScrollPane()
             }
-            Constant.dialogs.TABLE_FIELD_VIEW_WIDGET -> {
+            Constant.Dialog.TABLE_FIELD_VIEW_WIDGET -> {
                 // 刷新
                 for (element in elements) {
                     element.isEnable = mTitleName.isSelected
@@ -392,7 +392,7 @@ open class GenerateDialog(
                 elementSize = if (mTitleName.isSelected) elements.size else 0
                 refreshJScrollPane()
             }
-            Constant.dialogs.VIEWHOLDER_CHECK -> {
+            Constant.Dialog.VIEWHOLDER_CHECK -> {
                 mLayoutInflater.isEnabled = !mViewHolderCheck.isSelected
                 mLayoutInflaterField.isEnabled = !mViewHolderCheck.isSelected
                 mBind.isEnabled = !mViewHolderCheck.isSelected

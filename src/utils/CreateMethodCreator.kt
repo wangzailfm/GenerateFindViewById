@@ -59,9 +59,9 @@ class CreateMethodCreator<T>(private val mEditor: Editor,
             actionName = Constant.ACTION_BUTTERKNIFE
         }
         if (mType == Constant.CLASS_TYPE_BY_ACTIVITY) {
-            mEditor.showPopupBalloon(Constant.utils.CREATOR_NO_ONCREATE_METHOD + actionName, 10)
+            mEditor.showPopupBalloon(Constant.Ext.CREATOR_NO_ONCREATE_METHOD + actionName, 10)
         } else if (mType == Constant.CLASS_TYPE_BY_FRAGMENT) {
-            mEditor.showPopupBalloon(Constant.utils.CREATOR_NO_ONCREATEVIEW_METHOD + actionName, 10)
+            mEditor.showPopupBalloon(Constant.Ext.CREATOR_NO_ONCREATEVIEW_METHOD + actionName, 10)
         }
     }
 
@@ -74,7 +74,7 @@ class CreateMethodCreator<T>(private val mEditor: Editor,
             if (mClass.findMethodsByName(Constant.PSI_METHOD_BY_ONCREATE, false).isEmpty()) {
                 // 添加
                 mClass.add(mFactory.createMethodFromText(mSelectedText.createOnCreateMethod(mIsButterKnife), mClass))
-                if (!mIsButterKnife && mClass.findMethodsByName(Constant.utils.CREATOR_INITVIEW_NAME, false).isEmpty()) {
+                if (!mIsButterKnife && mClass.findMethodsByName(Constant.Ext.CREATOR_INITVIEW_NAME, false).isEmpty()) {
                     mClass.add(mFactory.createMethodFromText(createInitViewMethod(), mClass))
                 }
             }
@@ -83,10 +83,10 @@ class CreateMethodCreator<T>(private val mEditor: Editor,
             var isViewExist = false
             var isUnbinderExist = false
             for (psiField in mClass.fields) {
-                if (psiField.name != null && psiField.name == Constant.utils.CREATOR_VIEW_NAME) {
+                if (psiField.name != null && psiField.name == Constant.Ext.CREATOR_VIEW_NAME) {
                     isViewExist = true
                 }
-                if (psiField.name != null && psiField.name == Constant.utils.CREATOR_UNBINDER_NAME) {
+                if (psiField.name != null && psiField.name == Constant.Ext.CREATOR_UNBINDER_NAME) {
                     isUnbinderExist = true
                 }
             }
@@ -121,21 +121,21 @@ class CreateMethodCreator<T>(private val mEditor: Editor,
             if (mClass.findMethodsByName(Constant.PSI_METHOD_BY_ONCREATEVIEW, false).isEmpty()) {
                 // 添加
                 mClass.add(mFactory.createMethodFromText(createOnCreateViewMethod(mIsButterKnife), mClass))
-                if (!mIsButterKnife && mClass.findMethodsByName(Constant.utils.CREATOR_INITVIEW_NAME, false).isEmpty()) {
+                if (!mIsButterKnife && mClass.findMethodsByName(Constant.Ext.CREATOR_INITVIEW_NAME, false).isEmpty()) {
                     mClass.add(mFactory.createMethodFromText(createFragmentInitViewMethod(), mClass))
                 }
             }
             // ButterKnife判断是否有onDestroyView方法
             if (mIsButterKnife) {
-                if (mClass.findMethodsByName(Constant.utils.CREATOR_ONDESTROYVIEW_METHOD, false).isEmpty()) {
+                if (mClass.findMethodsByName(Constant.Ext.CREATOR_ONDESTROYVIEW_METHOD, false).isEmpty()) {
                     mClass.add(mFactory.createMethodFromText(createOnDestroyViewMethod(), mClass))
                 } else {
                     // onDestroyView是否存在unbinder.unbind();
                     var hasUnbinderStatement = false
-                    val onCreate = mClass.findMethodsByName(Constant.utils.CREATOR_ONDESTROYVIEW_METHOD, false)[0]
+                    val onCreate = mClass.findMethodsByName(Constant.Ext.CREATOR_ONDESTROYVIEW_METHOD, false)[0]
                     if (onCreate.body != null) {
                         for (psiStatement in onCreate.body!!.statements) {
-                            if (psiStatement.text.contains(Constant.utils.CREATOR_UNBINDER_FIELD)) {
+                            if (psiStatement.text.contains(Constant.Ext.CREATOR_UNBINDER_FIELD)) {
                                 hasUnbinderStatement = true
                                 break
                             } else {
@@ -143,7 +143,7 @@ class CreateMethodCreator<T>(private val mEditor: Editor,
                             }
                         }
                         if (!hasUnbinderStatement) {
-                            onCreate.body?.add(mFactory.createStatementFromText(Constant.utils.CREATOR_UNBINDER_FIELD, mClass))
+                            onCreate.body?.add(mFactory.createStatementFromText(Constant.Ext.CREATOR_UNBINDER_FIELD, mClass))
                         }
                     }
                 }

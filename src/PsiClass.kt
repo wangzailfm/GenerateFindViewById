@@ -12,7 +12,7 @@ import java.util.*
  */
 fun PsiClass.getInitViewBodyStatements(): Array<PsiStatement>? {
     // 获取initView方法
-    val method = this.findMethodsByName(Constant.utils.CREATOR_INITVIEW_NAME, false)
+    val method = this.findMethodsByName(Constant.Ext.CREATOR_INITVIEW_NAME, false)
     return if (method.isNotEmpty() && method[0].body != null)
         method[0].body?.statements
     else null
@@ -151,9 +151,9 @@ fun PsiClass.isButterKnifeBindExist(): Boolean {
     val onCreateMethod = this.getPsiMethodByName(Constant.PSI_METHOD_BY_ONCREATE)
     val onCreateViewMethod = this.getPsiMethodByName(Constant.PSI_METHOD_BY_ONCREATEVIEW)
     return !(onCreateMethod != null && onCreateMethod.body != null
-            && onCreateMethod.body!!.text.contains(Constant.utils.FIELD_BUTTERKNIFE_BIND)
+            && onCreateMethod.body!!.text.contains(Constant.Ext.FIELD_BUTTERKNIFE_BIND)
             || onCreateViewMethod != null && onCreateViewMethod.body != null
-            && onCreateViewMethod.body!!.text.contains(Constant.utils.FIELD_BUTTERKNIFE_BIND))
+            && onCreateViewMethod.body!!.text.contains(Constant.Ext.FIELD_BUTTERKNIFE_BIND))
 }
 
 

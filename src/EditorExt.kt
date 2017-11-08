@@ -22,7 +22,7 @@ import java.awt.Color
 fun Editor.showPopupBalloon(result: String?, time: Int) {
     ApplicationManager.getApplication().invokeLater {
         val factory = JBPopupFactory.getInstance()
-        factory.createHtmlTextBalloonBuilder(result ?: Constant.utils.UNKNOWN_ERROR, null, JBColor(Color(116, 214, 238), Color(76, 112, 117)), null).setFadeoutTime((time * 1000).toLong()).createBalloon().show(factory.guessBestPopupLocation(this), Balloon.Position.below)
+        factory.createHtmlTextBalloonBuilder(result ?: Constant.Ext.UNKNOWN_ERROR, null, JBColor(Color(116, 214, 238), Color(76, 112, 117)), null).setFadeoutTime((time * 1000).toLong()).createBalloon().show(factory.guessBestPopupLocation(this), Balloon.Position.below)
     }
 }
 

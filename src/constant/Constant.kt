@@ -15,7 +15,7 @@ object Constant {
     const val FIELD_ON_CLICK = "OnClick"
     const val FIELD_ONCLICK = "onClick"
 
-    object actions {
+    object Action {
         const val SELECTED_MESSAGE = "布局内容：（不需要输入R.layout.）"
         const val SELECTED_TITLE = "未选中布局内容，请输入layout文件名"
         const val SELECTED_ERROR_NO_NAME = "未输入layout文件名"
@@ -26,7 +26,7 @@ object Constant {
         const val SELECTED_SUCCESS = "生成成功"
     }
 
-    object dialogs {
+    object Dialog {
         const val TITLE_BUTTERKNIFE = "ButterKnifeDialog"
         const val TITLE_FINDVIEWBYID = "FindViewByIdDialog"
         const val TABLE_FIELD_VIEW_WIDGET = "ViewWidget"
@@ -41,7 +41,7 @@ object Constant {
         const val BUTTON_CANCEL = "取消"
     }
 
-    object utils {
+    object Ext {
         const val CREATOR_NO_ONCREATE_METHOD = "没有OnCreate方法，已创建OnCreate方法，请重新使用"
         const val CREATOR_NO_ONCREATEVIEW_METHOD = "没有OnCreateView方法，已创建OnCreateView方法，请重新使用"
         const val CREATOR_INITVIEW_NAME = "initView"

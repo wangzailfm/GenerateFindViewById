@@ -34,8 +34,6 @@ import layoutInflaterType2Str
 import showPopupBalloon
 import views.GenerateDialog
 import java.util.*
-import jdk.nashorn.internal.codegen.ObjectClassGenerator.getFieldName
-
 
 
 /**
@@ -96,7 +94,7 @@ class GenerateCreator<T>(
         styleManager.optimizeImports(mFile)
         styleManager.shortenClassReferences(mClass)
         ReformatCodeProcessor(mProject, mClass.containingFile, null, false).runWithoutProgress()
-        mEditor.showPopupBalloon(Constant.actions.SELECTED_SUCCESS, 5)
+        mEditor.showPopupBalloon(Constant.Action.SELECTED_SUCCESS, 5)
     }
 
     /**
@@ -147,9 +145,9 @@ class GenerateCreator<T>(
                     // 查找setContentView
                     if (psiStatement.firstChild is PsiMethodCallExpression) {
                         val methodExpression = (psiStatement.firstChild as PsiMethodCallExpression).methodExpression
-                        if (methodExpression.text == Constant.utils.CREATOR_SETCONTENTVIEW_METHOD) {
+                        if (methodExpression.text == Constant.Ext.CREATOR_SETCONTENTVIEW_METHOD) {
                             setContentViewStatement = psiStatement
-                        } else if (methodExpression.text == Constant.utils.CREATOR_INITVIEW_NAME) {
+                        } else if (methodExpression.text == Constant.Ext.CREATOR_INITVIEW_NAME) {
                             hasInitViewStatement = true
                         }
                     }
@@ -210,7 +208,7 @@ class GenerateCreator<T>(
                         }
                     } else if (psiStatement.firstChild is PsiMethodCallExpression) {
                         val methodExpression = (psiStatement.firstChild as PsiMethodCallExpression).methodExpression
-                        if (methodExpression.text == Constant.utils.CREATOR_INITVIEW_NAME) {
+                        if (methodExpression.text == Constant.Ext.CREATOR_INITVIEW_NAME) {
                             hasInitViewStatement = true
                         }
                     }
@@ -283,7 +281,7 @@ class GenerateCreator<T>(
      */
     private fun generateFindViewByIdLayoutCode(findPre: String?, context: String) {
         // 判断是否已有initView方法
-        val initViewMethods = mClass.findMethodsByName(Constant.utils.CREATOR_INITVIEW_NAME, false)
+        val initViewMethods = mClass.findMethodsByName(Constant.Ext.CREATOR_INITVIEW_NAME, false)
         // 有initView方法
         if (initViewMethods.isNotEmpty() && initViewMethods[0].body != null) {
             val initViewMethodBody = initViewMethods[0].body
@@ -458,9 +456,9 @@ class GenerateCreator<T>(
                         // 查找setContentView
                         if (psiStatement.firstChild is PsiMethodCallExpression) {
                             val methodExpression = (psiStatement.firstChild as PsiMethodCallExpression).methodExpression
-                            if (methodExpression.text == Constant.utils.CREATOR_SETCONTENTVIEW_METHOD) {
+                            if (methodExpression.text == Constant.Ext.CREATOR_SETCONTENTVIEW_METHOD) {
                                 setContentViewStatement = psiStatement
-                            } else if (methodExpression.text.contains(Constant.utils.FIELD_BUTTERKNIFE_BIND)) {
+                            } else if (methodExpression.text.contains(Constant.Ext.FIELD_BUTTERKNIFE_BIND)) {
                                 hasButterKnifeBindStatement = true
                             }
                         }
@@ -553,10 +551,10 @@ class GenerateCreator<T>(
             // 判断Unbinder是否存在
             var isUnBinderExist = false
             for (field in mClass.fields) {
-                if (field.name != null && field.name == Constant.utils.CREATOR_VIEW_NAME) {
+                if (field.name != null && field.name == Constant.Ext.CREATOR_VIEW_NAME) {
                     isViewExist = true
                 }
-                if (field.name != null && field.name == Constant.utils.CREATOR_UNBINDER_NAME) {
+                if (field.name != null && field.name == Constant.Ext.CREATOR_UNBINDER_NAME) {
                     isUnBinderExist = true
                 }
             }
@@ -702,7 +700,7 @@ class GenerateCreator<T>(
      */
     private fun generateButterKnifeLayoutCode() {
         // 判断是否已有onDestroyView方法
-        val onDestroyViewMethods = mClass.findMethodsByName(Constant.utils.CREATOR_ONDESTROYVIEW_METHOD, false)
+        val onDestroyViewMethods = mClass.findMethodsByName(Constant.Ext.CREATOR_ONDESTROYVIEW_METHOD, false)
         // 有onDestroyView方法
         if (onDestroyViewMethods.isNotEmpty() && onDestroyViewMethods[0].body != null) {
             val onDestroyViewMethodBody = onDestroyViewMethods[0].body
@@ -713,7 +711,7 @@ class GenerateCreator<T>(
                     // 判断是否已存在unbinder.unbind();
                     var isFdExist = false
                     for (statement in statements) {
-                        if (statement.text == Constant.utils.CREATOR_UNBINDER_FIELD) {
+                        if (statement.text == Constant.Ext.CREATOR_UNBINDER_FIELD) {
                             isFdExist = true
                             break
                         } else {
@@ -722,7 +720,7 @@ class GenerateCreator<T>(
                     }
                     // 不存在就添加
                     if (!isFdExist) {
-                        onDestroyViewMethodBody.add(mFactory.createStatementFromText(Constant.utils.CREATOR_UNBINDER_FIELD, onDestroyViewMethods[0]))
+                        onDestroyViewMethodBody.add(mFactory.createStatementFromText(Constant.Ext.CREATOR_UNBINDER_FIELD, onDestroyViewMethods[0]))
                         break
                     }
                 }
