@@ -266,7 +266,7 @@ class GenerateCreator<T>(
             // 设置变量名，获取text里面的内容
             if (element.isEnable) {
                 // 添加到class
-                mClass.add(mFactory.createFieldFromText(mProject.createFieldText(element).createFieldByElement(
+                mClass.add(mFactory.createFieldFromText(mProject.createFieldText(element, mFile).createFieldByElement(
                         element, mIsLayoutInflater, mLayoutInflaterText, mLayoutInflaterType), mClass))
             }
         }
@@ -593,7 +593,7 @@ class GenerateCreator<T>(
                 // 已存在跳出
                 if (!duplicateField) {
                     // 添加到class
-                    mClass.add(mFactory.createFieldFromText(mProject.createFieldText(element).createFieldByElement(
+                    mClass.add(mFactory.createFieldFromText(mProject.createFieldText(element, mFile).createFieldByElement(
                             element, true, mLayoutInflaterText, mLayoutInflaterType), mClass))
                 }
             } else {

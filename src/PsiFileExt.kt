@@ -26,8 +26,8 @@ fun PsiFile.fileAccept(accept: (element: PsiElement) -> Unit) =
  *
  * @param elements elements
  */
-fun PsiFile.getIDsFromLayoutToList(elements: ArrayList<Element>) {
-    this.fileAccept { element ->
+fun getIDsFromLayoutToList(psiFile: PsiFile, elements: ArrayList<Element>) {
+    psiFile.fileAccept { element ->
         // 解析Xml标签
         if (element is XmlTag) {
             with(element) {
@@ -44,11 +44,20 @@ fun PsiFile.getIDsFromLayoutToList(elements: ArrayList<Element>) {
                     var include: XmlFile? = null
                     val psiFiles = FilenameIndex.getFilesByName(project, layoutName + Constant.SELECTED_TEXT_SUFFIX, GlobalSearchScope.allScope(project))
                     if (psiFiles.isNotEmpty()) {
-                        include = psiFiles[0] as XmlFile
+                        include = if (psiFiles.size > 1) {
+                            val psiFilePath = psiFile.parent?.toString()!!
+                            val psiFiles1 = psiFiles.filter {
+                                val modulePath = it.parent?.toString()!!
+                                modulePath.contains("\\src\\main\\res\\layout") && psiFilePath.substring(0, psiFilePath.indexOf("\\main\\")) == modulePath.substring(0, modulePath.indexOf("\\main\\"))
+                            }
+                            psiFiles1[0] as XmlFile
+                        } else {
+                            psiFiles[0] as XmlFile
+                        }
                     }
                     if (include != null) {
                         // 递归
-                        include.getIDsFromLayoutToList(elements)
+                        getIDsFromLayoutToList(include, elements)
                         return@fileAccept
                     }
                 }

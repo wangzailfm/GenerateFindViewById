@@ -74,17 +74,16 @@ class FindViewByIdAction : AnAction() {
         }
         val xmlFile = if (psiFiles.size > 1) {
             val psiFilePath = psiFile.parent?.toString()!!
-            val psiFile1 = psiFiles.filter {
+            val psiFiles1 = psiFiles.filter {
                 val modulePath = it.parent?.toString()!!
-                psiFilePath.substring(0, psiFilePath.indexOf("\\main\\")) == modulePath.substring(0, psiFilePath.indexOf("\\main\\"))
-            }[0]
-            psiFile1 as XmlFile
+                modulePath.contains("\\src\\main\\res\\layout") && psiFilePath.substring(0, psiFilePath.indexOf("\\main\\")) == modulePath.substring(0, modulePath.indexOf("\\main\\"))
+            }
+            psiFiles1[0] as XmlFile
         } else {
             psiFiles[0] as XmlFile
         }
-//        val xmlFile = psiFiles[0] as XmlFile
         val elements = ArrayList<Element>()
-        xmlFile.getIDsFromLayoutToList(elements)
+        getIDsFromLayoutToList(xmlFile, elements)
         // 将代码写入文件，不允许在主线程中进行实时的文件写入
         if (elements.size == 0) {
             mEditor.showPopupBalloon(Constant.Action.SELECTED_ERROR_NO_ID, popupTime)

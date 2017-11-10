@@ -11,6 +11,8 @@ ButterKnife
 
 
 ## 更新
+- 1.4.2 Fix bugs with the same xml name for more than one Module.
+- 1.4.1 Code replace to Kotlin, add Forced Casts option, default true, and Replace code to Kotlin language.[Revision 26.0.0 Beta 1 Important changes](https://developer.android.google.cn/topic/libraries/support-library/revisions.html#26-0-0-beta1)
 - 1.4 Variable names only support mAaBbCc and aaBbCc naming formats, The switch block adds the default statement.[Alibaba Java Coding Guidelines](https://github.com/alibaba/p3c)
 - 1.3 Variable names support three naming formats: 1, mAaBbCc, 2, aa_bb_cc, 3, aaBbCc
 - 1.2.2 Onclick can select all or deselect all

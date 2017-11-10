@@ -1,6 +1,10 @@
+
+import com.intellij.notification.*
+import constant.Constant
 import entitys.Element
 import org.apache.commons.lang.StringUtils
 import java.util.*
+
 
 /**
  * 第一个字母大写
@@ -11,6 +15,14 @@ import java.util.*
  */
 fun String.firstToUpperCase(): String = this.substring(0, 1).toUpperCase(Locale.CHINA) + this.substring(1)
 
+/**
+ * 输出到Log窗口
+ */
+fun String.outInfo() {
+    NotificationsConfiguration.getNotificationsConfiguration().register(Constant.GENERATEFINDVIEWBYID, NotificationDisplayType.NONE)
+    Notifications.Bus.notify(
+            Notification(Constant.GENERATEFINDVIEWBYID, "${Constant.GENERATEFINDVIEWBYID} [INFO]", this, NotificationType.INFORMATION))
+}
 
 /**
  * 根据layoutInflaterType生成不同内容

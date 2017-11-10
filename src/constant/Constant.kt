@@ -4,6 +4,7 @@ package constant
  * @author Jowan
  */
 object Constant {
+    const val GENERATEFINDVIEWBYID = "GenerateFindViewById"
     const val ACTION_FINDVIEWBYID = "FindViewById"
     const val ACTION_BUTTERKNIFE = "ButterKnife"
     const val SELECTED_TEXT_SUFFIX = ".xml"
@@ -35,7 +36,7 @@ object Constant {
         const val FIELD_LAYOUT_INFLATER = "LayoutInflater.from(context).inflater"
         const val FIELD_CHECK_ALL = "CheckAll"
         const val VIEWHOLDER_CHECK = "Create ViewHolder"
-        const val NEED_CASTS = "Forced Casts(SupportLibrary V26 After Don't Need)"
+        const val NEED_CASTS = "Forced Casts(SupportLibrary uncheck the above version of 26)"
         const val FIELD_BUTTERKNIFE_BIND = "ButterKnife.bind()"
         const val BUTTON_CONFIRM = "确定"
         const val BUTTON_CANCEL = "取消"

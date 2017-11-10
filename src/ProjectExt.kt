@@ -1,11 +1,12 @@
+
 import com.intellij.openapi.project.Project
 import com.intellij.psi.JavaPsiFacade
 import com.intellij.psi.PsiClass
+import com.intellij.psi.PsiFile
 import com.intellij.psi.search.EverythingGlobalScope
 import com.intellij.psi.search.FilenameIndex
 import com.intellij.psi.search.GlobalSearchScope
 import entitys.Element
-import org.apache.commons.lang.StringUtils
 
 infix fun Project.findClassByProject(className: String) =
         JavaPsiFacade.getInstance(this).findClass(className, EverythingGlobalScope(this))
@@ -48,9 +49,11 @@ infix fun Project.isExtendsFragmentOrFragmentV4(mClass: PsiClass): Boolean {
  *
  * @param mProject Project
  *
+ * @param psiFile PsiFile
+ *
  * @return String
  */
-fun Project.createFieldText(element: Element): String? {
+fun Project.createFieldText(element: Element, psiFile: PsiFile): String? {
     // 如果是text为空，则获取hint里面的内容
     var text: String? = element.xml.getAttributeValue("android:text") ?: element.xml.getAttributeValue("android:hint")
     text?.let {
@@ -63,6 +66,12 @@ fun Project.createFieldText(element: Element): String? {
                         .filter {
                             // 获取src\main\res\values下面的strings.xml文件
                             it.parent != null && it.parent!!.toString().contains("src\\main\\res\\values", false)
+                        }
+                        .filter {
+                            it.parent!!.toString().outInfo()
+                            val psiFilePath = psiFile.parent?.toString()!!
+                            val modulePath = it.parent?.toString()!!
+                            psiFilePath.substring(0, psiFilePath.indexOf("\\main\\")) == modulePath.substring(0, modulePath.indexOf("\\main\\"))
                         }
                         .forEach { text = it.getTextFromStringsXml(text!!) }
             }
