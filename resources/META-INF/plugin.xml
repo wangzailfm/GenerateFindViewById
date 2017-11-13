@@ -10,7 +10,7 @@
     ]]></description>
 
     <change-notes><![CDATA[
-        1.4.3 Fix a IndexOutOfBoundsException bug.<br/>
+        1.4.3 Fix a IndexOutOfBoundsException bug, As some older projects use the aa_bb format, resuming aa_bb formatted code generation.<br/>
         1.4.2 Fix bugs with the same xml name for more than one Module.<br/>
         1.4.1 Code replace to Kotlin, add Forced Casts option, default true, and Replace code to Kotlin language.<br/>
         <a href="https://developer.android.google.cn/topic/libraries/support-library/revisions.html#26-0-0-beta1">Revision 26.0.0 Beta 1 Important changes</a><br/>

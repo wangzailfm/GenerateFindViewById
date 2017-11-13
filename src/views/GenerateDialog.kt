@@ -25,6 +25,7 @@ import java.util.*
 import javax.swing.*
 import javax.swing.border.EmptyBorder
 
+
 /**
  * GenerateDialog
  * @author Jowan
@@ -56,6 +57,8 @@ open class GenerateDialog(
     // 命名JPanel
     private val mPanelTitleField = JPanel()
     private val mTitleFieldGroup = ButtonGroup()
+    // aa_bb
+    private val mTitleFieldUnderline = JRadioButton("aa_bb")
     // aaBb
     private val mTitleFieldHump = JRadioButton("aaBb")
     // mAaBb
@@ -131,14 +134,17 @@ open class GenerateDialog(
         mTitleId.horizontalAlignment = JLabel.LEFT
         mTitleClick.horizontalAlignment = JLabel.LEFT
         // 添加listener
+        mTitleFieldUnderline.addItemListener(this);
         mTitleFieldHump.addItemListener(this)
         mTitleFieldPrefix.addItemListener(this)
         // 添加到group
+        mTitleFieldGroup.add(mTitleFieldUnderline);
         mTitleFieldGroup.add(mTitleFieldHump)
         mTitleFieldGroup.add(mTitleFieldPrefix)
         // 添加到JPanel
-        mPanelTitleField.add(mTitleFieldPrefix)
+        mPanelTitleField.add(mTitleFieldUnderline);
         mPanelTitleField.add(mTitleFieldHump)
+        mPanelTitleField.add(mTitleFieldPrefix)
         // 添加到JPanel
         mPanelTitle.add(mTitleName)
         mPanelTitle.add(mTitleId)
@@ -401,7 +407,11 @@ open class GenerateDialog(
     }
 
     override fun itemStateChanged(e: ItemEvent) {
-        type = if (e.source === mTitleFieldPrefix) 3 else 2
+        type = when (e.source) {
+            mTitleFieldPrefix -> 3
+            mTitleFieldHump -> 2
+            else -> 1
+        }
         for (element in elements) {
             if (element.isEnable) {
                 // 设置类型

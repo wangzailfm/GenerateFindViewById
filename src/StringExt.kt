@@ -34,6 +34,7 @@ fun String.outInfo() {
  * @return String
  */
 fun layoutInflaterType2Str(mLayoutInflaterText: String, mLayoutInflaterType: Int): String = when (mLayoutInflaterType) {
+    1 -> "_$mLayoutInflaterText"
     2 -> mLayoutInflaterText.firstToUpperCase()
     else -> mLayoutInflaterText.substring(1)
 }
@@ -71,29 +72,33 @@ infix fun String.getFieldName(type: Int): String {
     var fieldName = this
     if (!StringUtils.isEmpty(fieldName)) {
         val names = fieldName.split("_".toRegex()).dropLastWhile(String::isEmpty).toTypedArray()
-        if (type == 2) {
-            // aaBbCc
-            val sb = StringBuilder()
-            for (i in names.indices) {
-                if (i == 0) {
-                    sb.append(names[i])
-                } else {
+        when (type) {
+            2 -> {
+                // aaBbCc
+                val sb = StringBuilder()
+                for (i in names.indices) {
+                    if (i == 0) {
+                        sb.append(names[i])
+                    } else {
+                        sb.append(names[i].firstToUpperCase())
+                    }
+                }
+                sb.append("View")
+                fieldName = sb.toString()
+            }
+            3 -> {
+                // mAaBbCc
+                val sb = StringBuilder()
+                for (i in names.indices) {
+                    if (i == 0) {
+                        sb.append("m")
+                    }
                     sb.append(names[i].firstToUpperCase())
                 }
+                sb.append("View")
+                fieldName = sb.toString()
             }
-            sb.append("View")
-            fieldName = sb.toString()
-        } else {
-            // mAaBbCc
-            val sb = StringBuilder()
-            for (i in names.indices) {
-                if (i == 0) {
-                    sb.append("m")
-                }
-                sb.append(names[i].firstToUpperCase())
-            }
-            sb.append("View")
-            fieldName = sb.toString()
+            else -> fieldName += "_view"
         }
     }
     return fieldName
