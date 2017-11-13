@@ -78,7 +78,10 @@ class ButterKnifeAction : AnAction() {
                 val modulePath = it.parent?.toString()!!
                 modulePath.contains("\\src\\main\\res\\layout") && psiFilePath.substring(0, psiFilePath.indexOf("\\main\\")) == modulePath.substring(0, modulePath.indexOf("\\main\\"))
             }
-            psiFiles1[0] as XmlFile
+            if (psiFiles1.isEmpty()) {
+                mEditor.showPopupBalloon(Constant.Action.SELECTED_ERROR_NO_SELECTED, popupTime)
+                return
+            } else psiFiles1[0] as XmlFile
         } else {
             psiFiles[0] as XmlFile
         }

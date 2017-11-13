@@ -50,7 +50,7 @@ fun getIDsFromLayoutToList(psiFile: PsiFile, elements: ArrayList<Element>) {
                                 val modulePath = it.parent?.toString()!!
                                 modulePath.contains("\\src\\main\\res\\layout") && psiFilePath.substring(0, psiFilePath.indexOf("\\main\\")) == modulePath.substring(0, modulePath.indexOf("\\main\\"))
                             }
-                            psiFiles1[0] as XmlFile
+                            if (psiFiles1.isEmpty()) return@fileAccept else psiFiles1[0] as XmlFile
                         } else {
                             psiFiles[0] as XmlFile
                         }
